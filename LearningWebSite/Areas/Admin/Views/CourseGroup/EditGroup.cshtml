@@ -1,0 +1,19 @@
+﻿@model LearningWebSite.DataLayer.Entities.Courses.CourseGroups
+@{
+    ViewData["Title"] = "EditGroup";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+<form asp-area="Admin" asp-controller="CourseGroup" asp-action="EditGroup" method="post">
+    <input hidden asp-for="GroupId" />
+    <input hidden asp-for="ParentId" />
+    <div asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">عنوان گروه:</label>
+        <input type="text" class="form-control" asp-for="GroupTitle" id="exampleInputEmail1" aria-describedby="emailHelp">
+    </div>
+    <button type="submit" class="btn btn-success">ذخیره اطلاعات</button>
+</form>
+
+
+

@@ -1,0 +1,100 @@
+﻿@using LearningWebSite.Core.ViewModel.BasketVM
+@model List<ShowBasketVM>
+@{
+    ViewData["Title"] = "OrderView";
+}
+<br />
+<div class="container">
+    <section class="h-100" style="background-color: #eee;">
+        <div class="container h-100 py-5">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-10">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="fw-normal mb-0 text-black">سبد خرید</h3>
+                    </div>
+
+                    <form action="/Course/Payment" method="post">
+                        @foreach (var item in Model)
+                        {
+                            <input hidden name="courseId" value="@item.CourseId" />
+                            <div class="card rounded-3 mb-4 text-center">
+                                <div class="card-body p-4">
+                                    <div class="row d-flex justify-content-between align-items-center">
+                                        <div class="col-md-2 col-lg-2 col-xl-2">
+                                            <img src="/CourseImage/thumb/@item.CourseImage"
+                                             class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p class="lead fw-normal mb-2">@item.CourseTitle</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h5 class="mb-0">@item.CoursePrice.ToString("#,#") تومان</h5>
+                                        </div>
+
+                                        <div class="col-md-1 text-center">
+                                            <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="card rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="col-12 row">
+                                    <h5 class="mb-0">جمع کل خرید: @ViewBag.Total.ToString("#,#") تومان</h5>
+                                    <div class="col-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <label for="walletPay" />پرداخت با کیف پول
+                                                <input type="radio" value="wallet" required name="paymethod" id="walletPay" aria-label="Radio button for following text input">
+                                                <input type="number" value="@ViewBag.UserWallet" disabled class="form-control text-center" aria-label="Text input with radio button">
+                                                <button type="submit" class="btn btn-outline-success mt-3"> پرداخت</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <label for="onlinePay" />درگاه پرداخت
+                                                <input type="radio" value="online" required name="paymethod" id="onlinePay" aria-label="Radio button for following text input">
+                                                <button type="submit" class="btn btn-outline-primary">درگاه پرداخت</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="card mb-4">
+                        <div class="card-body p-4 d-flex flex-row">
+                            <div class="form-outline flex-fill">
+                                <div class="col-6">
+                                    <label class="form-label" for="form1">کد تخفیف</label>
+                                    <input type="text" placeholder="کد تخفیف خود را وارد نمایید..." id="form1" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <button type="button" class="btn btn-outline-warning btn-block mb-2">اعمال کد تخفیف</button>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

@@ -1,0 +1,49 @@
+﻿@using LearningWebSite.DataLayer.Entities.Courses
+@model CourseEpisode
+@{
+    ViewData["Title"] = "ویرایش بخش";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="CourseId" />
+    <input type="hidden" asp-for="EpisodeId" />
+    <input type="hidden" asp-for="EpisodeFileName" />
+    <div class="col-md-12">
+        <h2>اطلاعات دوره</h2>
+        <hr />
+        <div class="form-group">
+            <label>عنوان بخش</label>
+            <input type="text" asp-for="EpisodeTitle" class="form-control">
+            <span asp-validation-for="EpisodeTitle"></span>
+        </div>
+        <div class="form-group">
+            <label>زمان بخش</label>
+            <input type="text" asp-for="EpisodeTime" class="form-control">
+            <span asp-validation-for="EpisodeTime"></span>
+        </div>
+        <div class="form-group">
+            <label>فایل بخش</label>
+            <input type="file" name="fileEpisode">
+            <p class="text-danger">فایل اجباری است</p>
+            @if (ViewData["IsExistFile"] != null)
+            {
+                <div class="alert alert-danger">
+                    نام فایل معتبر نیست ، لطفا تغییر دهید
+                </div>
+            }
+            <span asp-validation-for="EpisodeFileName"></span>
+        </div>
+        <div class="form-group">
+            <label>دسترسی</label>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" asp-for="IsFree">
+                    رایگان است
+                </label>
+            </div>
+            <input type="submit" value="ذخیره اطلاعات" class="btn btn-success" />
+        </div>
+    </div>
+</form>
+

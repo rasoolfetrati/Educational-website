@@ -1,0 +1,18 @@
+﻿@using LearningWebSite.DataLayer.Entities.Users
+@model CustomUser
+
+@{
+    ViewData["Title"] = "فعال سازی اکانت";
+    Layout = null;
+}
+
+
+<div style="direction: rtl; padding: 20px">
+    <h2>@Model.FirstName @Model.LastName عزیز !</h2>
+    <h4>با تشکر از ثبت نام شما در ایزی لرن ، جهت ادامه کار میبایست کد زیر را در سایت وارد نمایید.</h4>
+    <p>
+        <h3>کد جهت فعال سازی حساب کاربری:</h3> <b>@Model.ActiveCode</b>
+    </p>
+</div>
+
+

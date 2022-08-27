@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "EditRole";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+<br />
+<h1>ویرایش نقش کاربر @ViewBag.UserEmail</h1>
+<hr />
+
+<form class="form" asp-area="Admin" asp-controller="User" asp-action="EditRole" method="post">
+    <input hidden value="@ViewBag.UserId"/>
+    <div class="form-group col-md-12">
+        <label class="my-1 mr-2" for="inlineFormCustomSelectPref">لیست نقش ها</label>
+        <select name="RoleName" id="inputState" asp-items="ViewBag.UserRole" class="form-control">
+        </select>
+    </div>
+    <input type="submit" class="btn btn-primary btn-lg mr-2" value="ارسال"/>
+</form>
+

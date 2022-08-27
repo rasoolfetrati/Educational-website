@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "CreateRole";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+<br />
+<h1>افزودن نقش به @ViewBag.UserEmail</h1>
+<hr />
+
+<form class="form" asp-area="Admin" asp-controller="User" asp-action="CreateRole" method="post">
+
+    <div class="form-group col-md-12">
+        <label class="my-1 mr-2" for="inlineFormCustomSelectPref">لیست نقش ها</label>
+        <select name="RoleName" id="inputState" asp-items="ViewBag.Claims" class="form-control">
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg mr-2">ارسال</button>
+</form>

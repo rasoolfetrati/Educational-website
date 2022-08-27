@@ -1,0 +1,42 @@
+@model List<LearningWebSite.DataLayer.Entities.Comments.Comment>
+@{
+    ViewData["Title"] = "GetComments";
+}
+<br />
+<div id="accordion">
+    @if (Model != null)
+    {
+        @foreach (var item in Model)
+        {
+            <div class="card" id="removeTr-@item.CommentID">
+                <div class="card-header" id="heading-@item.CommentID">
+                    <h5 class="mb-0">
+                        <span class="d-flex d-inline justify-content-between">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-@item.CommentID" aria-expanded="true" aria-controls="collapse-@item.CommentID">
+                                <label>کامنت جدیدی برای دوره  : @item.Course.CourseTitle</label>
+                            </button>
+                            <div class="d-flex justify-content-end text-light">
+                                    <button type="button" onclick="submitDeleteForm('/DeleteComment/',@item.CommentID)" class="btn btn-outline-danger btn-sm">
+                                        <i class="fa fa-trash-o fa-fw"></i>
+                                    </button>
+                                    <button type="button" onclick="submitComment('/ConfirmComment/',@item.CommentID)" class="btn btn-outline-success btn-sm">
+                                        <i class="fa fa-check fa-fw"></i>
+                                    </button>
+                            </div>
+                        </span>
+                    </h5>
+                </div>
+
+                <div id="collapse-@item.CommentID" class="collapse" aria-labelledby="heading-@item.CommentID" data-parent="#accordion">
+                    <div class="card-body">
+                        <p>نام کاربر: @item.CustomUser.FirstName @item.CustomUser.LastName</p>
+                        <p>آدرس ايميل: @item.CustomUser.Email</p>
+                        <p>تاريخ ارسال :@item.SaveDate</p>
+                        <p>متن پيام: <br>@Html.Raw(item.CommentText)</p>
+                    </div>
+                </div>
+            </div>
+            <br />
+        }
+    }
+</div>

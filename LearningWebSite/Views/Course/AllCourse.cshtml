@@ -1,0 +1,188 @@
+@using LearningWebSite.Core.ViewModel.CourseVM
+@using LearningWebSite.DataLayer.Entities.Courses
+@model Tuple<List<ShowCourseListItemViewModel>,int>
+@{
+    ViewData["Title"] = "AllCourse";
+}
+<div class="container pr-1">
+    <ul class="breadcrumb bg-white mt-4">
+        <li class="breadcrumb-item"><a href="#" class="font-12 vazir">صفحه اصلی</a></li>
+        <li class="breadcrumb-item"><a href="#" class="pr-2 font-12 vazir">دوره های آموزشی</a></li>
+    </ul>
+</div>
+<form action="/Course/AllCourse" id="formFilter" method="get">
+    <input type="hidden" id="pageid" name="pageId" value="@ViewBag.pageId.ToString()" />
+    <div class="container">
+        <div class="row my-4">
+
+            <div class="col-md-3 ">
+
+                <div class="row">
+                    <div class="col-md-12 bg-white shadow-sm mb-3">
+                        <p class="font-13 mt-3">نوع دوره </p>
+                        @{
+                            var Coursetype = ViewBag.selectedtype as string;
+                        }
+                        <hr>
+                        <div class="form-check mb-2">
+                            <label class="form-check-label">
+                                <input class="form-check-input custom-checkbox" onchange="changeGroup()" name="getType" value="all"
+                                       @((Coursetype.Equals("all")?"checked":"")) type="radio">همه
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input custom-checkbox" onchange="changeGroup()" name="getType"
+                                       value="free" type="radio" @((Coursetype.Equals("free")?"checked":"")) />رایگان
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-2">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input custom-checkbox" onchange="changeGroup()" name="getType"
+                                       value="price" type="radio" @((Coursetype.Equals("price")?"checked":"")) />فقط نقدی
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 bg-white shadow-sm mb-3">
+                        <p class="font-13 mt-3">مرتب سازی براساس </p>
+                        <hr>
+                        @{
+                            var courseSort = ViewBag.sort as string;
+                        }
+                        <div class="form-check mb-2">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input custom-checkbox" onchange="changeGroup()" value="lates"
+                                       name="sort" @((courseSort.Equals("lates")?"checked":"")) />جدیدترین
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-2">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input custom-checkbox" onchange="changeGroup()" value="oldest"
+                                       name="sort" @((courseSort.Equals("oldest")?"checked":"")) />قدیمی ترین
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-2">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input custom-checkbox" onchange="changeGroup()" value="1"
+                                       name="sort" @((courseSort.Equals("1")?"checked":"")) />درحال برگزاری
+                            </label>
+                        </div>
+
+                        <div class="form-check mb-2">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input custom-checkbox" onchange="changeGroup()" value="2"
+                                       name="sort" @((courseSort.Equals("2")?"checked":"")) />تکمیل شده ها
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!----- Start course title ----->
+                    <div class="col-md-12 bg-white shadow-sm">
+                        @{
+                            var groups = ViewBag.Groups as List<CourseGroups>;
+                            List<int> selected = ViewBag.selectedGroups as List<int>;
+                        }
+                        <p class="font-13 mt-3">سرفصل ها </p>
+                        <hr>
+                        <ul>
+                            @foreach (var group in groups.Where(g => g.ParentId == null))
+                            {
+                                <li>
+                                    <input class="form-check-input custom-checkbox" onchange="changeGroup()" type="checkbox"
+                                       @((selected.Any(s=>s==group.GroupId)?"checked":"")) name="selectedGroups" value="@group.GroupId"
+                                       id="cat-1" />
+                                    <label for="cat-1" class="form-check-label"> @group.GroupTitle </label>
+                                    @if (groups.Any(g => g.ParentId == group.GroupId))
+                                    {
+                                        <ul>
+                                            @foreach (var sub in groups.Where(g => g.ParentId == group.GroupId))
+                                            {
+                                                <li>
+                                                    <input onchange="changeGroup()" @((selected.Any(s=>s==sub.GroupId)?"checked":"")) type="checkbox"
+                                               name="selectedGroups" value="@sub.GroupId" id="cat-1" />
+                                                    <label class="form-check-label" for="cat-1"> @sub.GroupTitle </label>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <!----- End course title ----->
+
+            </div>
+</form>
+@if (Model.Item1 != null)
+{
+    <div class="col-md-9">
+        <div class="row">
+            @foreach (var item in Model.Item1)
+            {
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="card custom-card mb-3">
+                        <div class="sub-layer">
+                            <img src="/CourseImage/@item.ImageName" alt="@item.Title" class="img-fluid card-img-top">
+                            <div class="over-layer">
+                                <a href='/Course/@item.CourseId/@item.Title.Replace(" ","-")' class="btn btn-primary">مشاهده دوره </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="course.html" class="card-link">@item.Title</a>
+                        </div>
+                        <div class="card-footer">
+                            <div class="float-left">
+                                @if (item.Price <= 0)
+                                {
+                                    <small class="text-success mr-2 ">رایگان</small>
+                                }
+                                else
+                                {
+                                    <small class="text-info mr-2 ">@item.Price.ToString("#,#") تومان</small>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+@if (Model.Item2 > 1)
+{
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+
+            @for (int i = 1; i <= Model.Item2; i++)
+            {
+                <li class="page-item"><a class="page-link" onclick="changePage(@i)" href="#">@i</a></li>
+
+            }
+        </ul>
+    </nav>
+}
+</div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+
+        function changePage(pageid) {
+            $("#pageid").val(pageid);
+            $("#formFilter").submit();
+        }
+
+        function changeGroup() {
+            $("#formFilter").submit();
+        }
+    </script>
+}

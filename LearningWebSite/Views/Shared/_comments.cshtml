@@ -1,0 +1,64 @@
+﻿@using LearningWebSite.DataLayer.Entities.Comments
+@model List<Comment>
+@{
+}
+
+<div class="loadcomments">
+  @if (Model == null || Model.Count <= 0)
+  {
+    <div class="alert alert-info mt-3">
+      نظری وجود ندارد اولین نفر باشید!
+    </div>
+  }
+  @if (Model != null)
+
+  {
+    @foreach (var item in Model.Where(c => c.ParentId == 0 || c.ParentId == null))
+    {
+      if (item.IsApprove)
+      {
+        <div class="bg-light my-3 p-2 pb-4" id="removeTr-@item.CommentID">
+          <div class="d-flex align-items-center">
+            <p class="text-danger mb-0 vazir font-13">@item.CustomUser.FirstName @item.CustomUser.LastName</p>
+            <small class="mx-5 text-muted">@item.SaveDate</small>
+          </div>
+          <p class="text-justify my-2 vazir font-13">@Html.Raw(item.CommentText) </p>
+          @if (item.CustomUser.UserName == User.Identity.Name && !item.IsApprove)
+          {
+            <small class="text text-muted">@(!item.IsApprove?"نظر شما بعد از تایید در سایت نمایش داده خواهد شد!":"")</small>
+          }
+          @if (item.ParentId != null || item.ParentId != 0)
+          {
+            @foreach (var answer in Model.Where(a => a.ParentId == item.CommentID))
+            {
+              <div class=" shadow-sm mr-5 w-75 mt-3 p-2 bg-white">
+                <div class="d-flex align-items-center">
+                  <p class="text-danger mb-0 vazir font-13">@answer.CustomUser.FirstName @answer.CustomUser.LastName</p>
+                  <small class="mx-5 text-muted">@answer.SaveDate</small>
+                </div>
+                <p class="text-justify my-2 vazir font-13">@Html.Raw(answer.CommentText)</p>
+              </div>
+            }
+
+          }
+          @if (User.Identity.IsAuthenticated)
+          {
+            <button class="btn btn-success btn-sm mt-2 mb-2" id="btnAnswer"
+      onclick="answerTocomment(@item.CommentID)">پاسخ</button>
+          }
+          @if (item.CustomUser.UserName == User.Identity.Name)
+          {
+            <form id="deleteForm" class="d-inline">
+              <button onclick="submitDeleteForm('/DeleteComment/',@item.CommentID)" type="button"
+        class="btn btn-outline-danger btn-sm">
+                حذف
+              </button>
+            </form>
+          }
+        </div>
+      }
+
+    }
+
+  }
+</div>

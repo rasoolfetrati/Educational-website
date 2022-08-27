@@ -1,0 +1,60 @@
+﻿@using LearningWebSite.Core.ViewModel.Users
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <!----- Start login box ----->
+    <div class="row d-flex justify-content-center">
+
+        <div class="col-lg-7 col-xl-6 col-md-9 register">
+
+            <div class="card my-5">
+
+                <div class="card-body">
+                    <h5 class="shadow-sm text-center mb-4 py-3">ورود به سایت</h5>
+
+                    <form asp-controller="Account" asp-action="Login" method="post" asp-antiforgery="true">
+                        <div asp-validation-summary="All"></div>
+                        <div class="form-group">
+                            <label for="">ایمیل : </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text  my-icon"> <i class="fa fa-user-plus align-middle"></i></span>
+                                </div>
+                                <input type="email" asp-for="Email" class="form-control" placeholder="نام ایمیل خود را وارد کنید ">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for=""> رمز عبور : </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text  my-icon"> <i class="fa fa-lock align-middle"></i></span>
+                                </div>
+                                <input type="password" asp-for="Password" class="form-control" placeholder="رمز عبور خود را وارد کنید">
+                            </div>
+                        </div>
+
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input vazir ml-2" asp-for="RememberMe">مرا بخاطر بسپار
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block rounded-pill custom-btn font-13 my-3">ورود </button>
+
+                        <p class="text-center my-3  font-12 vazir">رمز عبور خود را فراموش کرده اید؟ <a href="/ForgetPassword" class="login">بازیابی رمز عبور</a></p>
+
+                        <p class="text-center my-3  font-12 vazir">هنوز در سایت ثبت نام نکرده اید ؟ <a href="/Account/SignUp" class="login">ثبت نام</a></p>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

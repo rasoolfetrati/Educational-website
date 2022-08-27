@@ -1,0 +1,127 @@
+﻿@using LearningWebSite.DataLayer.Entities.Courses
+@model Course
+@{
+    ViewData["Title"] = "EditCourse";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+<br />
+<div class="col-md-12">
+    <form method="post" class="row" enctype="multipart/form-data">
+        <input hidden asp-for="CourseId" />
+        <input hidden asp-for="CourseImageName" />
+        <input hidden asp-for="DemoFileName" />
+        <div class="col-md-8">
+            <h2>اطلاعات دوره</h2>
+            <hr />
+            <div class="form-group">
+                <label>عنوان دوره</label>
+                <input asp-for="CourseTitle" type="text" class="form-control">
+                <span></span>
+            </div>
+            <div class="form-group">
+                <label>گروه اصلی</label>
+                <select asp-for="GroupId" asp-items="ViewBag.Groups" class="form-control"></select>
+                <span></span>
+            </div>
+            <div class="form-group">
+                <label>گروه فرعی</label>
+                <select asp-for="SubGroup" asp-items="ViewBag.subGroups" class="form-control"></select>
+                <span></span>
+            </div>
+            <div class="form-group">
+                <label>مدرس دوره</label>
+                <select asp-for="TeacherId" asp-items="ViewBag.Teachers" class="form-control"></select>
+                <span></span>
+            </div>
+            <div class="form-group">
+                <label>شرح دوره</label>
+                <textarea asp-for="CourseDescription" class="form-control" rows="10"></textarea>
+                <span></span>
+            </div>
+            <div class="form-group">
+                <label>قیمت دوره</label>
+                <input asp-for="CoursePrice" type="number" class="form-control" />
+                <span></span>
+            </div>
+            <div class="form-group">
+                <label>فایل دمو دوره</label>
+                <input type="file" name="demoUp">
+                <span></span>
+            </div>
+            <input type="submit" value="ذخیره اطلاعات" class="btn btn-success" />
+        </div>
+        <div class="col-md-4">
+            <p></p>
+            <img id="imgCourse" class="thumbnail" style="max-height: 150px;max-width: 150px" src="/CourseImage/@Model.CourseImageName" />
+            <div class="form-group">
+
+                <label>انتخاب تصویر</label>
+                <input name="imgCourseUp" type="file" id="imgCourseUp">
+            </div>
+            <div class="form-group">
+                <label>سطح دوره</label>
+                <select asp-for="courseLevel" class="form-control">
+                    <option value="1" selected>مقدماتی</option>
+                    <option value="2">متوسط</option>
+                    <option value="3">پیشرفته</option>
+                </select>
+                <span></span>
+            </div>
+            <div class="form-group">
+                <label>وضعیت دوره</label>
+                <select asp-for="courseStatus" class="form-control">
+                    <option value="1">در حال برگذاری</option>
+                    <option value="2">به اتمام رسیده است.</option>
+                </select>
+                <span></span>
+            </div>
+        </div>
+    </form>
+    <br />
+    <br />
+    <br />
+    <br />
+</div>
+
+@section Scripts
+    {
+    <script>
+        $("#GroupId").change(function () {
+            $("#SubGroup").empty();
+            $.getJSON("/GetSubGroups/" + $("#GroupId :selected").val(),
+                function (data) {
+
+                    $.each(data,
+                        function () {
+                            $("#SubGroup").append('<option value=' + this.value + '>' + this.text + '</option>');
+                        });
+                });
+        });
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imgCourse').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imgCourseUp").change(function () {
+            readURL(this);
+        });
+    </script>
+    <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
+    <script>
+
+        CKEDITOR.replace('CourseDescription', {
+            customConfig: '/js/Config.js'
+        });
+
+    </script>
+}
+

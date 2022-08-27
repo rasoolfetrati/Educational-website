@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "فعال سازی حساب کاربری";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row d-flex justify-content-center">
+
+        <div class="col-lg-7 col-xl-6 col-md-9 register">
+
+            <div class="card my-5">
+
+                <div class="card-body">
+                    <h5 class="shadow-sm text-center mb-4 py-3">فعال سازی حساب کاربری</h5>
+
+                    <form asp-area="" asp-controller="Account" asp-action="ActiveAccount" method="post">
+
+                        <div class="form-group">
+                            <label for="">کد فعال سازی : </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text  my-icon"> <i class="fa fa-code align-middle"></i></span>
+                                </div>
+                                <input type="number" class="form-control" id="code" name="code" placeholder="کد ارسال شده به ایمیل تان را اینجا وارد کنید ... ">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block rounded-pill custom-btn font-13 mt-4">فعال سازی حساب </button>
+
+                    </form>
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="text-danger">کد وارد شده اشتباه است </div>
+                    }
+                    @if (ViewBag.Error2 != null)
+                    {
+                        <div class="text-danger">حساب کاربری شما قبلا فعال شده است </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

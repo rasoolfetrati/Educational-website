@@ -1,0 +1,48 @@
+﻿@using LearningWebSite.Core.ViewModel.Users
+@model UserAddingViewModel
+<br />
+<div class="container">
+    <div class="row d-felx justify-content-center align-items-center">
+        <div class="col-9">
+            <div class="card">
+                <div class="card-header bg-primary text-light">
+                    اطلاعات کاربر
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">افزودن کاربر جدید</h5>
+                    <form method="post" asp-area="Admin" asp-controller="User" asp-action="AddUser" class="form">
+                        <div class="card-primary">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>ایمیل</label>
+                                    <input type="email" asp-for="Email" class="form-control form-control-sm">
+                                </div>
+                                <div class="form-group">
+                                    <label>کلمه عبور</label>
+                                    <input type="text" asp-for="Password" class="form-control form-control-sm">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-check-label">حساب کاربری فعال باشد؟</label>
+                                    <input type="checkbox" asp-for="IsActive" class="form-check-inline">
+                                </div>
+                                <div class="form-group">
+                                    <label>انتخاب نقش کاربر</label>
+                                    <select asp-for="Claim" class="form-control">
+                                        <option value="0">انتخاب کنید ...</option>
+                                        <option value="1">مدیر</option>
+                                        <option value="2">مدرس</option>
+                                        <option value="3">کاربر عادی</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <input type="submit" value="ذخیره اطلاعات" class="btn btn-success" />
+                                    <a class="btn btn-warning mr-auto" asp-area="Admin" asp-controller="User" asp-action="Index">بازگشت</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

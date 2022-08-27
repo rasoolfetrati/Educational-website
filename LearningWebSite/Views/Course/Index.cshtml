@@ -1,0 +1,240 @@
+﻿@using LearningWebSite.Core.ViewModel.CourseVM
+@using LearningWebSite.DataLayer.Entities.Courses
+@model ShowCourseViewModel
+@inject LearningWebSite.Core.Services.IUserService _userService;
+@{
+
+    ViewData["Title"] = @Model.CourseTitle;
+}
+
+<div class="container">
+    <ul class="breadcrumb bg-white mt-4 ">
+        <li class="breadcrumb-item"><a href="/" class="font-12 vazir">صفحه اصلی</a></li>
+        <li class="breadcrumb-item"><a href="#" class="pr-2 font-12 vazir">دوره های آموزشی</a></li>
+        <li class="breadcrumb-item"><a href="#" class="pr-2 font-12 vazir">@Model.CourseTitle</a></li>
+    </ul>
+</div>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <img src="/CourseImage/@Model.CourseImageName" class="img-fluid" alt="@Model.CourseTitle">
+            <ul class="list-group text-center list-group-flush custom-list-group">
+                <li class="list-group-item font-13">عنوان دوره : @Model.CourseTitle</li>
+                <li class="list-group-item font-13">مدرس : @ViewBag.Fullname</li>
+                @if (Model.courseStatus == 1)
+                {
+                    <li class="list-group-item font-13">وضعیت دوره :  <span class="text-warning">در حال برگذاری</span></li>
+                }
+                @if (Model.courseStatus == 2)
+                {
+                    <li class="list-group-item font-13 ">وضعیت دوره : <span class="text-success">به اتمام رسیده است.</span></li>
+                }
+                @if (Model.courseLevel == 1)
+                {
+                    <li class="list-group-item font-13">سطح دوره : مقدماتی</li>
+                }
+                @if (Model.courseLevel == 2)
+                {
+                    <li class="list-group-item font-13">سطح دوره : متوسط</li>
+                }
+                @if (Model.courseLevel == 3)
+                {
+                    <li class="list-group-item font-13">سطح دوره : پیشرفته</li>
+                }
+                <li class="list-group-item font-13">قسمت های ارسالی : @ViewBag.EpisodeCount</li>
+                <li class="list-group-item font-13">قیمت دوره : @Model.CoursePrice.ToString("#,#") تومان</li>
+                <li class="list-group-item font-13">مدت زمان دوره : @ViewBag.CourseTime</li>
+            </ul>
+            @if (Model.CoursePrice > 0)
+            {
+                @if (User.Identity.IsAuthenticated && _userService.IsUserInCourse(Model.CourseId, User.Identity.Name))
+                {
+                    <li class="text-center text-success list-group-item font-13">
+                        شما این دوره را خریداری کرده اید! <i class="fa fa-check-double"></i>
+                    </li>
+
+                }
+                else
+                {
+                    <button class="btn btn-info btn-block mt-3 py-2 font-12" onclick="AddToBasket(@Model.CourseId)">
+                        <i class="fa fa-cart-plus align-middle"></i> افزودن به سبد خرید
+                    </button>
+
+                }
+            }
+
+        </div>
+
+        <div class="col-md-8 ckeditorDiv">
+            <div class="card mb-3">
+                <div class="card-header bg-white px-0 course-table">
+                    <ul class="nav nav-justified pr-0">
+                        <li class="nav-item">
+                            <a href="#course-info" class="nav-link active font-14" data-toggle="list">
+                                معرفی
+                                دوره
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#comment" class="nav-link font-14" data-toggle="list">
+                                نظرات
+                                دوره
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="course-info">
+                            <!-- Start course info -->
+
+                            <h1 id="courseTitle" class="mb-3 text-info">@Model.CourseTitle</h1>
+
+                            <video src="/course/demos/@Model.DemoFileName" poster="/CourseImage/@Model.CourseImageName" controls=""
+                                   class="embed-responsive embed-responsive-item">
+                            </video>
+
+                            <p class="text-justify course-text vazir font-14 my-5">
+                                @Html.Raw(Model.CourseDescription)
+                            </p>
+                            @{
+                                int counter = 1;
+                                var episode = ViewBag.Episode as List<CourseEpisode>;
+                            }
+                            <h6 class="mb-3 mt-3">سر فصل ها :</h6>
+                            @foreach (var item in episode)
+                            {
+                                <div class="mb-2 course-items px-2 py-4 d-flex align-items-center text-center">
+                                    <span class="bg-info count text-center text-white mr-3 font-13">@counter</span>
+                                    <span class="mr-3 font-13">@item.EpisodeTitle</span>
+                                    <span class="mr-3 font-13 @(item.IsFree?"text-success":"text-danger")">
+                                        @(item.IsFree ?
+                                            "رایگان" : "نقدی")
+                                    </span>
+                                    <span class="mr-3 font-13">
+                                        <i class="@(item.IsFree ? "text-success fa fa-unlock":"text-danger fa fa-lock")"></i>
+                                    </span>
+                                    <span class="mr-5 font-13">
+                                        <a href="/downloadFile/@item.EpisodeId" class="btn btn-outline-success btn-sm">
+                                            <i class="fa fa-download"></i>
+                                        </a>
+                                    </span>
+                                    <span class="mr-5 font-13">مدت زمان این قسمت: @item.EpisodeTime</span>
+                                </div>
+
+                                counter++;
+                            }
+                        </div><!-- End course info -->
+                        <div class="tab-pane fade" id="comment">
+                            <!-- Start comment -->
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <form id="myForm" method="post" enctype="multipart/form-data" action="/savecomment">
+                                    <input hidden name="txtcourseId" id="txtcourseId" value="@Model.CourseId" />
+                                    <input type="hidden" name="commentId" id="commentId" value="0" />
+                                    <div class="form-group">
+                                        <textarea class="form-control w-100 rounded-lg p-3" id="txtComment" name="txtComment"></textarea>
+                                    </div>
+                                    <button type="button" id="btnGet" class="btn btn-primary rounded-pill mr-auto d-block font-13">
+                                        ارسال
+                                    </button>
+                                </form>
+                            }
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <div class="alert alert-danger">
+                                    جهت ثبت نظر ابتدا وارد سایت شوید!
+                                </div>
+                            }
+                            <partial name="_comments" model="null" />
+                        </div><!-- End comment -->
+                        <!-- End teacher info -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="https://cdn.ckeditor.com/4.19.1/basic/ckeditor.js"></script>
+    <script src="/js/deleteScript.js"></script>
+
+    <script>
+        CKEDITOR.replace('txtComment', {
+            customConfig: '/js/Config.js'
+        });
+    </script>
+    <script>
+        $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
+    </script>
+    <script>
+        function AddToBasket(courseId) {
+            requestSent = false;
+            $.ajax({
+                type: "POST",
+                url: "/AddBasket/" + courseId,
+                async: true,
+                success: function (result) {
+                    Swal.fire(result);
+                    GetBasketItems();
+                }
+            });
+        }
+    </script>
+    <script>
+        $("#btnGet").click(AjaxFormSubmit);
+        function AjaxFormSubmit() {
+            //Set the URL.
+            var url = $("#myForm").attr("action");
+
+            //Add the Field values to FormData object.
+            var formData = new FormData();
+            formData.append("txtcourseId", $("#txtcourseId").val());
+            var date = CKEDITOR.instances.txtComment.getData();
+            formData.append("txtComment", date);
+            formData.append("commentId", $("#commentId").val());
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                async: true,
+                success: function (response) {
+                    JSON.stringify(response);
+                    if (response.status === "success") {
+                        Swal.fire(
+                            'عملیات موفق',
+                            response.message,
+                            'success'
+                        );
+                        $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
+                        CKEDITOR.instances.txtComment.setData('');
+                    } else if (response.status === "error") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'اوپس...',
+                            text: response.message,
+                            confirmButtonText: 'باشه',
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+    <script>
+        $("#btnAnswer").click(answerTocomment);
+        function answerTocomment(id) {
+            $("#commentId").val(id);
+            $('html, body').animate({
+                scrollTop: $(".ckeditorDiv").offset().top
+            }, 1000);
+        }
+
+    </script>
+}

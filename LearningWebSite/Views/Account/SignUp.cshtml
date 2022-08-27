@@ -1,0 +1,83 @@
+﻿@using LearningWebSite.Core.ViewModel.Users
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "ثبت نام در سایت";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row d-flex justify-content-center">
+
+        <div class="col-lg-7 col-xl-6 col-md-9 register">
+
+            <div class="card my-5">
+
+                <div class="card-body">
+                    <h5 class="shadow-sm text-center mb-4 py-3"> عضویت در سایت </h5>
+
+                    <form asp-controller="Account" asp-action="SignUp" method="post">
+                        <div asp-validation-summary="All"></div>
+                        <div class="form-group">
+                            <label for="name"> نام : </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text  my-icon"><i class="fa fa-user align-middle"></i></span>
+                                </div>
+                                <input type="text" class="form-control" asp-for="FirstName" id="name" placeholder="نام خود را وارد کنید">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">نام خانوادگی :</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text  my-icon"> <i class="fa fa-user align-middle"></i></span>
+                                </div>
+                                <input type="text" class="form-control" asp-for="LastName" placeholder="نام خانوادگی خود را وارد کنید ">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for=""> ایمیل : </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text  my-icon"> <i class="fa fa-envelope align-middle"></i></span>
+                                </div>
+                                <input type="email" class="form-control" asp-for="Email" placeholder=" ایمیل خود را وارد کنید">
+                            </div>
+                        </div>
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                        <div class="form-group">
+                            <label for=""> رمز عبور : </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text  my-icon"> <i class="fa fa-lock align-middle"></i></span>
+                                </div>
+                                <input type="password" class="form-control" asp-for="Password" placeholder="رمز عبور خود را وارد کنید">
+                            </div>
+                        </div>
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                        <div class="form-group">
+                            <label for="">  تکرار رمز عبور : </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text  my-icon"> <i class="fa fa-lock align-middle"></i></span>
+                                </div>
+                                <input  type="password" class="form-control" asp-for="RePassword" placeholder="تکرار رمز عبور خود را وارد کنید">
+                            </div>
+                        </div>
+                        <span class="text-danger" asp-validation-for="RePassword"></span>
+
+                        <button type="submit" class="btn btn-primary btn-block rounded-pill custom-btn font-13 mt-4">ثبت نام</button>
+
+                        <p class="text-center my-3 font-12 vazir">قبلا در سایت ثبت نام کرده اید ؟ <a  asp-controller="Account" asp-action="Login"  class="login vazir">وارد شوید</a></p>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,59 @@
+﻿@using LearningWebSite.Core.ViewModel.Users
+@using LearningWebSite.DataLayer.Entities.Users
+@using Microsoft.AspNetCore.Identity
+@model UserViewModel
+@inject UserManager<CustomUser> _usermanager;
+@{
+    var user = await _usermanager.FindByNameAsync(User.Identity.Name);
+}
+
+<div class="tab-pane fade show text-right" id="user-change">
+    <!----- Start user change ----->
+    <div class="card my-5">
+        <div class="card-header">
+            <h6 class="mt-2 font-14 text-center"> مشخصات کاربری </h6>
+        </div>
+        <div class="card-body">
+            <div class="card text-right my-3">
+                <div class="card-header bg-primary text-center pb-0 text-white">
+                    <p class="font-13"> مشخصات کاربری شما : </p>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditInfo" method="post" enctype="multipart/form-data">
+                        <input hidden asp-for="Avatar" />
+                        <div class="form-group">
+                            <p> نام : </p>
+                            <input type="text" class="form-control" asp-for="FirstName" value="@user.FirstName">
+                        </div>
+
+                        <div class="form-group">
+                            <p> نام خانوادگی : </p>
+                            <input type="text" class="form-control" asp-for="LastName" value="@user.LastName">
+                        </div>
+
+                        <div class="form-group">
+                            <p> رمز عبور : </p>
+                            <input type="password" class="form-control" asp-for="Password">
+                        </div>
+                        <div class="form-group">
+                            <p>تکرار رمز عبور : </p>
+                            <input type="password" class="form-control" asp-for="RePassword">
+                        </div>
+                        <div class="custom-file my-4">
+                            <label class="custom-file-label" for="customFile">انتخاب عکس</label>
+                            <input type="file" name="image" class="custom-file-input" id="customFile">
+                        </div>
+
+                        <div class="form-group">
+                            <p> ایمیل : </p>
+                            <input type="email" class="form-control" value="@user.Email" disabled="" style="cursor:no-drop">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block my-4 font-13"> ثبت تغییرات </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!----- End user change ----->

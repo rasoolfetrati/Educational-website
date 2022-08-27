@@ -1,0 +1,128 @@
+﻿@using LearningWebSite.Core.Services.CourseService
+@model List<LearningWebSite.Core.ViewModel.CourseVM.ShowCourseViewModel>
+@inject ICourseService _course;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+    int counter = 1;
+}
+<div class="row d-felx justify-content-center align-content-center align-items-center">
+    <div class="col-10">
+
+        <br>
+
+        <div class="card text-right">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h1 class="h5">لیست دوره ها</h1>
+                <div>
+                    <a class="btn btn-default btn-sm" href="/Admin/User">خالی کن</a>
+                    <a class="btn btn-outline-primary btn-sm" data-toggle="collapse" href="#frmFilter" role="button" aria-expanded="false" aria-controls="collapseExample">جستجو دوره</a>
+                    <a class="btn btn-outline-success btn-sm" asp-area="Admin" asp-controller="Course" asp-action="CreateCourse">افزودن دوره</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-around">
+                    <div class="col-md-6">
+                        <div class="collapse" id="frmFilter">
+                            <div class="card mb-3 border-info">
+                                <div class="card-header bg-info h5 text-light">فیلتر</div>
+                                <div class="card-body">
+                                    <form class="form-horizontal" method="post" action="/Admin/Account/Filter">
+                                        <div class="form-group row">
+                                            <label class="col-md-3" for="txtTitle">نام دوره :</label>
+                                            <div class="col-md-6">
+                                                <input class="form-control" id="txtTitle" name="email" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-3" for="ddlState">وضعیت :</label>
+                                            <div class="col-md-6">
+                                                <select class="form-control" id="ddlState" name="state">
+                                                    <option>انتخاب کنید...</option>
+                                                    <option value="1">فعال</option>
+                                                    <option value="2">غیر فعال</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">جستجو</button>
+                                        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8LvjrmDMANhCtY9xqZHo4TQN72_Sm-1aC-qTchhH4NHfDBcR4rjAoMj6ECM83CGyzhgERp9eyAn-UZwJEQ324PJ-4GPSZ6NPgAoHcNx5fWgvbgLn4pUdEjYLP_A7mEUP32GXyYuNrEUM5S58i0_SYxA">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-hover table-bordered d-lg-table table-responsive-lg">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">تصویر</th>
+                            <th scope="col">عنوان دوره</th>
+                            <th scope="col">تعداد جلسه</th>
+                            <th scope="col">دستورات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+
+                            var count = _course.GetEpisodeCount(item.CourseId);
+
+                            <tr id="removeTr-@item.CourseId">
+                                <td scope="col">
+                                    @counter
+                                </td>
+                                <td scope="col">
+                                    <img src="/CourseImage/thumb/@item.CourseImageName" class="img-thumbnail" style="max-height: 150px;max-width150px;" />
+                                </td>
+                                <td scope="col">
+                                    @item.CourseTitle
+                                </td>
+                                <td scope="col">
+                                    @count
+                                </td>
+
+                                <td scope="col">
+                                    <a asp-area="Admin" asp-controller="Course" asp-action="EditCourse" asp-route-courseId="@item.CourseId" class="btn btn-warning btn-sm">
+                                        ویرایش
+                                    </a>
+                                    <a asp-area="Admin" asp-controller="Course" asp-action="IndexEpisode" asp-route-courseId="@item.CourseId" class="btn btn-info btn-sm">
+                                        بخش های دوره
+                                    </a>
+                                    <button onclick="submitDeleteForm('/DeleteCourse/',@item.CourseId)" type="button" class="btn btn-outline-danger btn-sm">
+                                        <i class="fa fa-trash-o fa-fw"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            counter++;
+                        }
+                    </tbody>
+                </table>
+                <hr />
+                <nav aria-label="Page navigation example" dir="ltr">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">«</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
