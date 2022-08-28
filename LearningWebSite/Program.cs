@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,14 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+app.Use(async (context, next) =>
+{
+    await next.Invoke();
+    if (context.Response.StatusCode == 404)
+    {
+        context.Response.Redirect("/NotFound");
+    }
+});
 app.UseStaticFiles();
 
 app.UseRouting();

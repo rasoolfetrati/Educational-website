@@ -1,0 +1,37 @@
+@font-face {
+    font-family: iransans;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb.eot');
+    src: url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb.eot?#iefix') format('embedded-opentype'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb.woff2') format('woff2'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb.woff') format('woff'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: iransans-light;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Light.eot');
+    src: url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Light.eot?#iefix') format('embedded-opentype'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Light.woff2') format('woff2'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Light.woff') format('woff'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Light.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: iransans-medium;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Medium.eot');
+    src: url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Medium.eot?#iefix') format('embedded-opentype'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Medium.woff2') format('woff2'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Medium.woff') format('woff'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Medium.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: iransans-bold;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Bold.eot');
+    src: url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Bold.eot?#iefix') format('embedded-opentype'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Bold.woff2') format('woff2'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Bold.woff') format('woff'), url('https://atiyehahmadi.ir/parallax-404-pages/assets/fonts/IRANSansWeb_Bold.ttf') format('truetype');
+  }
+  
+  body {
+    
+    font-family: iransans-light ;
+    
+  }
