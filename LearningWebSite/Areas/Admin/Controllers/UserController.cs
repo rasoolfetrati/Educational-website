@@ -13,7 +13,6 @@ namespace LearningWebSite.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [AutoValidateAntiforgeryToken]
-    //[Authorize]
     public class UserController : AdminControllerBase
     {
         private readonly UserManager<CustomUser> userManager;
@@ -54,6 +53,8 @@ namespace LearningWebSite.Areas.Admin.Controllers
                 Email = data.Email,
                 Id = data.Id,
                 IsActive = data.EmailConfirmed,
+                LastName = data.LastName,
+                FirstName = data.FirstName,
             };
             return View(model);
         }

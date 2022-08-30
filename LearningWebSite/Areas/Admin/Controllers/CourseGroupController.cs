@@ -8,7 +8,6 @@ namespace LearningWebSite.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [AutoValidateAntiforgeryToken]
-    // [Authorize]
     public class CourseGroupController : AdminControllerBase
     {
         private readonly ICourseService _courseService;

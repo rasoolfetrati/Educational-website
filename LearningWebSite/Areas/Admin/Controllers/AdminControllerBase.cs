@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace LearningWebSite.Areas.Admin.Controllers;
 
 [Area("admin")]
-//[Authorize(Policy = "AdminPolicy")]
+[Authorize(Roles = "Admin")]
 public class AdminControllerBase : Controller
 {
     protected IActionResult RedirectAndShowAlert(OperationResult result, IActionResult redirectPath)

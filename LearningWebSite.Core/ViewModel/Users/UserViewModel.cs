@@ -19,6 +19,10 @@ namespace LearningWebSite.Core.ViewModel.Users
     }
     public class UserAddingViewModel
     {
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
         [Display(Name = "ایمیل")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(50, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
@@ -36,6 +40,10 @@ namespace LearningWebSite.Core.ViewModel.Users
     {
         [Required]
         public string Id { get; set; }
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
         [Display(Name = "ایمیل")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(50, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]

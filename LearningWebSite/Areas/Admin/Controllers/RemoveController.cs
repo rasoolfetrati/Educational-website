@@ -1,11 +1,13 @@
 ﻿using LearningWebSite.Core.Services.CommentService;
 using LearningWebSite.Core.Services.CourseService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearningWebSite.Areas.Admin.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class RemoveController : ControllerBase
     {
         private readonly ICourseService _courseService;

@@ -3,13 +3,13 @@
 @foreach (var group in Model.Where(g => g.ParentId == null))
 {
     <li class="nav-item ml-3 dropdown custom-nav-item">
-        <a href="#" class="nav-link  dropdown-toggle" data-toggle="dropdown">@group.GroupTitle</a>
+        <a href="/Course/AllCourse?selectedGroups=@group.GroupId" class="nav-link">@group.GroupTitle</a>
         @if (Model.Any(g => g.ParentId == group.GroupId))
         {
             <div class="dropdown-menu custom-dropdown-menu dropdown-menu-right font-13 text-right">
                 @foreach (var sub in Model.Where(g => g.ParentId == group.GroupId))
                 {
-                    <a href="#" class="dropdown-item py-2">@sub.GroupTitle</a>
+                    <a href="/Course/AllCourse?selectedGroups=@sub.GroupId" class="dropdown-item py-2">@sub.GroupTitle</a>
                 }
             </div>
 
