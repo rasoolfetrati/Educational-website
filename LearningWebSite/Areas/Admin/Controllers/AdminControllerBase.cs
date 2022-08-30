@@ -1,11 +1,12 @@
 ﻿using LearningWebSite.Core.InfraStructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.HttpSys;
 using Newtonsoft.Json;
 
 namespace LearningWebSite.Areas.Admin.Controllers;
 
-[Area("admin")]
+[Area("Admin")]
 [Authorize(Roles = "Admin")]
 public class AdminControllerBase : Controller
 {

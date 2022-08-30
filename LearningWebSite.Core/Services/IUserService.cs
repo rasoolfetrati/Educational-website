@@ -70,8 +70,8 @@ public class UserService : IUserService
         }
         if (userAddingViewModel.Claim == DataLayer.Entities.User.Claimtype.Student)
         {
-            await userManager.AddClaimAsync(user, new Claim("UserType", "User"));
-            await userManager.AddToRoleAsync(user, "User");
+            await userManager.AddClaimAsync(user, new Claim("StudentType", "Student"));
+            await userManager.AddToRoleAsync(user, "Student");
         }
         await Task.CompletedTask;
     }

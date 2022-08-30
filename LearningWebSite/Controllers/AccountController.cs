@@ -63,7 +63,7 @@ namespace LearningWebSite.Controllers
             }
             var user = _userService.SignUpUser(registerViewModel);
             await _userManager.CreateAsync(user, registerViewModel.Password);
-            await _userManager.AddClaimAsync(user, new Claim("UserType", "User"));
+            await _userManager.AddClaimAsync(user, new Claim("StudentType", "Student"));
             await _userManager.AddToRoleAsync(user,"Student");
             var body = _viewRenderService.RenderToStringAsync("_ActiveAccount", user);
             SendEmail.Send(user.Email, "فعال سازی", body);

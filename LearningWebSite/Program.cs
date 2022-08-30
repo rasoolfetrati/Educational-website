@@ -48,6 +48,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 {
     options.LoginPath = new PathString("/Account/Login");
     options.LogoutPath = new PathString("/Account/Logout");
+    options.AccessDeniedPath = new PathString("/AccessDenied");
     options.Cookie.Expiration = TimeSpan.FromDays(3);
     options.Cookie.HttpOnly = true;
 });
@@ -55,9 +56,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler("/NotFound");
 }
 app.Use(async (context, next) =>
 {
@@ -68,11 +73,9 @@ app.Use(async (context, next) =>
     }
 });
 app.UseStaticFiles();
-
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
