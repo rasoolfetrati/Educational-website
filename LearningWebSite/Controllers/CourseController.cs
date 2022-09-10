@@ -37,6 +37,7 @@ namespace LearningWebSite.Controllers
         [HttpGet("course/{courseId}/{CourseTitle}")]
         public IActionResult Index(int courseId, string CourseTitle)
         {
+            CourseTitle = CourseTitle.Replace(" ", "-");
             if (courseService.IsCourseExist(courseId))
             {
                 var course = courseService.showCourseViewModel(courseId, CourseTitle);
@@ -61,16 +62,22 @@ namespace LearningWebSite.Controllers
             ViewBag.selectedGroups = selectedGroups;
             ViewBag.selectedtype = getType;
             ViewBag.sort = sort;
-            ViewBag.Groups =await courseService.GetAllGroups();
+            ViewBag.Groups = await courseService.GetAllGroups();
             ViewBag.pageId = pageId;
             return View(courseService.GetCourse(pageId, filter, getType, sort, selectedGroups, 4));
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> OrderView(List<int> courseId)
+        public async Task<IActionResult> OrderView()
         {
-            var data = await basketService.GetCourses(User.Identity.Name, courseId);
+           
+            var data = await basketService.GetCourses(User.Identity.Name);
+            if (data.Count<=0)
+            {
+                ViewBag.Error = "در سبد خرید شما محصولی وجود ندارد!";
+                return View();
+            }
             ViewBag.Total = basketService.GetTotalPriceUserBasket(User.Identity.Name);
             ViewBag.UserWallet = userService.WalletBalance(User.Identity.Name);
             return View(data);
@@ -80,6 +87,7 @@ namespace LearningWebSite.Controllers
         [Authorize]
         public async Task<IActionResult> Payment(List<int> courseId, string paymethod)
         {
+            var url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             var orderId = await basketService.CreateOrder(courseId, User.Identity.Name);
             var orderSum = basketService.orderSum(orderId, User.Identity.Name);
             if (paymethod.Equals("wallet"))
@@ -100,7 +108,7 @@ namespace LearningWebSite.Controllers
                 var payment = new ZarinpalSandbox.Payment(orderSum);
                 var response = await payment.PaymentRequest(
                     "خرید دوره",
-                    "http://localhost:17109/OnlineCoursePayment/" + orderId,
+                    $"{url}/OnlineCoursePayment/" + orderId,
                     User.Identity.Name,
                     "09902036655"
                 );
@@ -133,7 +141,7 @@ namespace LearningWebSite.Controllers
                     basketService.DeleteUserBasket(User.Identity.Name);
                     string code = response.RefId.ToString();
                     basketService.AddToUserCourse(orderId, User.Identity.Name, code);
-                    return RedirectAndShowAlert(OperationResult.Success(), Redirect("/"));
+                    return RedirectAndShowAlert(OperationResult.Success("خرید شما با موفقیت انجام شد!"), Redirect("/"));
                 }
                 else
                 {
@@ -204,6 +212,14 @@ namespace LearningWebSite.Controllers
                 "wwwroot/course/Episode",
                 episode.EpisodeFileName
             );
+           
+            if (!System.IO.File.Exists(filePath))
+            {
+                return RedirectAndShowAlert(
+              OperationResult.Error("فایل یافت نشد!"),
+              RedirectToAction("index", new { episode.CourseId, episode.Course.CourseTitle })
+                );
+            }
             string fileName = episode.EpisodeFileName;
             if (episode.IsFree && User.Identity.IsAuthenticated)
             {

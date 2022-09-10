@@ -1,5 +1,14 @@
 @import 'fonts.css';
 
+button {
+    all: unset;
+    cursor: pointer;
+}
+
+    button:focus {
+        outline: orange 5px auto;
+    }
+
 * {
     font-family: vazir-med-fa;
     outline: none !important;

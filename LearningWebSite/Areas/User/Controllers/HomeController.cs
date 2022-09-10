@@ -51,19 +51,19 @@ namespace LearningWebSite.Areas.User.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditInfo(UserViewModel userViewModel, IFormFile image)
         {
-            if (userViewModel.Password != null && userViewModel.Password.Equals(userViewModel.RePassword))
+            if (!string.IsNullOrWhiteSpace(userViewModel.Password) && userViewModel.Password.Equals(userViewModel.RePassword))
             {
                 bool changepassword = await _userService.ResetPasswordUserAsync(userViewModel, User.Identity.Name);
                 if (changepassword)
                 {
-                    ViewBag.Success = true;
+                    return await RedirectAndShowAlert(OperationResult.Success("کلمه عبور شما با موفقیت تغییر کرد! لطفا مجددا وارد سایت شوید"), RedirectToAction(nameof(Index)), true);
                 }
             }
             else
             {
                 await _userService.updateUserAsync(User.Identity.Name, userViewModel, image);
             }
-            return await RedirectAndShowAlert(OperationResult.Success("کلمه عبور شما با موفقیت تغییر کرد! لطفا مجددا وارد سایت شوید"), RedirectToAction(nameof(Index)),true);
+            return await RedirectAndShowAlert(OperationResult.Success("اطلاعات شمت با موفقیت بروز شد!"), RedirectToAction(nameof(Index)),false);
         }
     }
 }

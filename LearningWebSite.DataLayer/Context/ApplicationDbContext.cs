@@ -1,5 +1,6 @@
 ﻿using LearningWebSite.DataLayer.Entities.Basket;
 using LearningWebSite.DataLayer.Entities.Comments;
+using LearningWebSite.DataLayer.Entities.ContactUs;
 using LearningWebSite.DataLayer.Entities.Courses;
 using LearningWebSite.DataLayer.Entities.Users;
 using LearningWebSite.DataLayer.Entities.UserWallet;
@@ -25,6 +26,7 @@ namespace LearningWebSite.DataLayer.Context
         public DbSet<OrderDetail> orderDetails { get; set; }
         public DbSet<UserInCourse> UserInCourses { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Contacts> Contacts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

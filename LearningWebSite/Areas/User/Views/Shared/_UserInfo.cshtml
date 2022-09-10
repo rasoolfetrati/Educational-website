@@ -19,8 +19,8 @@
                     <p class="font-13"> مشخصات کاربری شما : </p>
                 </div>
                 <div class="card-body">
-                    <form asp-action="EditInfo" method="post" enctype="multipart/form-data">
-                        <input hidden asp-for="Avatar" />
+                    <form asp-action="EditInfo" method="post" enctype="multipart/form-data" novalidate asp-antiforgery="true">
+                        <input hidden asp-for="Id" value="@user.Id" />
                         <div class="form-group">
                             <p> نام : </p>
                             <input type="text" class="form-control" asp-for="FirstName" value="@user.FirstName">
@@ -33,11 +33,11 @@
 
                         <div class="form-group">
                             <p> رمز عبور : </p>
-                            <input type="password" class="form-control" asp-for="Password">
+                            <input type="password" id="password" class="form-control" asp-for="Password">
                         </div>
                         <div class="form-group">
                             <p>تکرار رمز عبور : </p>
-                            <input type="password" class="form-control" asp-for="RePassword">
+                            <input type="password" id="repassword" class="form-control" formnovalidate asp-for="RePassword">
                         </div>
                         <div class="custom-file my-4">
                             <label class="custom-file-label" for="customFile">انتخاب عکس</label>

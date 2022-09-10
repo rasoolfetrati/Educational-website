@@ -141,7 +141,7 @@
                     <li class="nav-item ml-3 custom-nav-item"><a href="/" class="nav-link">صفحه اصلی</a></li>
                     @await Component.InvokeAsync("CourseGroupComponent")
 
-                    <li class="nav-item ml-3 custom-nav-item"><a href="~/contact-us.html" class="nav-link">تماس باما</a>
+                    <li class="nav-item ml-3 custom-nav-item"><a href="/Home/ContactUs" class="nav-link">تماس باما</a>
                     </li>
                 </ul>
             </div>
@@ -253,7 +253,7 @@
                     }
                 }).then(() => {
                     response.forEach((item) => {
-                        $("#header ul").prepend(`<input hidden name="courseId" value="${item.courseId}"/><li><img src="/CourseImage/${item.courseImage}" class="m-1 ml-3"><div class="float-right"><small class=" mt-3 mr-2 d-block"> ${item.courseTitle} (${new Intl.NumberFormat('fa-IR').format(item.coursePrice)} تومان)</small></div></li>`);
+                        $("#header ul").prepend(`<li><img src="/CourseImage/${item.courseImage}" class="m-1 ml-3"><div class="float-right"><small class=" mt-3 mr-2 d-block"> ${item.courseTitle} (${new Intl.NumberFormat('fa-IR').format(item.coursePrice)} تومان)</small></div></li>`);
                         $("#TotalPrice").text("مبلغ کل:" + new Intl.NumberFormat('fa-IR').format(item.sumOrder) + "تومان");
                     });
                 });

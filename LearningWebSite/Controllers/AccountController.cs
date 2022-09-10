@@ -95,7 +95,7 @@ namespace LearningWebSite.Controllers
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _userManager.ConfirmEmailAsync(user, token);
                 _userService.changeActiveCode(user.Id);
-                return Redirect("/");
+                return View("Success");
             }
             return BadRequest();
         }
@@ -164,6 +164,11 @@ namespace LearningWebSite.Controllers
             }
             ViewBag.UserId=model.UserId;
             return View(model);
+        }
+
+        public IActionResult Success()
+        {
+            return View();
         }
     }
 }

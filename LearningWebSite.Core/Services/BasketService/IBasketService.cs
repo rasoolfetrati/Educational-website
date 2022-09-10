@@ -14,7 +14,7 @@ public interface IBasketService
 {
     Task<OperationResult> AddCourseToBasket(int courseId, string username);
     List<ShowBasketVM> GetBasketItems(string username);
-    Task<List<ShowBasketVM>> GetCourses(string username, List<int> ids);
+    Task<List<ShowBasketVM>> GetCourses(string username);
     int GetTotalPriceUserBasket(string username);
     Task<int> CreateOrder(List<int> ids, string username);
     void UpdateOrderPrice(int orderId);
@@ -26,6 +26,7 @@ public interface IBasketService
     void DeleteUserBasket(string username);
     List<Basket> GetUserBaskets(string username);
     int GetUserBasketsCount(string username);
+    void DeleteBasket(int basketId);
 }
 public class BasketService : IBasketService
 {
@@ -152,6 +153,13 @@ public class BasketService : IBasketService
 
     }
 
+    public void DeleteBasket(int basketId)
+    {
+        var basket = context.Baskets.Find(basketId);
+        context.Baskets.Remove(basket);
+        context.SaveChanges();
+    }
+
     public void DeleteUserBasket(string username)
     {
         var baskets = context.Baskets.Where(u => u.UserName == username).ToList();
@@ -169,13 +177,14 @@ public class BasketService : IBasketService
             SumOrder = userFactor.Sum(b => b.CoursePrice),
             CourseTitle = b.CourseTitle,
             CourseId = b.CourseId,
+            BasketId=b.BasketId,
         }).ToList();
     }
 
-    public async Task<List<ShowBasketVM>> GetCourses(string username, List<int> ids)
+    public async Task<List<ShowBasketVM>> GetCourses(string username)
     {
         var userBasket = context.Baskets
-                               .Where(t => ids.Contains(t.CourseId) && t.UserName == username).ToList();
+                               .Where(t=>t.UserName == username&&!t.IsFinally).ToList();
         return userBasket.Select(c => new ShowBasketVM()
         {
             CourseId = c.CourseId,
@@ -183,13 +192,14 @@ public class BasketService : IBasketService
             CourseTitle = c.CourseTitle,
             CourseImage = c.CourseImage,
             SumOrder = userBasket.Sum(b => b.CoursePrice),
+            BasketId=c.BasketId
         }).ToList();
 
     }
 
     public int GetTotalPriceUserBasket(string username)
     {
-        return context.Baskets.Where(u => u.UserName == username).Sum(p => p.CoursePrice);
+        return context.Baskets.Where(u => u.UserName == username&&!u.IsFinally).Sum(p => p.CoursePrice);
     }
 
     public List<Basket> GetUserBaskets(string username)

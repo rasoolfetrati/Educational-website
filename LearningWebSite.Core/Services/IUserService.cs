@@ -201,6 +201,7 @@ public class UserService : IUserService
     )
     {
         var user = await userManager.FindByNameAsync(username);
+        user.Id = userViewModel.Id;
         user.FirstName = userViewModel.FirstName;
         user.LastName = userViewModel.LastName;
         if (image != null && image.IsImage())
@@ -259,7 +260,10 @@ public class UserService : IUserService
                     && u.UserOperationType == UserOperationType.Collect
             )
             .Sum(c => c.Amount);
-
+        if (spend>enter)
+        {
+            return 0;
+        }
         return (enter - spend);
     }
 }

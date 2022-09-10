@@ -19,7 +19,7 @@ namespace LearningWebSite.Controllers
             return View(data);
         }
 
-        public IActionResult Privacy()
+        public IActionResult ContactUs()
         {
             return View();
         }

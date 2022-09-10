@@ -54,6 +54,13 @@ namespace LearningWebSite.Controllers
             var data = _basketService.GetBasketItems(User.Identity.Name);
             return Ok(data);
         }
+        [Route("RemoveBasket/{basketId}")]
+        [HttpPost]
+        public IActionResult RemoveBasket(int basketId)
+        {
+            _basketService.DeleteBasket(basketId);
+            return Ok($"این ایتم با موفقیت از سبد خرید شما حذف شد!");
+        }
 
         [HttpPost]
         [Route("DeleteComment/{commentId}")]

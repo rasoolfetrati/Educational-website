@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-12 col-lg-3">
             <div class="card bg-info my-5 p-5">
-                <img src="/userAvatar/@Model.ImageName" class="img-fluid rounded-circle d-block mx-auto" width="120px" height="120px" alt="user-image">
+                <img src="/userAvatar/@Model.ImageName" id="imguser" class="img-fluid rounded-circle d-block mx-auto" width="120px" height="120px" alt="@Model.FirstName">
                 <h5 class="text-white text-center mt-3">کاربر : @Model.FirstName @Model.LastName</h5>
             </div>
             <div class="text-right">
@@ -294,3 +294,29 @@
 
     </div>
 </div>
+@section Scripts{
+    <script>
+        $("#password").removeAttr("remove", "required")
+        $("#repassword").removeAttr("remove", "required")
+        $("#password").removeAttr("data-val", "required")
+        $("#repassword").removeAttr("data-val", "required")
+        $("#password").removeAttr("data-val-required");
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imguser').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#customFile").change(function () {
+            readURL(this);
+        });
+    </script>
+}

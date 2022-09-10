@@ -9,6 +9,7 @@ namespace LearningWebSite.Core.ViewModel.BasketVM
     public class ShowBasketVM
     {
         public int CourseId { get; set; }
+        public int BasketId { get; set; }
         public string CourseTitle { get; set; }
         public string CourseImage { get; set; }
         public int CoursePrice { get; set; }
