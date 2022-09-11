@@ -77,5 +77,13 @@ namespace LearningWebSite.Areas.Admin.Controllers
             }
             return new JsonResult("False");
         }
+        [Route("DeleteDiscount/{id}")]
+        [HttpPost]
+        public IActionResult DeleteDiscount(int id)
+        {
+            _discountService.DeleteDiscountCode(id);
+            return Ok("کد تخفیف با موفقیت حذف شد!");
+        }
+
     }
 }

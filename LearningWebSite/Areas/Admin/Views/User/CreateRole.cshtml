@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "CreateRole";
+    ViewData["Title"] = "تعیین نقش";
     Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
 }
 <br />
@@ -7,7 +7,12 @@
 <hr />
 
 <form class="form" asp-area="Admin" asp-controller="User" asp-action="CreateRole" method="post">
-
+    @if (ViewBag.Error!=null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
     <div class="form-group col-md-12">
         <label class="my-1 mr-2" for="inlineFormCustomSelectPref">لیست نقش ها</label>
         <select name="RoleName" id="inputState" asp-items="ViewBag.Claims" class="form-control">

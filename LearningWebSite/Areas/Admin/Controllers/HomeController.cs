@@ -43,18 +43,24 @@ namespace LearningWebSite.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateDiscount(Discount discount, string sdDate, string edDate)
         {
-            if (!string.IsNullOrWhiteSpace(discount.DiscountCode))
+            if (string.IsNullOrWhiteSpace(discount.DiscountCode))
             {
+                ViewBag.StartDate = sdDate;
+                ViewBag.EndDate = edDate;
                 ModelState.AddModelError(String.Empty, "لطفا کد تخفیف را وارد نمایید!");
                 return View(discount);
             }
-            if (discount.DiscountPercent != null || discount.DiscountPercent <= 0)
+            if (discount.DiscountPercent == null || discount.DiscountPercent <= 0)
             {
+                ViewBag.StartDate = sdDate;
+                ViewBag.EndDate = edDate;
                 ModelState.AddModelError(String.Empty, "لطفا تعداد کد تخفیف را وارد نمایید!");
                 return View(discount);
             }
-            if (!DiscountService.IsDiscountCodeExist(discount.DiscountCode))
+            if (DiscountService.IsDiscountCodeExist(discount.DiscountCode))
             {
+                ViewBag.StartDate = sdDate;
+                ViewBag.EndDate = edDate;
                 ModelState.AddModelError(String.Empty, "این کد تخفیف از قبل موجود است!");
                 return View(discount);
             }
@@ -73,6 +79,47 @@ namespace LearningWebSite.Areas.Admin.Controllers
             }
             await DiscountService.AddDiscountCode(discount);
             return RedirectAndShowAlert(OperationResult.Success(), RedirectToAction(nameof(Discount)));
+        }
+        [HttpGet]
+        public IActionResult EditDiscount(int discountId)
+        {
+            var result = DiscountService.FindDiscountById(discountId);
+            ViewBag.StartDate = result.StartDate.Value.Date.ToShamsi();
+            ViewBag.EndDate = result.EndDate.Value.Date.ToShamsi();
+            return View(result);
+        }
+        [HttpPost]
+        public IActionResult EditDiscount(Discount discount, string sdDate = "", string edDate = "")
+        {
+            if (string.IsNullOrWhiteSpace(discount.DiscountCode))
+            {
+                ViewBag.StartDate = sdDate;
+                ViewBag.EndDate = edDate;
+                ModelState.AddModelError(String.Empty, "لطفا کد تخفیف را وارد نمایید!");
+                return View(discount);
+            }
+            if (discount.DiscountPercent == null || discount.DiscountPercent <= 0)
+            {
+                ViewBag.StartDate = sdDate;
+                ViewBag.EndDate = edDate;
+                ModelState.AddModelError(String.Empty, "لطفا تعداد کد تخفیف را وارد نمایید!");
+                return View(discount);
+            }
+            if (sdDate != "")
+            {
+                string[] std = sdDate.Split("/");
+                discount.StartDate = new DateTime(int.Parse(std[0]), int.Parse(std[1]), int.Parse(std[2]),
+                    new PersianCalendar());
+            }
+
+            if (edDate != "")
+            {
+                string[] edd = edDate.Split("/");
+                discount.EndDate = new DateTime(int.Parse(edd[0]), int.Parse(edd[1]), int.Parse(edd[2]),
+                    new PersianCalendar());
+            }
+            DiscountService.EditDiscount(discount);
+            return RedirectAndShowAlert(OperationResult.Success("ویرایش با موفقیت انجام شد!"), RedirectToAction("Discount"));
         }
     }
 }

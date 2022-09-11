@@ -29,7 +29,7 @@
                     <form action="/Course/AllCourse" method="get">
                         <div class="input-group">
                             <input type="search" name="filter" class="form-control rounded-pill"
-                                placeholder="عنوان مورد نظر خود را جستجو کنید ...">
+                                   placeholder="عنوان مورد نظر خود را جستجو کنید ...">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-info rounded-pill font-13">جستجو</button>
                             </div>
@@ -43,18 +43,17 @@
 
                     {
 
-                        <a asp-controller="Account" asp-action="SignUp" class="btn btn-outline-info font-13 vazir-med-fa"><i
-                            class="fa fa-user-plus pl-1"></i>ثبت نام</a>
+                        <a asp-controller="Account" asp-action="SignUp" class="btn btn-outline-info font-13 vazir-med-fa">
+                            <i class="fa fa-user-plus pl-1"></i>ثبت نام
+                        </a>
                         <a asp-controller="Account" asp-action="Login"
-                        class="btn btn-info font-13 vazir-med-fa mx-2">ورود</a>
+                       class="btn btn-info font-13 vazir-med-fa mx-2">ورود</a>
 
                     }
                     @if (User.Identity.IsAuthenticated)
-
                     {
                         <a id="loadBasket" class="cart mt-2 ml-2 dropdown" data-toggle="dropdown">
-                            <span class="badge badge-info badge-pill" id="orderAmount"></span><i
-                            class="fa fa-shopping-basket"></i>
+                            <span class="badge badge-info badge-pill" id="orderAmount"></span><i class="fa fa-shopping-basket"></i>
                             <div class="dropdown-menu dropdown-cart mt-3" id="header">
                                 <form method="get" action="/Course/OrderView" id="form_payment">
                                     <ul class="list-unstyled">
@@ -63,21 +62,31 @@
                                         </div>
                                     </ul>
                                     <button type="submit" onclick="submitDetailsForm()"
-                                    class="btn btn-info m-1 ml-3 font-12">پرداخت</button>
+                                        class="btn btn-info m-1 ml-3 font-12">
+                                        پرداخت
+                                    </button>
                                 </form>
                             </div>
                         </a>
                         <div class="btn-group">
                             <button type="button" class="btn btn-info font-13 vazir-med-fa mx-2 dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 پنل کاربری
                             </button>
+
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="/User">پنل کاربری</a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="dropdown-item" href="/Admin">پنل مدیریت</a>
+                                }
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">خروج از
-                                    حساب کاربری</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">
+                                    خروج از
+                                    حساب کاربری
+                                </a>
                             </div>
+
                         </div>
 
                     }
@@ -93,14 +102,15 @@
                 </div>
 
                 <div class="col-12 d-flex d-lg-none justify-content-center mb-4 mobile-header">
-                    <a asp-area="" asp-controller="Account" asp-action="SignUp" class="border-left ml-3"><i
-                            class="fa fa-user-plus ml-3"></i></a>
-                    <a asp-controller="Account" asp-action="Login" class="border-left ml-3"><i
-                            class="fa fa-lock ml-3"></i></a>
+                    <a asp-area="" asp-controller="Account" asp-action="SignUp" class="border-left ml-3">
+                        <i class="fa fa-user-plus ml-3"></i>
+                    </a>
+                    <a asp-controller="Account" asp-action="Login" class="border-left ml-3">
+                        <i class="fa fa-lock ml-3"></i>
+                    </a>
                     <a href="~/teach.html" class="border-left ml-3"><i class="fa fa-graduation-cap ml-3"></i></a>
                     <a href="~/#" class="border-left ml-3 dropdown" data-toggle="dropdown">
-                        <span class="badge badge-info badge-pill" id="orderAmount"></span><i
-                            class="fa fa-shopping-basket ml-3"></i>
+                        <span class="badge badge-info badge-pill" id="orderAmount"></span><i class="fa fa-shopping-basket ml-3"></i>
                         <form method="get" action="/Course/OrderView" id="form_payment">
                             <div class="dropdown-menu  dropdown-cart mt-3 mx-5" id="header">
                                 <ul class="list-unstyled">
@@ -115,7 +125,7 @@
                     <form action="/Course/AllCourse" method="get">
                         <div class="input-group">
                             <input type="search" name="filter" class="form-control rounded-pill"
-                                placeholder="عنوان مورد نظر خود را جستجو کنید ...">
+                                   placeholder="عنوان مورد نظر خود را جستجو کنید ...">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-info rounded-pill font-13">جستجو</button>
                             </div>
@@ -141,7 +151,8 @@
                     <li class="nav-item ml-3 custom-nav-item"><a href="/" class="nav-link">صفحه اصلی</a></li>
                     @await Component.InvokeAsync("CourseGroupComponent")
 
-                    <li class="nav-item ml-3 custom-nav-item"><a href="/Home/ContactUs" class="nav-link">تماس باما</a>
+                    <li class="nav-item ml-3 custom-nav-item">
+                        <a href="/Home/ContactUs" class="nav-link">تماس باما</a>
                     </li>
                 </ul>
             </div>
@@ -162,8 +173,10 @@
                         استفاده از طراحان گرافیک است.
                         چاپگرها و متون بلکه روزنامه و مجله در ستون و سطر آنچنان که لازم است.
                     </p>
-                    <p class="font-14"><i class="fas fa-map-marker-alt text-muted ml-2"></i> ایران , تهران , زعفرانیه ,
-                        ساختمان مهر</p>
+                    <p class="font-14">
+                        <i class="fas fa-map-marker-alt text-muted ml-2"></i> ایران , تهران , زعفرانیه ,
+                        ساختمان مهر
+                    </p>
                     <p class="font-14"><i class="fas fa-envelope text-muted ml-2"></i> info@sitename.com</p>
                     <p class="font-14"><i class="fa fa-phone text-muted ml-2"></i>021-12345678</p>
                 </div>
@@ -193,7 +206,7 @@
                     <form action="#" method="">
                         <div class="input-group">
                             <input type="search" name="" class="form-control rounded-pill"
-                                placeholder="ایمیل خود را وارد کنید ...">
+                                   placeholder="ایمیل خود را وارد کنید ...">
                             <div class="input-group-append">
                                 <button type="submit" name="" class="btn btn-info rounded-pill font-13">اشتراک</button>
                             </div>

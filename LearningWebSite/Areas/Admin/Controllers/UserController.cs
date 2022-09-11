@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace LearningWebSite.Areas.Admin.Controllers
 {
@@ -119,7 +120,28 @@ namespace LearningWebSite.Areas.Admin.Controllers
                 ?? items[0];
             string selectedText = selectedItem.Text;
             var user = await userManager.FindByIdAsync(id);
+            var userRoles = await userManager.GetRolesAsync(user);
+            if (userRoles.Contains(selectedText))
+            {
+                ViewBag.Claims = list;
+                ViewBag.UserId = id;
+                ViewBag.UserEmail = user.Email;
+                ViewBag.Error = "این نقش از قبل برای این کاربر تعیین شده است!";
+                return View();
+            }
             await userManager.AddToRoleAsync(user, selectedText);
+            if (selectedText=="Admin")
+            {
+                await userManager.AddClaimAsync(user, new Claim("AdminType", "Admin"));
+            }
+            if (selectedText == "Teacher")
+            {
+                await userManager.AddClaimAsync(user, new Claim("TeacherType", "Teacher"));
+            }
+            if (selectedText == "Student")
+            {
+                await userManager.AddClaimAsync(user, new Claim("StudentType", "Student"));
+            }
             return RedirectToAction(nameof(RoleList), new { id = user.Id });
         }
         [Route("EditRole/{userId}/{RoleName}")]
@@ -148,6 +170,20 @@ namespace LearningWebSite.Areas.Admin.Controllers
             var currentRole = await userManager.GetRolesAsync(user);
             await userManager.RemoveFromRoleAsync(user, currentRole.First().ToString());
             await userManager.AddToRoleAsync(user, selectedItem.Text.ToString());
+            var userClaims = await userManager.GetClaimsAsync(user);
+            await userManager.RemoveClaimsAsync(user, userClaims);
+            if (selectedItem.Text.ToString() == "Admin")
+            {
+                await userManager.AddClaimAsync(user, new Claim("AdminType", "Admin"));
+            }
+            if (selectedItem.Text.ToString() == "Teacher")
+            {
+                await userManager.AddClaimAsync(user, new Claim("TeacherType", "Teacher"));
+            }
+            if (selectedItem.Text.ToString() == "Student")
+            {
+                await userManager.AddClaimAsync(user, new Claim("StudentType", "Student"));
+            }
             return RedirectToAction(nameof(RoleList), new { id = user.Id });
         }
         [HttpPost]
@@ -156,6 +192,7 @@ namespace LearningWebSite.Areas.Admin.Controllers
             var user = await userManager.FindByIdAsync(Id);
             var currentRole = await userManager.GetRolesAsync(user);
             await userManager.RemoveFromRoleAsync(user, currentRole.First().ToString());
+            await userManager.RemoveClaimAsync(user, new Claim($"{currentRole.First().ToString()}Type", currentRole.First().ToString()));
             return RedirectToAction(nameof(RoleList), new { id = user.Id });
         }
         private async Task CreateRoles()

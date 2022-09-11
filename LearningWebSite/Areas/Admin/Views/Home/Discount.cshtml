@@ -32,31 +32,35 @@
                         <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>کد</th>
                                     <th>تعداد</th>
+                                    <th>درصد تخفیف</th>
                                     <th>تاریخ شروع</th>
                                     <th>تاریخ پایان</th>
                                     <th>دستورات</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Model!=null)
+                                @if (Model != null)
                                 {
                                     @foreach (var code in Model)
                                     {
-                                        <tr>
+                                        <tr id="removeTr-@code.DiscountId">
+                                            <td>@code.DiscountId</td>
                                             <td>@code.DiscountCode</td>
                                             <td>@code.UsableCount</td>
+                                            <td>%@code.DiscountPercent</td>
                                             <td>@((code.StartDate != null) ? code.StartDate.Value.ToShamsi() : "")</td>
                                             <td>@((code.EndDate != null) ? code.EndDate.Value.ToShamsi() : "")</td>
 
                                             <td>
-                                                <a href="/Admin/Discount/EditDiscount/@code.DiscountId" class="btn btn-warning btn-sm">
+                                                <a asp-area="Admin" asp-controller="Home" asp-action="EditDiscount" asp-route-discountId="@code.DiscountId" class="btn btn-warning btn-sm">
                                                     ویرایش
                                                 </a>
-                                                <a href="/Admin/Discount/EditDiscount/@code.DiscountId" class="btn btn-danger btn-sm">
-                                                    حذف
-                                                </a>
+                                                <button onclick="submitDeleteForm('/DeleteDiscount/',@code.DiscountId)" type="button" class="btn btn-outline-danger btn-sm">
+                                                    <i class="fa fa-trash-o fa-fw"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     }

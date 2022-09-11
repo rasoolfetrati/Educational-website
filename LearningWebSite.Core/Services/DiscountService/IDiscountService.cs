@@ -35,7 +35,8 @@ public class DiscountService : IDiscountService
 
     public void EditDiscount(Discount discount)
     {
-        throw new NotImplementedException();
+        context.Discounts.Update(discount);
+        context.SaveChanges();
     }
 
     public Discount FindDiscountById(int discountId)
