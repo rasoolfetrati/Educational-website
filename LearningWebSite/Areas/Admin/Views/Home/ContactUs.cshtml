@@ -1,0 +1,42 @@
+﻿@using LearningWebSite.DataLayer.Entities.ContactUs
+@model IList<Contacts>
+@{
+    ViewData["Title"] = "ContactUs";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+<br />
+<div id="accordion">
+    @if (Model != null)
+    {
+        @foreach (var item in Model)
+        {
+            <div class="card" id="removeTr-@item.ContactId">
+                <div class="card-header" id="heading-@item.ContactId">
+                    <h5 class="mb-0">
+                        <span class="d-flex d-inline justify-content-between">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-@item.ContactId" aria-expanded="true" aria-controls="collapse-@item.ContactId">
+                                <label>پیامی از طرف  : @item.Fullname</label>
+                            </button>
+                            <div class="d-flex justify-content-end text-light">
+                                <button type="button" onclick="submitDeleteForm('/DeleteMessage/',@item.ContactId)" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-trash-o fa-fw"></i>
+                                </button>
+                            </div>
+                        </span>
+                    </h5>
+                </div>
+
+                <div id="collapse-@item.ContactId" class="collapse" aria-labelledby="heading-@item.ContactId" data-parent="#accordion">
+                    <div class="card-body">
+                        <p>نام کاربر: @item.Fullname</p>
+                        <p>آدرس ايميل: @item.Email</p>
+                        <p>متن پيام: <br>@Html.Raw(item.Message)</p>
+                    </div>
+                </div>
+            </div>
+            <br />
+        }
+    }
+</div>
+

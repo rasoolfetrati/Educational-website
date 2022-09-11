@@ -217,7 +217,7 @@ namespace LearningWebSite.Controllers
             {
                 return RedirectAndShowAlert(
               OperationResult.Error("فایل یافت نشد!"),
-              RedirectToAction("index", new { episode.CourseId, episode.Course.CourseTitle })
+              RedirectToAction("index", new { episode.CourseId,episode.Course.CourseTitle})
                 );
             }
             string fileName = episode.EpisodeFileName;

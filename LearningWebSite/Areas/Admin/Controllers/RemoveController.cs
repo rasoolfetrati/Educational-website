@@ -1,5 +1,7 @@
 ﻿using LearningWebSite.Core.Services.CommentService;
+using LearningWebSite.Core.Services.ContactUsService;
 using LearningWebSite.Core.Services.CourseService;
+using LearningWebSite.Core.Services.DiscountService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +14,15 @@ namespace LearningWebSite.Areas.Admin.Controllers
     {
         private readonly ICourseService _courseService;
         private ICommentServices _commentServices;
+        private readonly IContactUsService contactUsService;
+        private readonly IDiscountService _discountService;
 
-        public RemoveController(ICourseService courseService, ICommentServices commentServices)
+        public RemoveController(ICourseService courseService, ICommentServices commentServices,IContactUsService contactUsService, IDiscountService discountService)
         {
             _courseService = courseService;
             _commentServices = commentServices;
+            this.contactUsService = contactUsService;
+            _discountService = discountService;
         }
 
         [Route("DeleteEpisode/{episodId}")]
@@ -51,6 +57,25 @@ namespace LearningWebSite.Areas.Admin.Controllers
         {
             _commentServices.ConfirmComment(id);
             return Ok("کامنت با موفقیت تایید شد!");
+        }
+
+
+        [Route("DeleteMessage/{ContactId}")]
+        [HttpPost]
+        public IActionResult DeleteMessage(int ContactId)
+        {
+            contactUsService.Delete(ContactId);
+            return Ok($"پیام با موفقیت حذف شد!!!");
+        }
+        [Route("checkCode")]
+        [HttpGet]
+        public IActionResult checkcode(string code)
+        {
+            if (_discountService.IsDiscountCodeExist(code))
+            {
+                return new JsonResult("True");
+            }
+            return new JsonResult("False");
         }
     }
 }

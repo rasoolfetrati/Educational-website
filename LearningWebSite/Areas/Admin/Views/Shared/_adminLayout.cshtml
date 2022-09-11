@@ -47,7 +47,7 @@
             <form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-navbar" type="search" placeholder="جستجو"
-                        aria-label="Search">
+                           aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-navbar" type="submit">
                             <i class="fa fa-search"></i>
@@ -69,7 +69,7 @@
                             <!-- Message Start -->
                             <div class="media">
                                 <img src="/AdminContent/dist/img/user1-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 ml-3 img-circle">
+                                     class="img-size-50 ml-3 img-circle">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         حسام موسوی
@@ -86,7 +86,7 @@
                             <!-- Message Start -->
                             <div class="media">
                                 <img src="/AdminContent/dist/img/user8-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 img-circle ml-3">
+                                     class="img-size-50 img-circle ml-3">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         پیمان احمدی
@@ -103,7 +103,7 @@
                             <!-- Message Start -->
                             <div class="media">
                                 <img src="/AdminContent/dist/img/user3-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 img-circle ml-3">
+                                     class="img-size-50 img-circle ml-3">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         سارا وکیلی
@@ -159,7 +159,7 @@
             <!-- Brand Logo -->
             <a href="/AdminContent/index3.html" class="brand-link">
                 <img src="/AdminContent/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
+                     class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">پنل مدیریت</span>
             </a>
 
@@ -180,10 +180,8 @@
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
-                            <!-- Add icons to the links using the .nav-icon class
-             with font-awesome or any other icon font library -->
-                            <li class="nav-item has-treeview menu-open">
-                                <a class="nav-link active">
+                            <li class="nav-item has-treeview">
+                                <a class="nav-link" style="cursor:pointer;">
                                     <i class="nav-icon fa fa-user"></i>
                                     <p>
                                         مدیریت کاربران
@@ -193,7 +191,7 @@
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
                                         <a asp-area="Admin" asp-controller="User" asp-action="Index"
-                                            class="nav-link active">
+                                           class="nav-link active">
                                             <i class="fa fa-user-o nav-icon"></i>
                                             <p>لیست کاربران</p>
                                         </a>
@@ -215,8 +213,8 @@
                         </ul>
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
-                            <li class="nav-item has-treeview menu-open">
-                                <a class="nav-link active">
+                            <li class="nav-item has-treeview">
+                                <a class="nav-link" style="cursor:pointer;">
                                     <i class="nav-icon fa fa-book"></i>
                                     <p>
                                         مدیریت دوره ها
@@ -226,14 +224,14 @@
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
                                         <a asp-area="Admin" asp-controller="CourseGroup" asp-action="Index"
-                                            class="nav-link active">
+                                           class="nav-link active">
                                             <i class="fa fa-book nav-icon"></i>
                                             <p>لیست گروه ها</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a asp-area="Admin" asp-controller="Course" asp-action="Index"
-                                            class="nav-link active">
+                                           class="nav-link active">
                                             <i class="fa fa-book nav-icon"></i>
                                             <p>لیست دوره ها</p>
                                         </a>
@@ -245,15 +243,36 @@
                                         </a>
                                     </li>
                                 </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/CommentsList"
-                                            class="nav-link active">
-                                            <i class="fa fa-book nav-icon"></i>
-                                            <p>لیست کامنت ها</p>
-                                        </a>
-                                    </li>
-                                </ul>
+                        </ul>
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                            data-accordion="false">
+                            <li class="nav-item">
+                                <a href="/CommentsList"
+                                   class="nav-link ">
+                                    <i class="fa fa-book nav-icon"></i>
+                                    <p>لیست کامنت ها</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                            data-accordion="false">
+                            <li class="nav-item">
+                                <a href="/ContactUs"
+                                   class="nav-link ">
+                                    <i class="fa fa-address-book nav-icon"></i>
+                                    <p> تماس با ما</p>
+                                </a>
+                            </li>
+                        </ul>
+                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                            data-accordion="false">
+                            <li class="nav-item">
+                                <a href="/Admin/Home/Discount"
+                                   class="nav-link ">
+                                    <i class="fa fa-money nav-icon"></i>
+                                    <p> مدیریت کدهای تخفیف</p>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->

@@ -142,7 +142,7 @@ function Info(Title, description) {
 }
 function ErrorAlert(Title, description, isReload = false) {
     if (Title == null || Title == "undefined") {
-        Title = "مشکلی در عملیات رخ داده است";
+        Title = "خطا...";
     }
     if (description == null || description == "undefined") {
         description = "";

@@ -2,6 +2,7 @@
 using LearningWebSite.DataLayer.Entities.Comments;
 using LearningWebSite.DataLayer.Entities.ContactUs;
 using LearningWebSite.DataLayer.Entities.Courses;
+using LearningWebSite.DataLayer.Entities.Discounts;
 using LearningWebSite.DataLayer.Entities.Users;
 using LearningWebSite.DataLayer.Entities.UserWallet;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -27,6 +28,8 @@ namespace LearningWebSite.DataLayer.Context
         public DbSet<UserInCourse> UserInCourses { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Contacts> Contacts { get; set; }
+        public DbSet<UserDiscountCode> UserDiscountCodes { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -1,0 +1,75 @@
+﻿@using LearningWebSite.DataLayer.Entities.Discounts
+@model Discount
+@{
+    ViewData["Title"] = "ثبت کد تخفیف";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">افزودن کد جدید</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <form method="post" enctype="multipart/form-data" asp-area="Admin" asp-controller="Home" asp-action="CreateDiscount">
+            <div asp-validation-summary="All"></div>
+            <div class="form-group">
+                <label>کد تخفیف </label>
+                <input type="text" asp-for="DiscountCode" class="form-control" autocomplete="off">
+                <div id="alertcode" class="alert alert-danger mt-3" style="display: none">
+                    <p class="text-white">این کد تخفیف از قبل موجود است!</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>درصد کد تخفیف </label>
+                <input type="number" asp-for="DiscountPercent" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>تعداد </label>
+                <input type="number" asp-for="UsableCount" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>تاریخ شروع </label>
+                <input id="sdDate" name="sdDate" value="" />
+            </div>
+            <div class="form-group">
+                <label>تاریخ پایان </label>
+                <input id="edDate" value="" name="edDate" />
+            </div>
+            <input type="submit" value="ذخیره اطلاعات" class="btn btn-success" />
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        $("#DiscountCode").blur(function () {
+            $.ajax({
+                type: "get",
+                url: "/checkcode?code=" + $("#DiscountCode").val()
+            }).done(function (res) {
+                if (res === 'True') {
+                    $("#alertcode").show();
+                } else {
+                    $("#alertcode").hide();
+                }
+            });
+        });
+    </script>
+    <link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.default.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
+    <script src="/js/kendo.all.min.js"></script>
+    <script>
+        $("#sdDate").kendoDatePicker();
+        $("#edDate").kendoDatePicker();
+    </script>
+
+}
+

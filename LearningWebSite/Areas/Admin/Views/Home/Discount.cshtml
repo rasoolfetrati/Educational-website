@@ -1,0 +1,76 @@
+﻿@using LearningWebSite.Core.InfraStructure
+@using LearningWebSite.DataLayer.Entities.Discounts
+@model IList<Discount>
+@{
+    ViewData["Title"] = "کد های نحفیف";
+    Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+}
+<br />
+<br />
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">لیست کد های تخفیف</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card card-info">
+            <div class="card-header">
+                لیست کد های تخفیف
+            </div>
+            <!-- /.card-heading -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="col-md-12" style="margin: 10px 0;">
+
+                            <a href="/Admin/Home/CreateDiscount" class="btn btn-outline-success">افزودن کد جدید</a>
+
+                        </div>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>کد</th>
+                                    <th>تعداد</th>
+                                    <th>تاریخ شروع</th>
+                                    <th>تاریخ پایان</th>
+                                    <th>دستورات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model!=null)
+                                {
+                                    @foreach (var code in Model)
+                                    {
+                                        <tr>
+                                            <td>@code.DiscountCode</td>
+                                            <td>@code.UsableCount</td>
+                                            <td>@((code.StartDate != null) ? code.StartDate.Value.ToShamsi() : "")</td>
+                                            <td>@((code.EndDate != null) ? code.EndDate.Value.ToShamsi() : "")</td>
+
+                                            <td>
+                                                <a href="/Admin/Discount/EditDiscount/@code.DiscountId" class="btn btn-warning btn-sm">
+                                                    ویرایش
+                                                </a>
+                                                <a href="/Admin/Discount/EditDiscount/@code.DiscountId" class="btn btn-danger btn-sm">
+                                                    حذف
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

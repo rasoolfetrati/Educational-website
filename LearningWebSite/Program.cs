@@ -3,7 +3,9 @@ using LearningWebSite.Core.InfraStructure;
 using LearningWebSite.Core.Services;
 using LearningWebSite.Core.Services.BasketService;
 using LearningWebSite.Core.Services.CommentService;
+using LearningWebSite.Core.Services.ContactUsService;
 using LearningWebSite.Core.Services.CourseService;
+using LearningWebSite.Core.Services.DiscountService;
 using LearningWebSite.Core.Services.WalletService;
 using LearningWebSite.Core.ViewModel;
 using LearningWebSite.DataLayer.Context;
@@ -31,6 +33,8 @@ builder.Services.AddScoped<IViewRenderService, RenderViewToString>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<ICommentServices, CommentServices>();
+builder.Services.AddScoped<IContactUsService, ContactUsService>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddIdentity<CustomUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;

@@ -1,16 +1,21 @@
-﻿using LearningWebSite.Core.Services.CourseService;
-using LearningWebSite.DataLayer.Entities.Courses;
-using Microsoft.AspNetCore.Cors.Infrastructure;
+﻿using Ganss.XSS;
+using LearningWebSite.Areas.Admin.Controllers;
+using LearningWebSite.Core.InfraStructure;
+using LearningWebSite.Core.Services.ContactUsService;
+using LearningWebSite.Core.Services.CourseService;
+using LearningWebSite.DataLayer.Entities.ContactUs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearningWebSite.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : MainControllerBase
     {
         private readonly ICourseService _courseService;
-        public HomeController(ICourseService courseService)
+        private readonly IContactUsService _contactUsService;
+        public HomeController(ICourseService courseService, IContactUsService contactUsService)
         {
             _courseService = courseService;
+            _contactUsService = contactUsService;
         }
 
         public IActionResult Index()
@@ -18,10 +23,23 @@ namespace LearningWebSite.Controllers
             var data = _courseService.GetCoursesForIndex();
             return View(data);
         }
-
+        [HttpGet]
         public IActionResult ContactUs()
         {
             return View();
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> ContactUs(Contacts contacts)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(ModelState);
+            }
+            HtmlSanitizer htmlSanitizer = new();
+            contacts.Message= htmlSanitizer.Sanitize(contacts.Message);
+            await _contactUsService.SaveMessage(contacts);
+            return RedirectAndShowAlert(OperationResult.Success("پیام شما با موفقیت ثبت شد!"),RedirectToAction("ContactUs"));
         }
         [Route("NotFound")]
         public IActionResult NotFound()

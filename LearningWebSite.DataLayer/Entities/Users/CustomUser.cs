@@ -25,5 +25,6 @@ namespace LearningWebSite.DataLayer.Entities.Users
         public virtual List<Order> Orders { get; set; }
         public List<UserInCourse> UserCourses { get; set; }
         public List<Comment> Comments { get; set; }
+        public List<UserDiscountCode> DiscountCodes { get; set; }
     }
 }
