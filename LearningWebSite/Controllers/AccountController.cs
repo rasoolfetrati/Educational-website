@@ -25,12 +25,14 @@ namespace LearningWebSite.Controllers
             _viewRenderService = viewRenderService;
             _userService = userService;
         }
-
-        public IActionResult Login()
+        [Route("Login")]
+        public IActionResult Login(string ReturnUrl = "")
         {
+            ViewBag.url = ReturnUrl;
             return View();
         }
         [HttpPost]
+        [Route("Login")]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (!ModelState.IsValid) return View(loginViewModel);
@@ -43,18 +45,27 @@ namespace LearningWebSite.Controllers
             var res = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, loginViewModel.RememberMe, false);
             if (res.Succeeded)
             {
-                return RedirectToAction("Index", "Home", new { area = "User" });
+                if (loginViewModel.returnUrl != "")
+                {
+                    return Redirect(loginViewModel.returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home", new { area = "User" });
+                }
             }
             ModelState.AddModelError(String.Empty, "نام کاربری یا کلمه عبور اشتباه می باشد!");
             return View(loginViewModel);
         }
         [HttpGet]
+        [Route("SignUp")]
         public IActionResult SignUp()
         {
             return View();
         }
 
         [HttpPost]
+        [Route("SignUp")]
         public async Task<IActionResult> SignUp(RegisterViewModel registerViewModel)
         {
             if (!ModelState.IsValid)
@@ -64,7 +75,7 @@ namespace LearningWebSite.Controllers
             var user = _userService.SignUpUser(registerViewModel);
             await _userManager.CreateAsync(user, registerViewModel.Password);
             await _userManager.AddClaimAsync(user, new Claim("StudentType", "Student"));
-            await _userManager.AddToRoleAsync(user,"Student");
+            await _userManager.AddToRoleAsync(user, "Student");
             var body = _viewRenderService.RenderToStringAsync("_ActiveAccount", user);
             SendEmail.Send(user.Email, "فعال سازی", body);
             return RedirectToAction(nameof(ActiveAccount));
@@ -162,7 +173,7 @@ namespace LearningWebSite.Controllers
             {
                 ModelState.AddModelError(string.Empty, item.Description);
             }
-            ViewBag.UserId=model.UserId;
+            ViewBag.UserId = model.UserId;
             return View(model);
         }
 

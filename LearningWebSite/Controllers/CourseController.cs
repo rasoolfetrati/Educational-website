@@ -67,18 +67,16 @@ namespace LearningWebSite.Controllers
             return View(courseService.GetCourse(pageId, filter, getType, sort, selectedGroups, 4));
         }
 
-        [HttpGet]
         [Authorize]
         public async Task<IActionResult> OrderView()
         {
-           
             var data = await basketService.GetCourses(User.Identity.Name);
             if (data.Count<=0)
             {
                 ViewBag.Error = "در سبد خرید شما محصولی وجود ندارد!";
                 return View();
             }
-            ViewBag.Total = basketService.GetTotalPriceUserBasket(User.Identity.Name);
+            ViewBag.orderId = basketService.GetOrderId(User.Identity.Name);
             ViewBag.UserWallet = userService.WalletBalance(User.Identity.Name);
             return View(data);
         }
@@ -87,6 +85,13 @@ namespace LearningWebSite.Controllers
         [Authorize]
         public async Task<IActionResult> Payment(List<int> courseId, string paymethod)
         {
+            if (string.IsNullOrWhiteSpace(paymethod) || !paymethod.Equals("wallet") || !paymethod.Equals("online"))
+            {
+                return RedirectAndShowAlert(
+                        OperationResult.Error("لطفا روش پرداخت را انتخاب نمایید!"),
+                        RedirectToAction(nameof(OrderView))
+                    );
+            }
             var url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             var orderId = await basketService.CreateOrder(courseId, User.Identity.Name);
             var orderSum = basketService.orderSum(orderId, User.Identity.Name);
@@ -97,11 +102,11 @@ namespace LearningWebSite.Controllers
                 {
                     return RedirectAndShowAlert(
                         OperationResult.Error("موجودی کیف پول شما کمتر از مبلغ سفارش می باشد!"),
-                        RedirectToAction(nameof(OrderView), new { courseId = courseId })
+                        RedirectToAction(nameof(OrderView))
                     );
                 }
                 basketService.PayWithWallet(User.Identity.Name, orderId);
-                return RedirectAndShowAlert(OperationResult.Success(), Redirect("/"));
+                return RedirectAndShowAlert(OperationResult.Success("خرید شما با موفقیت انجام شد!"), Redirect($"{url}/User"));
             }
             else
             {

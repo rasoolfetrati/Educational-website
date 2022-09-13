@@ -10,7 +10,7 @@
         @ViewBag.Error
     </div>
 }
-@if (Model!=null)
+@if (Model != null)
 {
     <div class="container">
         <section class="h-100" style="background-color: #eee;">
@@ -26,6 +26,7 @@
                             @foreach (var item in Model)
                             {
                                 <input hidden name="courseId" value="@item.CourseId" />
+                                <input hidden id="orderId" name="orderId" value="@ViewBag.orderId" />
                                 <div class="card rounded-3 mb-4 text-center" id="removeTr-@item.BasketId">
                                     <div class="card-body p-4">
                                         <div class="row d-flex justify-content-between align-items-center">
@@ -50,7 +51,7 @@
                             <div class="card rounded-3 mb-4">
                                 <div class="card-body p-4">
                                     <div class="col-12 row">
-                                        <h5 class="mb-0">جمع کل خرید: @ViewBag.Total.ToString("#,#") تومان</h5>
+                                        <h5 class="mb-0" id="sumOrder"></h5>
                                         <div class="col-6">
                                         </div>
                                     </div>
@@ -93,17 +94,14 @@
                                 <div class="form-outline flex-fill">
                                     <div class="col-6">
                                         <label class="form-label" for="form1">کد تخفیف</label>
-                                        <input type="text" placeholder="کد تخفیف خود را وارد نمایید..." id="form1" class="form-control" />
+                                        <input type="text" placeholder="کد تخفیف خود را وارد نمایید..." name="discountCode" id="discountCode" class="form-control" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
-                                <button type="button" class="btn btn-outline-warning btn-block mb-2">اعمال کد تخفیف</button>
+                                <button type="button" id="discountSubmit" class="btn btn-outline-info btn-block mb-2">اعمال کد تخفیف</button>
                             </div>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>
@@ -114,4 +112,85 @@
 }
 @section Scripts{
     <script src="/js/deleteScript.js"></script>
+    <script>
+        $(document).ready(function () {
+            getsum();
+        });
+        function getsum() {
+            var rial = Intl.NumberFormat('fa-IR');
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "/getOrdersum",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    $("#sumOrder").text("جمع کل خرید: " + rial.format(result.sum) + " تومان");
+                },
+                error: function (xhr, textStatus, errorThrown) { alert(textStatus + ':' + errorThrown); }
+            });
+        }
+    </script>
+    <script>
+        $("#discountSubmit").click(userDiscount);
+        function userDiscount() {
+            var codediscount = $("#discountCode").val();
+            var orderIdClient = $("#orderId").val();
+            console.log(codediscount);
+            console.log(orderIdClient);
+            $.ajax({
+                type: 'GET',
+                url: '/useDiscount',
+                data: { code: codediscount, orderId: orderIdClient },
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                success: function (result) {
+                    if (result.code === 200) {
+                        getsum();
+                        $("#discountCode").val("");
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'موفق',
+                            text: result.message,
+                        });    
+                    }
+                    if (result.code === 404) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'هشدار!',
+                            text: result.message,
+                        });
+                    }
+                    if (result.code === 300) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'هشدار!',
+                            text: result.message,
+                        });
+                    }
+                    if (result.code === 500) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'هشدار!',
+                            text: result.message,
+                        });
+                    }
+                    if (result.code === 501) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'هشدار!',
+                            text: result.message,
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'اوپس...',
+                        text: 'مشکلی پیش اومد...!',
+                    });
+                }
+            })
+        }
+
+    </script>
+
 }

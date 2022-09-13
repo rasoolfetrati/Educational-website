@@ -23,6 +23,7 @@ namespace LearningWebSite.Areas.User.Controllers
         [HttpPost]
         public async Task<IActionResult> ChargeWallet(int amount)
         {
+            var url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             if (amount == 0 && amount == null)
             {
                 return RedirectAndShowAlert
@@ -32,7 +33,7 @@ namespace LearningWebSite.Areas.User.Controllers
             var walletId =  _walletService.AddFactor(amount, User.Identity.Name);
             var payment = new ZarinpalSandbox.Payment(amount);
             var response = await payment
-                .PaymentRequest("شارژ حساب", "http://localhost:17109/OnlinePayment/" + walletId,
+                .PaymentRequest("شارژ حساب", $"{url}/OnlinePayment/" + walletId,
                     "rasoulfetrati2@gmail.com", "09902036655");
             if (response.Status == 100)
             {

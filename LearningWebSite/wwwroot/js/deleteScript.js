@@ -102,7 +102,7 @@ function submitDeletebasketForm(url, id) {
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    $("#removeTr-" + id).fadeOut(3000, function () { $(this).remove(); window.location.reload(); });
+                    $("#removeTr-" + id).fadeOut(3000, function () { $(this).remove(); getsum(); });
                     
                 },
                 error: function () {

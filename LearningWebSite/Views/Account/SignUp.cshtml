@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <h5 class="shadow-sm text-center mb-4 py-3"> عضویت در سایت </h5>
 
-                    <form asp-controller="Account" asp-action="SignUp" method="post">
+                    <form asp-controller="Account" asp-action="SignUp" method="post" asp-antiforgery="true">
                         <div asp-validation-summary="All"></div>
                         <div class="form-group">
                             <label for="name"> نام : </label>

@@ -27,6 +27,9 @@ public interface IBasketService
     List<Basket> GetUserBaskets(string username);
     int GetUserBasketsCount(string username);
     void DeleteBasket(int basketId);
+    Order GetOrderById(int orderId);
+    void UpdateOrder(Order order);
+    int GetOrderId(string username);
 }
 public class BasketService : IBasketService
 {
@@ -58,9 +61,12 @@ public class BasketService : IBasketService
             CourseImage = course.CourseImageName,
             CourseTitle = course.CourseTitle,
         };
+        List<int> ids = new List<int>();
+        ids.Add(courseId);
         await context.Baskets.AddAsync(basket);
+        await CreateOrder(ids, username);
         await context.SaveChangesAsync();
-        return OperationResult.Success($"دوره {course.CourseTitle}با موفقیت به سبد خرید شما افزوده شد.");
+        return OperationResult.Success($"دوره {course.CourseTitle} با موفقیت به سبد خرید شما افزوده شد.");
     }
 
     public void AddToUserCourse(int orderId, string username, string code)
@@ -152,12 +158,14 @@ public class BasketService : IBasketService
         return order.OrderId;
 
     }
-
     public void DeleteBasket(int basketId)
     {
         var basket = context.Baskets.Find(basketId);
+        var orderDetail = context.orderDetails.SingleOrDefault(c => c.CourseId == basket.CourseId);
+        context.orderDetails.Remove(orderDetail);
         context.Baskets.Remove(basket);
         context.SaveChanges();
+        UpdateOrderPrice(orderDetail.OrderID);
     }
 
     public void DeleteUserBasket(string username)
@@ -177,29 +185,37 @@ public class BasketService : IBasketService
             SumOrder = userFactor.Sum(b => b.CoursePrice),
             CourseTitle = b.CourseTitle,
             CourseId = b.CourseId,
-            BasketId=b.BasketId,
+            BasketId = b.BasketId,
         }).ToList();
     }
 
     public async Task<List<ShowBasketVM>> GetCourses(string username)
     {
-        var userBasket = context.Baskets
-                               .Where(t=>t.UserName == username&&!t.IsFinally).ToList();
+        var userBasket = await context.Baskets
+                               .Where(t => t.UserName == username && !t.IsFinally).ToListAsync();
         return userBasket.Select(c => new ShowBasketVM()
         {
             CourseId = c.CourseId,
             CoursePrice = c.CoursePrice,
             CourseTitle = c.CourseTitle,
             CourseImage = c.CourseImage,
-            SumOrder = userBasket.Sum(b => b.CoursePrice),
-            BasketId=c.BasketId
+            BasketId = c.BasketId,
         }).ToList();
+    }
 
+    public Order GetOrderById(int orderId)
+    {
+        return context.Orders.Find(orderId);
+    }
+
+    public int GetOrderId(string username)
+    {
+        return context.Orders.Single(u => u.Username == username && !u.IsPay).OrderId;
     }
 
     public int GetTotalPriceUserBasket(string username)
     {
-        return context.Baskets.Where(u => u.UserName == username&&!u.IsFinally).Sum(p => p.CoursePrice);
+        return context.Orders.Where(u => u.Username == username && !u.IsPay).Sum(p => p.OrderSum);
     }
 
     public List<Basket> GetUserBaskets(string username)
@@ -249,8 +265,14 @@ public class BasketService : IBasketService
     }
     public void UpdateOrder(int orderId, string username)
     {
-        var order = context.Orders.FirstOrDefault(o => o.OrderId == orderId && o.Username == username);
+        var order = context.Orders.FirstOrDefault(o => o.OrderId == orderId && o.Username == username && !o.IsPay);
         order.IsPay = true;
+        context.Orders.Update(order);
+        context.SaveChanges();
+    }
+
+    public void UpdateOrder(Order order)
+    {
         context.Orders.Update(order);
         context.SaveChanges();
     }
@@ -258,6 +280,7 @@ public class BasketService : IBasketService
     public void UpdateOrderPrice(int orderId)
     {
         var orderDetail = context.Orders.Find(orderId);
+        orderDetail.OrderId = orderId;
         orderDetail.OrderSum = context.orderDetails.Where(o => o.OrderID == orderId).Sum(o => o.coursePrice);
         context.Orders.Update(orderDetail);
         context.SaveChanges();

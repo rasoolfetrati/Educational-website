@@ -8,7 +8,13 @@ button {
     button:focus {
         outline: orange 5px auto;
     }
-
+.validation-summary-errors{
+    color:red;
+    list-style:none;
+}
+.validation-summary-errors ul li {
+    list-style: none;
+}
 * {
     font-family: vazir-med-fa;
     outline: none !important;

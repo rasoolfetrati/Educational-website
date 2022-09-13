@@ -48,15 +48,14 @@ builder.Services.AddIdentity<CustomUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders()
 .AddErrorDescriber<PersianIdentityErrorDescriber>();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = new PathString("/Account/Login");
-    options.LogoutPath = new PathString("/Account/Logout");
+    options.LoginPath = "/Login";
+    options.LogoutPath = "/Logout";
     options.AccessDeniedPath = new PathString("/AccessDenied");
-    options.Cookie.Expiration = TimeSpan.FromDays(3);
+    options.ExpireTimeSpan = TimeSpan.FromDays(3);
     options.Cookie.HttpOnly = true;
 });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -64,18 +63,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-else
-{
-    app.UseExceptionHandler("/NotFound");
-}
-app.Use(async (context, next) =>
-{
-    await next.Invoke();
-    if (context.Response.StatusCode == 404)
-    {
-        context.Response.Redirect("/NotFound");
-    }
-});
+//app.Use(async (context, next) =>
+//{
+//    await next.Invoke();
+//    if (context.Response.StatusCode == 404)
+//    {
+//        context.Response.Redirect("/NotFound");
+//    }
+//});
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LearningWebSite.Core.ViewModel.Users
 {
@@ -19,6 +20,8 @@ namespace LearningWebSite.Core.ViewModel.Users
 
         [Display(Name = "مرا به خاطر بسپار")]
         public bool RememberMe { get; set; }
+        [AllowNull]
+        public string returnUrl { get; set; }
 
     }
 
