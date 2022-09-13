@@ -26,7 +26,7 @@ namespace LearningWebSite.Controllers
             _userService = userService;
         }
         [Route("Login")]
-        public IActionResult Login(string ReturnUrl = "")
+        public IActionResult Login(string? ReturnUrl = "")
         {
             ViewBag.url = ReturnUrl;
             return View();
@@ -45,9 +45,9 @@ namespace LearningWebSite.Controllers
             var res = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, loginViewModel.RememberMe, false);
             if (res.Succeeded)
             {
-                if (loginViewModel.returnUrl != "")
+                if (!string.IsNullOrWhiteSpace(loginViewModel.returnUrl))
                 {
-                    return Redirect(loginViewModel.returnUrl);
+                    return Redirect(loginViewModel?.returnUrl);
                 }
                 else
                 {

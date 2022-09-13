@@ -30,9 +30,9 @@ namespace LearningWebSite.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int currentPageIndex=1)
         {
-            var data = _courseService.GetAllCourseForAdmin();
+            var data = _courseService.GetAllCourseForAdmin(currentPageIndex);
             return View(data);
         }
 

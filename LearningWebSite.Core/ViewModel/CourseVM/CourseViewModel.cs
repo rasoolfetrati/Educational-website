@@ -60,6 +60,12 @@ namespace LearningWebSite.Core.ViewModel.CourseVM
         public IFormFile imgCourseUp { get; set; }
         public IFormFile demoUp { get; set; }
     }
+    public class ShowCourseViewModelWithIndex
+    {
+        public List<ShowCourseViewModel> showCourseViewModels { get; set; }
+        public int CurrentPageIndex { get; set; }
+        public int PageCount { get; set; }
+    }
     public class ShowCourseViewModel
     {
         public int CourseId { get; set; }

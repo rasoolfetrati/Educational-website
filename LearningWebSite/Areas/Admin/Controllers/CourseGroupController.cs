@@ -15,10 +15,10 @@ namespace LearningWebSite.Areas.Admin.Controllers
         {
             _courseService = courseService;
         }
-
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            var data = await _courseService.GetAllGroups();
+            var data = _courseService.GetAllGroups();
             return View(data);
         }
         [HttpGet]

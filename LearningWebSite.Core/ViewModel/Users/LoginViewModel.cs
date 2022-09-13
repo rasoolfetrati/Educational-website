@@ -21,7 +21,7 @@ namespace LearningWebSite.Core.ViewModel.Users
         [Display(Name = "مرا به خاطر بسپار")]
         public bool RememberMe { get; set; }
         [AllowNull]
-        public string returnUrl { get; set; }
+        public string? returnUrl { get; set; }
 
     }
 

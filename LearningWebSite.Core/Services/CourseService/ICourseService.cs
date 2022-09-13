@@ -13,7 +13,7 @@ namespace LearningWebSite.Core.Services.CourseService
     public interface ICourseService
     {
         bool IsexistCourse(int courseId);
-        Task<List<CourseGroups>> GetAllGroups();
+        List<CourseGroups> GetAllGroups();
         List<CourseGroups> GetAllGroupsForLayout();
         List<SelectListItem> GetCourseGroups();
         List<SelectListItem> GetTeachers();
@@ -23,7 +23,7 @@ namespace LearningWebSite.Core.Services.CourseService
         void DeleteGroup(int groupId);
         CourseGroups GetGroup(int groupId);
         Task CreateCourse(CourseViewModel courseViewModel);
-        List<ShowCourseViewModel> GetAllCourseForAdmin();
+        ShowCourseViewModelWithIndex GetAllCourseForAdmin(int PageIndex = 1);
         List<CourseEpisode> GetAllCourseEpisodes(int courseId);
         Task CreateEpisode(CourseEpisode courseEpisode, IFormFile file);
         bool CheckExistFile(string fileName);
@@ -90,11 +90,6 @@ namespace LearningWebSite.Core.Services.CourseService
             await _context.CourseGroups.AddAsync(courseGroups);
             await _context.SaveChangesAsync();
             await Task.CompletedTask;
-        }
-
-        public async Task<List<CourseGroups>> GetAllGroups()
-        {
-            return await _context.CourseGroups.Include(g => g.CourseGroup).ToListAsync();
         }
 
         public List<SelectListItem> GetCourseGroups()
@@ -197,9 +192,11 @@ namespace LearningWebSite.Core.Services.CourseService
             await Task.CompletedTask;
         }
 
-        public List<ShowCourseViewModel> GetAllCourseForAdmin()
+        public ShowCourseViewModelWithIndex GetAllCourseForAdmin(int PageIndex = 1)
         {
-            return _context.Courses
+            ShowCourseViewModelWithIndex showCourseViewModelWithIndex = new ShowCourseViewModelWithIndex();
+            int maxRows = 5;
+            showCourseViewModelWithIndex.showCourseViewModels = _context.Courses
                 .Select(
                     c =>
                         new ShowCourseViewModel()
@@ -212,7 +209,16 @@ namespace LearningWebSite.Core.Services.CourseService
                             UpdateDate = c.UpdateDate,
                         }
                 )
+                .OrderBy(c => c.CourseId)
+                .Skip((PageIndex - 1) * maxRows)
+                .Take(maxRows)
                 .ToList();
+            double pageCount = (double)((decimal)this._context.Courses.Count() / Convert.ToDecimal(maxRows));
+            showCourseViewModelWithIndex.PageCount = (int)Math.Ceiling(pageCount);
+
+            showCourseViewModelWithIndex.CurrentPageIndex = PageIndex;
+
+            return showCourseViewModelWithIndex;
         }
 
         public async Task CreateEpisode(CourseEpisode courseEpisode, IFormFile file)
@@ -617,6 +623,11 @@ namespace LearningWebSite.Core.Services.CourseService
                 .Take(take)
                 .ToList();
             return Tuple.Create(query, pageCount);
+        }
+
+        public List<CourseGroups> GetAllGroups()
+        {
+            return _context.CourseGroups.Include(g => g.CourseGroup).ToList();
         }
     }
 }

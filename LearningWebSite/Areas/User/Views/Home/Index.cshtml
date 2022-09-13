@@ -123,9 +123,11 @@
                         </div>
 
                         <div class="card-body mt-5">
-
+                            @{
+                                var basket = ViewBag.Basket as List<Basket>;
+                            }
                             <div class="table-responsive">
-                                <table id="myTable2" class="table">
+                                <table id="myTable2" class="table table-border">
                                     <thead>
                                         <tr>
                                             <th>عکس</th>
@@ -134,32 +136,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @{
-                                            var basket = ViewBag.Basket as List<Basket>;
-                                        }
-                                        <form method="get" action="/Course/OrderView" id="form_payment">
-                                            @foreach (var item in basket)
+
+                                        <form method="post" action="/Course/OrderView" class="form">
+                                            @if (basket.Count > 0)
                                             {
-                                                <input hidden name="courseId" value="@item.CourseId" />
+                                                @foreach (var item in basket)
+                                                {
+                                                    <input hidden name="courseId" value="@item.CourseId" />
+                                                <tr>
+                                                    <td>
+                                                        <div class="product-img">
+                                                            <div class=""><img class="img img-thumbnail" src="/CourseImage/thumb/@item.CourseImage"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <p>@item.CourseTitle</p>
+                                                    </td>
 
-                                            <tr>
-                                                <td>
-                                                    <div class="product-img">
-                                                        <div class=""><img class="img img-thumbnail" src="/CourseImage/thumb/@item.CourseImage"></div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <p>@item.CourseTitle</p>
-                                                </td>
+                                                    <td>
+                                                        <input type="number" value="@item.CoursePrice" class="price form-control-sm" disabled="">
+                                                    </td>
+                                                </tr>
+                                                }
 
-                                                <td>
-                                                    <input type="number" value="@item.CoursePrice" class="price form-control" disabled="">
-                                                </td>
-
-                                            </tr>
                                             }
-
-
                                         <span class="font-13">قیمت کل :</span>
                                         <span id="total" class="total mx-2">0</span>
                                         <span class="font-13">تومان</span>
