@@ -2,6 +2,7 @@ using LearningWebSite.Core.Identity;
 using LearningWebSite.Core.InfraStructure;
 using LearningWebSite.Core.Services;
 using LearningWebSite.Core.Services.BasketService;
+using LearningWebSite.Core.Services.BotService;
 using LearningWebSite.Core.Services.CommentService;
 using LearningWebSite.Core.Services.ContactUsService;
 using LearningWebSite.Core.Services.CourseService;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using Telegram.Bot;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +58,17 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromDays(3);
     options.Cookie.HttpOnly = true;
 });
+var botConfig = builder.Configuration.GetSection("BotConfiguration").Get<BotConfiguration>();
+
+// There are several strategies for completing asynchronous tasks during startup.
+// Some of them could be found in this article https://andrewlock.net/running-async-tasks-on-app-startup-in-asp-net-core-part-1/
+// We are going to use IHostedService to add and later remove Webhook
+builder.Services.AddHostedService<ConfigureWebhook>();
+builder.Services.AddHttpClient("LearningWebSite")
+    .AddTypedClient<ITelegramBotClient>(httpClient => new TelegramBotClient(botConfig.BotToken, httpClient));
+
+// Dummy business-logic service
+builder.Services.AddScoped<HandleUpdateService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,16 +76,17 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-//app.Use(async (context, next) =>
-//{
-//    await next.Invoke();
-//    if (context.Response.StatusCode == 404)
-//    {
-//        context.Response.Redirect("/NotFound");
-//    }
-//});
+app.Use(async (context, next) =>
+{
+    await next.Invoke();
+    if (context.Response.StatusCode == 404)
+    {
+        context.Response.Redirect("/NotFound");
+    }
+});
 app.UseStaticFiles();
 app.UseRouting();
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>

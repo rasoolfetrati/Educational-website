@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningWebSite", "LearningWebSite\LearningWebSite.csproj", "{DD61D2D6-4FB7-4261-BEF7-8423B0D10D29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningWebSite", "LearningWebSite\LearningWebSite.csproj", "{DD61D2D6-4FB7-4261-BEF7-8423B0D10D29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningWebSite.DataLayer", "LearningWebSite.DataLayer\LearningWebSite.DataLayer.csproj", "{B2978D85-2F27-4BD3-907B-D64F22B99353}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningWebSite.DataLayer", "LearningWebSite.DataLayer\LearningWebSite.DataLayer.csproj", "{B2978D85-2F27-4BD3-907B-D64F22B99353}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningWebSite.Core", "LearningWebSite.Core\LearningWebSite.Core.csproj", "{6D1C6AEC-A209-4E6C-B6D8-A44BED198A54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningWebSite.Core", "LearningWebSite.Core\LearningWebSite.Core.csproj", "{6D1C6AEC-A209-4E6C-B6D8-A44BED198A54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

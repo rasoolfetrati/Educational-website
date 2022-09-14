@@ -7,6 +7,15 @@ using LearningWebSite.DataLayer.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Telegram.Bot.Exceptions;
+using Telegram.Bot.Extensions.Polling;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot;
+using Telegram.Bot.Types;
+using LearningWebSite.Core.Services.BotService;
+using System.Threading;
+using System.Text.Encodings.Web;
+using Ganss.XSS;
 
 namespace LearningWebSite.Areas.Admin.Controllers
 {
@@ -17,22 +26,24 @@ namespace LearningWebSite.Areas.Admin.Controllers
         private ICourseService _courseService;
         private readonly UserManager<CustomUser> _userManager;
         private ICommentServices _commentServices;
-
+        private readonly ITelegramBotClient _botClient;
         public CourseController(
             ICourseService courseService,
             UserManager<CustomUser> userManager,
-            ICommentServices commentServices
+            ICommentServices commentServices,
+             ITelegramBotClient botClient
         )
         {
             _courseService = courseService;
             _userManager = userManager;
             _commentServices = commentServices;
+            _botClient = botClient;
         }
-
         [HttpGet]
-        public IActionResult Index(int currentPageIndex=1)
+        public IActionResult Index(int currentPageIndex = 1)
         {
             var data = _courseService.GetAllCourseForAdmin(currentPageIndex);
+
             return View(data);
         }
 
@@ -55,6 +66,10 @@ namespace LearningWebSite.Areas.Admin.Controllers
         public async Task<IActionResult> CreateCourse(CourseViewModel courseViewModel)
         {
             await _courseService.CreateCourse(courseViewModel);
+            Message message = await _botClient.SendPhotoAsync(
+            chatId: "@testRasool79",
+            photo: "https://unsplash.com/s/photos/unspalsh",
+            caption: $"{courseViewModel.CourseTitle}");
             return RedirectAndShowAlert(OperationResult.Success("دوره با موفقیت افزوده شد!"), RedirectToAction(nameof(Index)));
         }
 
@@ -77,7 +92,6 @@ namespace LearningWebSite.Areas.Admin.Controllers
                 "Text",
                 teachers.First(t => t.Text == fullname)
             );
-
             return View(data);
         }
 
@@ -86,6 +100,10 @@ namespace LearningWebSite.Areas.Admin.Controllers
         public async Task<IActionResult> EditCourse(Course courseViewModel, IFormFile imgCourseUp, IFormFile demoUp)
         {
             _courseService.UpdateCourse(courseViewModel, imgCourseUp, demoUp);
+            Message message = await _botClient.SendPhotoAsync(
+            chatId: "@testRasool79",
+            photo: "https://unsplash.com/s/photos/unspalsh",
+            caption: $"{courseViewModel.CourseTitle}");
             return RedirectAndShowAlert(OperationResult.Success(), RedirectToAction(nameof(Index)));
         }
 
