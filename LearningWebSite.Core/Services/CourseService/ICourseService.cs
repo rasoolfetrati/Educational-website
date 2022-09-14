@@ -38,7 +38,7 @@ namespace LearningWebSite.Core.Services.CourseService
         void DeleteCourse(int courseId);
         List<CourseIndexViewModel> GetCoursesForIndex();
         List<Course> GetDeleteCourses();
-        ShowCourseViewModel showCourseViewModel(int id, string Title);
+        ShowCourseViewModel showCourseViewModel(int id, string slug);
         string GetTeacherName(int courseId);
         TimeSpan GetTimeSpan(int courseId);
         CourseEpisode GetEpisodeById(int episodeId);
@@ -171,7 +171,7 @@ namespace LearningWebSite.Core.Services.CourseService
                     await courseViewModel.demoUp.CopyToAsync(stream);
                 }
             }
-
+            
             Course course = new Course()
             {
                 CourseImageName = courseViewModel.CourseImageName,
@@ -186,6 +186,8 @@ namespace LearningWebSite.Core.Services.CourseService
                 SubGroup = courseViewModel.SubGroup,
                 courseLevel = courseViewModel.courseLevel,
                 courseStatus = courseViewModel.courseStatus,
+                Slug=courseViewModel.Slug.Replace(" ","-"),
+                CoursePresentation=courseViewModel.CoursePresentation,  
             };
             await _context.Courses.AddAsync(course);
             await _context.SaveChangesAsync();
@@ -345,6 +347,8 @@ namespace LearningWebSite.Core.Services.CourseService
             originalCourse.TeacherId = courseView.TeacherId;
             originalCourse.courseStatus = courseView.courseStatus;
             originalCourse.courseLevel = courseView.courseLevel;
+            originalCourse.Slug = courseView.Slug.Replace(" ","-");
+            originalCourse.CoursePresentation = courseView.CoursePresentation;
             _context.Courses.Update(originalCourse);
             _context.SaveChanges();
         }
@@ -449,19 +453,21 @@ namespace LearningWebSite.Core.Services.CourseService
                             CourseId = c.CourseId,
                             CourseTitle = c.CourseTitle,
                             CoursePrice = c.CoursePrice,
-                            CourseImageName = c.CourseImageName
+                            CourseImageName = c.CourseImageName,
+                            Slug=c.Slug
                         }
                 )
+                .OrderBy(c=>c.CourseId)
                 .Take(9)
                 .ToList();
         }
 
-        public ShowCourseViewModel showCourseViewModel(int id, string Title)
+        public ShowCourseViewModel showCourseViewModel(int id, string slug)
         {
             return _context.Courses
                 .Include(c => c.CourseEpisodes)
                 .Include(c => c.Comments)
-                .Where(c => c.CourseId == id && c.CourseTitle == Title.Replace("-", " "))
+                .Where(c => c.CourseId == id && c.Slug == slug)
                 .Select(
                     c =>
                         new ShowCourseViewModel()
@@ -479,10 +485,11 @@ namespace LearningWebSite.Core.Services.CourseService
                             SubGroup = c.SubGroup,
                             comments = c.Comments,
                             courseLevel = c.courseLevel,
-                            courseStatus = c.courseStatus
+                            courseStatus = c.courseStatus, 
+                            CoursePresentation=c.CoursePresentation,
                         }
                 )
-                .SingleOrDefault();
+                .FirstOrDefault();
         }
 
         public List<CourseGroups> GetAllGroupsForLayout()

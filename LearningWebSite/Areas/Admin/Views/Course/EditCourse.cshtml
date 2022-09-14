@@ -19,6 +19,11 @@
                 <span></span>
             </div>
             <div class="form-group">
+                <label>Url دوره</label>
+                <input asp-for="Slug" type="text" class="form-control">
+                <span asp-validation-for="Slug"></span>
+            </div>
+            <div class="form-group">
                 <label>گروه اصلی</label>
                 <select asp-for="GroupId" asp-items="ViewBag.Groups" class="form-control"></select>
                 <span></span>
@@ -74,6 +79,15 @@
                     <option value="2">به اتمام رسیده است.</option>
                 </select>
                 <span></span>
+            </div>
+            <div class="form-group">
+                <label>نحوه برگذاری دوره</label>
+                <select asp-for="CoursePresentation" class="form-control">
+                    <option value="1" selected>مجازی</option>
+                    <option value="2">حضوری</option>
+                    <option value="2">نیمه حضوری</option>
+                </select>
+                <span asp-validation-for="CoursePresentation"></span>
             </div>
         </div>
     </form>

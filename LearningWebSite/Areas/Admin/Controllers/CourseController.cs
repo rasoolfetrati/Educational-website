@@ -54,12 +54,8 @@ namespace LearningWebSite.Areas.Admin.Controllers
         [DisableRequestSizeLimit]
         public async Task<IActionResult> CreateCourse(CourseViewModel courseViewModel)
         {
-            if (courseViewModel.CoursePrice < 10000)
-            {
-                return RedirectAndShowAlert(OperationResult.Error(), View(courseViewModel));
-            }
             await _courseService.CreateCourse(courseViewModel);
-            return RedirectAndShowAlert(OperationResult.Success(), RedirectToAction(nameof(Index)));
+            return RedirectAndShowAlert(OperationResult.Success("دوره با موفقیت افزوده شد!"), RedirectToAction(nameof(Index)));
         }
 
         [HttpGet]

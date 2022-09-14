@@ -43,8 +43,26 @@
                     <li class="list-group-item font-13">سطح دوره : پیشرفته</li>
                 }
                 <li class="list-group-item font-13">قسمت های ارسالی : @ViewBag.EpisodeCount</li>
-                <li class="list-group-item font-13">قیمت دوره : @Model.CoursePrice.ToString("#,#") تومان</li>
+                @if (Model.CoursePrice!=0)
+                {
+                    <li class="list-group-item font-13">قیمت دوره : @Model.CoursePrice.ToString("#,#") تومان</li>
+                }else
+                {
+                    <li class="list-group-item font-13">قیمت دوره : رایگان</li>
+                }
                 <li class="list-group-item font-13">مدت زمان دوره : @ViewBag.CourseTime</li>
+                @if (Model.CoursePresentation == "1")
+                {
+                    <li class="list-group-item font-13 text-success">نحوه برگذاری دوره : مجازی</li>
+                }
+                @if (Model.CoursePresentation == "2")
+                {
+                    <li class="list-group-item font-13 text-warning">نحوه برگذاری دوره : حضوری</li>
+                }
+                @if (Model.CoursePresentation == "3")
+                {
+                    <li class="list-group-item font-13 text-info">نحوه برگذاری دوره : نیمه حضوری</li>
+                }
             </ul>
             @if (Model.CoursePrice > 0)
             {
@@ -53,14 +71,12 @@
                     <li class="text-center text-success list-group-item font-13">
                         شما این دوره را خریداری کرده اید! <i class="fa fa-check-double"></i>
                     </li>
-
                 }
                 else
                 {
                     <button class="btn btn-info btn-block mt-3 py-2 font-12" onclick="AddToBasket(@Model.CourseId)">
                         <i class="fa fa-cart-plus align-middle"></i> افزودن به سبد خرید
                     </button>
-
                 }
             }
 

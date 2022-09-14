@@ -6,13 +6,19 @@
 <br />
 <div class="col-md-12">
     <form method="post" class="row" enctype="multipart/form-data">
+        <div asp-validation-summary="All"></div>
         <div class="col-md-8">
             <h2>اطلاعات دوره</h2>
             <hr />
             <div class="form-group">
                 <label>عنوان دوره</label>
                 <input asp-for="CourseTitle" type="text" class="form-control">
-                <span></span>
+                <span asp-validation-for="CourseTitle"></span>
+            </div>
+            <div class="form-group">
+                <label>Url دوره</label>
+                <input asp-for="Slug" type="text" class="form-control">
+                <span asp-validation-for="Slug"></span>
             </div>
             <div class="form-group">
                 <label>گروه اصلی</label>
@@ -61,16 +67,24 @@
                     <option value="2">متوسط</option>
                     <option value="3">پیشرفته</option>
                 </select>
-                <span></span>
+                <span asp-validation-for="courseLevel"></span>
             </div>
             <div class="form-group">
                 <label>وضعیت دوره</label>
                 <select asp-for="courseStatus" class="form-control">
                     <option value="1">در حال برگذاری</option>
                     <option value="2">به اتمام رسیده است.</option>
-
                 </select>
-                <span></span>
+                <span asp-validation-for="courseStatus"></span>
+            </div>
+            <div class="form-group">
+                <label>نحوه برگذاری دوره</label>
+                <select asp-for="CoursePresentation" class="form-control">
+                    <option value="1" selected>مجازی</option>
+                    <option value="2">حضوری</option>
+                    <option value="2">نیمه حضوری</option>
+                </select>
+                <span asp-validation-for="CoursePresentation"></span>
             </div>
         </div>
     </form>

@@ -81,11 +81,11 @@
                     <div class="sub-layer">
                         <img src="/CourseImage/@item.CourseImageName" alt="@item.CourseTitle" class="img-fluid card-img-top">
                         <div class="over-layer">
-                            <a href="/Course/@item.CourseId/@item.CourseTitle.Replace(" ","-")" class="btn btn-primary"> مشاهده دوره </a>
+                            <a href="/Course/@item.CourseId/@item.Slug" class="btn btn-primary"> مشاهده دوره </a>
                         </div>
                     </div>
                     <div class="card-body">
-                        <a href="/Course/@item.CourseId/@item.CourseTitle.Replace(" ","-")" class="card-link">@item.CourseTitle</a>
+                        <a href="/Course/@item.CourseId/@item.Slug" class="card-link">@item.CourseTitle</a>
                     </div>
                     <div class="card-footer">
                         @*<span class="badge badge-primary badge-pill pt-1">60%</span>*@
@@ -293,5 +293,5 @@
 <!----- End best teachers ----->
 
 @section Scripts{
-  
+
 }

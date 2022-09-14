@@ -16,6 +16,7 @@ namespace LearningWebSite.Core.ViewModel.CourseVM
         public string CourseTitle { get; set; }
         public string CourseImageName { get; set; }
         public int CoursePrice { get; set; }
+        public string Slug { get; set; }
 
     }
     public class CourseViewModel
@@ -33,7 +34,13 @@ namespace LearningWebSite.Core.ViewModel.CourseVM
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(450, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
         public string CourseTitle { get; set; }
-
+        [Display(Name = "Url دوره")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(450, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
+        public string Slug { get; set; }
+        [Display(Name = "نحوه برگذاری دوره")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public string CoursePresentation { get; set; }
         [Display(Name = "شرح دوره")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string CourseDescription { get; set; }
@@ -79,7 +86,7 @@ namespace LearningWebSite.Core.ViewModel.CourseVM
         public string CourseTitle { get; set; }
 
         public string CourseDescription { get; set; }
-
+        public string CoursePresentation { get; set; }
         public int CoursePrice { get; set; }
 
         [Required]

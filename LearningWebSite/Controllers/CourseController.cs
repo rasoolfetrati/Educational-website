@@ -34,13 +34,12 @@ namespace LearningWebSite.Controllers
             _commentServices = commentServices;
         }
 
-        [HttpGet("course/{courseId}/{CourseTitle}")]
-        public IActionResult Index(int courseId, string CourseTitle)
+        [HttpGet("course/{courseId}/{Slug}")]
+        public IActionResult Index(int courseId, string Slug)
         {
-            CourseTitle = CourseTitle.Replace(" ", "-");
             if (courseService.IsCourseExist(courseId))
             {
-                var course = courseService.showCourseViewModel(courseId, CourseTitle);
+                var course = courseService.showCourseViewModel(courseId, Slug);
                 ViewBag.Episode = courseService.GetAllCourseEpisodes(courseId);
                 ViewBag.EpisodeCount = courseService.GetEpisodeCount(courseId);
                 ViewBag.Fullname = courseService.GetTeacherName(courseId);
