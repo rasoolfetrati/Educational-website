@@ -1,34 +1,32 @@
+#region Usings
 using LearningWebSite.Core.Identity;
 using LearningWebSite.Core.InfraStructure;
 using LearningWebSite.Core.Services;
 using LearningWebSite.Core.Services.BasketService;
-using LearningWebSite.Core.Services.BotService;
 using LearningWebSite.Core.Services.CommentService;
 using LearningWebSite.Core.Services.ContactUsService;
 using LearningWebSite.Core.Services.CourseService;
 using LearningWebSite.Core.Services.DiscountService;
 using LearningWebSite.Core.Services.WalletService;
-using LearningWebSite.Core.ViewModel;
 using LearningWebSite.DataLayer.Context;
 using LearningWebSite.DataLayer.Entities.Users;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
-using Telegram.Bot;
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
+#region SQL
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     option.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
-
+#endregion
+#region IoC
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFactorService, FactorService>();
 builder.Services.AddScoped<IViewRenderService, RenderViewToString>();
@@ -50,6 +48,8 @@ builder.Services.AddIdentity<CustomUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders()
 .AddErrorDescriber<PersianIdentityErrorDescriber>();
+#endregion
+#region CookieConfig
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Login";
@@ -58,6 +58,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromDays(3);
     options.Cookie.HttpOnly = true;
 });
+#endregion
+#region TelBot
 //var botConfig = builder.Configuration.GetSection("BotConfiguration").Get<BotConfiguration>();
 
 //builder.Services.AddHostedService<ConfigureWebhook>();
@@ -66,6 +68,10 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 //// Dummy business-logic service
 //builder.Services.AddScoped<HandleUpdateService>();
+#endregion
+
+//===================APP=======================
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -73,6 +79,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+#region ExeptionHandlers
+app.UseStatusCodePagesWithReExecute("/NotFound");
 app.Use(async (context, next) =>
 {
     await next.Invoke();
@@ -81,9 +89,10 @@ app.Use(async (context, next) =>
         context.Response.Redirect("/NotFound");
     }
 });
+#endregion
+
 app.UseStaticFiles();
 app.UseRouting();
-app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
