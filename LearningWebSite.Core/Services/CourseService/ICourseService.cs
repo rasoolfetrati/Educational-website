@@ -603,21 +603,8 @@ namespace LearningWebSite.Core.Services.CourseService
                 }
             }
             int skip = (pageId - 1) * take;
-            int pageCount =
-                result
-                    .Include(c => c.CourseEpisodes)
-                    .Select(
-                        c =>
-                            new ShowCourseListItemViewModel()
-                            {
-                                ImageName = c.CourseImageName,
-                                CourseId = c.CourseId,
-                                Price = c.CoursePrice,
-                                Title = c.CourseTitle,
-                                CourseEpisodes = c.CourseEpisodes
-                            }
-                    )
-                    .Count() / take;
+            double pageCounter = (double)((decimal)result.Count() / Convert.ToDecimal(take));
+            int pageCount = (int)Math.Ceiling(pageCounter);
             var query = result
                 .Include(c => c.CourseEpisodes)
                 .Select(
@@ -628,7 +615,8 @@ namespace LearningWebSite.Core.Services.CourseService
                             CourseId = c.CourseId,
                             Price = c.CoursePrice,
                             Title = c.CourseTitle,
-                            CourseEpisodes = c.CourseEpisodes
+                            CourseEpisodes = c.CourseEpisodes,
+                            Slug=c.Slug
                         }
                 )
                 .Skip(skip)

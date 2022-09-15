@@ -63,7 +63,7 @@ namespace LearningWebSite.Controllers
             ViewBag.sort = sort;
             ViewBag.Groups =  courseService.GetAllGroups();
             ViewBag.pageId = pageId;
-            return View(courseService.GetCourse(pageId, filter, getType, sort, selectedGroups, 4));
+            return View(courseService.GetCourse(pageId, filter, getType, sort, selectedGroups, take));
         }
 
         [Authorize]

@@ -114,6 +114,7 @@ namespace LearningWebSite.Core.ViewModel.CourseVM
     {
         public int CourseId { get; set; }
         public string Title { get; set; }
+        public string Slug { get; set; }
         public string ImageName { get; set; }
         public int Price { get; set; }
         public List<CourseEpisode> CourseEpisodes { get; set; }
