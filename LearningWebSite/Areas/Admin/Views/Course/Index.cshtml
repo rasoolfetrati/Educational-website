@@ -3,8 +3,11 @@
 @model ShowCourseViewModelWithIndex
 @inject ICourseService _course;
 @{
+
     ViewData["Title"] = "Index";
+
     Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
+
     int counter = 1;
 }
 <div class="row d-felx justify-content-center align-content-center align-items-center">
@@ -17,8 +20,10 @@
                 <h1 class="h5">لیست دوره ها</h1>
                 <div>
                     <a class="btn btn-default btn-sm" href="/Admin/User">خالی کن</a>
-                    <a class="btn btn-outline-primary btn-sm" data-toggle="collapse" href="#frmFilter" role="button" aria-expanded="false" aria-controls="collapseExample">جستجو دوره</a>
-                    <a class="btn btn-outline-success btn-sm" asp-area="Admin" asp-controller="Course" asp-action="CreateCourse">افزودن دوره</a>
+                    <a class="btn btn-outline-primary btn-sm" data-toggle="collapse" href="#frmFilter" role="button"
+                        aria-expanded="false" aria-controls="collapseExample">جستجو دوره</a>
+                    <a class="btn btn-outline-success btn-sm" asp-area="Admin" asp-controller="Course"
+                        asp-action="CreateCourse">افزودن دوره</a>
                 </div>
             </div>
             <div class="card-body">
@@ -32,7 +37,8 @@
                                         <div class="form-group row">
                                             <label class="col-md-3" for="txtTitle">نام دوره :</label>
                                             <div class="col-md-6">
-                                                <input class="form-control" id="txtTitle" name="email" autocomplete="off">
+                                                <input class="form-control" id="txtTitle" name="email"
+                                                    autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -46,7 +52,8 @@
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">جستجو</button>
-                                        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8LvjrmDMANhCtY9xqZHo4TQN72_Sm-1aC-qTchhH4NHfDBcR4rjAoMj6ECM83CGyzhgERp9eyAn-UZwJEQ324PJ-4GPSZ6NPgAoHcNx5fWgvbgLn4pUdEjYLP_A7mEUP32GXyYuNrEUM5S58i0_SYxA">
+                                        <input name="__RequestVerificationToken" type="hidden"
+                                            value="CfDJ8LvjrmDMANhCtY9xqZHo4TQN72_Sm-1aC-qTchhH4NHfDBcR4rjAoMj6ECM83CGyzhgERp9eyAn-UZwJEQ324PJ-4GPSZ6NPgAoHcNx5fWgvbgLn4pUdEjYLP_A7mEUP32GXyYuNrEUM5S58i0_SYxA">
                                     </form>
                                 </div>
                             </div>
@@ -66,14 +73,17 @@
                     </thead>
                     <tbody>
                         @foreach (var item in Model.showCourseViewModels)
+
                         {
+
                             var count = _course.GetEpisodeCount(item.CourseId);
                             <tr id="removeTr-@item.CourseId">
                                 <td scope="col">
                                     @counter
                                 </td>
                                 <td scope="col">
-                                    <img src="/CourseImage/thumb/@item.CourseImageName" class="img-thumbnail" style="max-height: 150px;max-width150px;" />
+                                    <img src="/CourseImage/thumb/@item.CourseImageName" class="img-thumbnail"
+                                    style="max-height: 150px;max-width150px;" />
                                 </td>
                                 <td scope="col">
                                     @item.CourseTitle
@@ -83,18 +93,23 @@
                                 </td>
 
                                 <td scope="col">
-                                    <a asp-area="Admin" asp-controller="Course" asp-action="EditCourse" asp-route-courseId="@item.CourseId" class="btn btn-warning btn-sm">
+                                    <a asp-area="Admin" asp-controller="Course" asp-action="EditCourse"
+                                    asp-route-courseId="@item.CourseId" class="btn btn-warning btn-sm">
                                         ویرایش
                                     </a>
-                                    <a asp-area="Admin" asp-controller="Course" asp-action="IndexEpisode" asp-route-courseId="@item.CourseId" class="btn btn-info btn-sm">
+                                    <a asp-area="Admin" asp-controller="Course" asp-action="IndexEpisode"
+                                    asp-route-courseId="@item.CourseId" class="btn btn-info btn-sm">
                                         بخش های دوره
                                     </a>
-                                    <button onclick="submitDeleteForm('/DeleteCourse/',@item.CourseId)" type="button" class="btn btn-outline-danger btn-sm">
+                                    <button onclick="submitDeleteForm('/DeleteCourse/',@item.CourseId)" type="button"
+                                    class="btn btn-outline-danger btn-sm">
                                         <i class="fa fa-trash-o fa-fw"></i>
                                     </button>
                                 </td>
                             </tr>
+
                             counter++;
+
                         }
                     </tbody>
                 </table>
@@ -109,15 +124,22 @@
                                 </a>
                             </li>
                             @for (int i = 1; i <= Model.PageCount; i++)
+
                             {
                                 @if (i != Model.CurrentPageIndex)
+
                                 {
                                     <li class="page-item"><a class="page-link" href="javascript:PagerClick(@i);">@i</a></li>
+
                                 }
+
                                 else
+
                                 {
                                     <li class="page-item active"><a class="page-link">@i</a></li>
+
                                 }
+
                             }
                             <input type="hidden" id="hfCurrentPageIndex" name="currentPageIndex" />
                             <li class="page-item">
@@ -134,13 +156,16 @@
 
     </div>
 </div>
+@* ///////////////////////////// *@
 
+@*/////////////////////////////////////*@
 
 @section Scripts{
-    <script type="text/javascript">
-        function PagerClick(index) {
-            document.getElementById("hfCurrentPageIndex").value = index;
-            $("#pageForm").submit();
-        }
-    </script>
+
+<script type="text/javascript">
+    function PagerClick(index) {
+        document.getElementById("hfCurrentPageIndex").value = index;
+        $("#pageForm").submit();
+    }
+</script>
 }

@@ -3,6 +3,7 @@ using LearningWebSite.Core.Identity;
 using LearningWebSite.Core.InfraStructure;
 using LearningWebSite.Core.Services;
 using LearningWebSite.Core.Services.BasketService;
+using LearningWebSite.Core.Services.BotService;
 using LearningWebSite.Core.Services.CommentService;
 using LearningWebSite.Core.Services.ContactUsService;
 using LearningWebSite.Core.Services.CourseService;
@@ -12,6 +13,7 @@ using LearningWebSite.DataLayer.Context;
 using LearningWebSite.DataLayer.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Telegram.Bot;
 #endregion
 
 var builder = WebApplication.CreateBuilder(args);
@@ -66,7 +68,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 //builder.Services.AddHttpClient("LearningWebSite")
 //    .AddTypedClient<ITelegramBotClient>(httpClient => new TelegramBotClient(botConfig.BotToken, httpClient));
 
-//// Dummy business-logic service
+////Dummy business-logic service
 //builder.Services.AddScoped<HandleUpdateService>();
 #endregion
 

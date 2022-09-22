@@ -65,10 +65,11 @@ namespace LearningWebSite.Areas.Admin.Controllers
         [DisableRequestSizeLimit]
         public async Task<IActionResult> CreateCourse(CourseViewModel courseViewModel)
         {
+            var url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             await _courseService.CreateCourse(courseViewModel);
             Message message = await _botClient.SendPhotoAsync(
             chatId: "@testRasool79",
-            photo: "https://unsplash.com/s/photos/unspalsh",
+            photo: $"{url}/{courseViewModel.CourseImageName}",
             caption: $"{courseViewModel.CourseTitle}");
             return RedirectAndShowAlert(OperationResult.Success("دوره با موفقیت افزوده شد!"), RedirectToAction(nameof(Index)));
         }
@@ -100,11 +101,7 @@ namespace LearningWebSite.Areas.Admin.Controllers
         public async Task<IActionResult> EditCourse(Course courseViewModel, IFormFile imgCourseUp, IFormFile demoUp)
         {
             _courseService.UpdateCourse(courseViewModel, imgCourseUp, demoUp);
-            Message message = await _botClient.SendPhotoAsync(
-            chatId: "@testRasool79",
-            photo: "https://unsplash.com/s/photos/unspalsh",
-            caption: $"{courseViewModel.CourseTitle}");
-            return RedirectAndShowAlert(OperationResult.Success(), RedirectToAction(nameof(Index)));
+            return RedirectAndShowAlert(OperationResult.Success("با موفقیت ویرایش شد!"), RedirectToAction(nameof(Index)));
         }
 
         [HttpGet]
