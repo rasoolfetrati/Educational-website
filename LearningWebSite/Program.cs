@@ -77,12 +77,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+
 #region ExeptionHandlers
-app.UseStatusCodePagesWithReExecute("/NotFound");
 app.Use(async (context, next) =>
 {
     await next.Invoke();
@@ -92,7 +93,7 @@ app.Use(async (context, next) =>
     }
 });
 #endregion
-
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();

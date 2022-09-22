@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
+    @await RenderSectionAsync("MetaTags",false)
     <link rel="stylesheet" href="~/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/carousel/owl.carousel.min.css">
     <link rel="stylesheet" href="~/css/carousel/owl.theme.default.min.css">
@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="~/css/customcss/style.css">
     <link rel="stylesheet" href="~/css/fontawesome/css/all.css">
     <link rel="stylesheet" href="~/css/sweetalert2.min.css">
-    <link rel="stylesheet" href="~/css/customcss/floatButton.css">
 </head>
 
 <body>

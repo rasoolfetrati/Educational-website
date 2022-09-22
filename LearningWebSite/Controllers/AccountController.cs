@@ -28,6 +28,10 @@ namespace LearningWebSite.Controllers
         [Route("Login")]
         public IActionResult Login(string? ReturnUrl = "")
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return Redirect("/");
+            }
             ViewBag.url = ReturnUrl;
             return View();
         }
@@ -61,6 +65,10 @@ namespace LearningWebSite.Controllers
         [Route("SignUp")]
         public IActionResult SignUp()
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                return Redirect("/");
+            }
             return View();
         }
 

@@ -36,6 +36,9 @@ public class Course
     [Display(Name = "قیمت دوره")]
     [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
     public int CoursePrice { get; set; }
+    [MaxLength(600)]
+    [Required(ErrorMessage ="لطفا تگ ها را وارد نمایید")]
+    public string Tags { get; set; }
 
     [MaxLength(50)]
     public string CourseImageName { get; set; }

@@ -193,6 +193,7 @@ namespace LearningWebSite.Core.Services.CourseService
                 courseStatus = courseViewModel.courseStatus,
                 Slug = courseViewModel.Slug.Replace(" ", "-"),
                 CoursePresentation = courseViewModel.CoursePresentation,
+                Tags=courseViewModel.Tags
             };
             await _context.Courses.AddAsync(course);
             await _context.SaveChangesAsync();
@@ -354,6 +355,8 @@ namespace LearningWebSite.Core.Services.CourseService
             originalCourse.courseLevel = courseView.courseLevel;
             originalCourse.Slug = courseView.Slug.Replace(" ", "-");
             originalCourse.CoursePresentation = courseView.CoursePresentation;
+            originalCourse.Tags = courseView.Tags;
+
             _context.Courses.Update(originalCourse);
             _context.SaveChanges();
         }
@@ -477,6 +480,7 @@ namespace LearningWebSite.Core.Services.CourseService
                     c =>
                         new ShowCourseViewModel()
                         {
+                            Slug=c.Slug,
                             CourseTitle = c.CourseTitle,
                             CourseId = c.CourseId,
                             CourseDescription = c.CourseDescription,
@@ -492,9 +496,10 @@ namespace LearningWebSite.Core.Services.CourseService
                             courseLevel = c.courseLevel,
                             courseStatus = c.courseStatus,
                             CoursePresentation = c.CoursePresentation,
+                            Tags=c.Tags
                         }
                 )
-                .FirstOrDefault();
+                .First();
         }
 
         public List<CourseGroups> GetAllGroupsForLayout()

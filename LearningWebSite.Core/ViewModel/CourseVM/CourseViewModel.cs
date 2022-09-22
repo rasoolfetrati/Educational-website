@@ -48,7 +48,9 @@ namespace LearningWebSite.Core.ViewModel.CourseVM
         [Display(Name = "قیمت دوره")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int CoursePrice { get; set; }
-
+        [MaxLength(600)]
+        [Required(ErrorMessage = "لطفا تگ ها را وارد نمایید")]
+        public string Tags { get; set; }
         [Required]
         public int courseLevel { get; set; }
         [Required]
@@ -84,19 +86,16 @@ namespace LearningWebSite.Core.ViewModel.CourseVM
         public string TeacherId { get; set; }
 
         public string CourseTitle { get; set; }
+        public string Slug { get; set; }
 
         public string CourseDescription { get; set; }
         public string CoursePresentation { get; set; }
         public int CoursePrice { get; set; }
-
-        [Required]
+        public string Tags { get; set; }
         public int courseLevel { get; set; }
-        [Required]
         public int courseStatus { get; set; }
         public string CourseImageName { get; set; }
-
         public string DemoFileName { get; set; }
-
         public DateTime CreateDate { get; set; }
 
         public DateTime? UpdateDate { get; set; }

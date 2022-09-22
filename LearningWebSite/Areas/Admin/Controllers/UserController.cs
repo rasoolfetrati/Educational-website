@@ -130,7 +130,7 @@ namespace LearningWebSite.Areas.Admin.Controllers
                 return View();
             }
             await userManager.AddToRoleAsync(user, selectedText);
-            if (selectedText=="Admin")
+            if (selectedText == "Admin")
             {
                 await userManager.AddClaimAsync(user, new Claim("AdminType", "Admin"));
             }
@@ -184,16 +184,15 @@ namespace LearningWebSite.Areas.Admin.Controllers
             {
                 await userManager.AddClaimAsync(user, new Claim("StudentType", "Student"));
             }
-            return RedirectToAction(nameof(RoleList), new { id = user.Id });
+            return Redirect("/Logout");
         }
         [HttpPost]
-        public async Task<IActionResult> DeleteRole(string Id)
+        public async Task<IActionResult> DeleteRole(string Id, string roleName)
         {
             var user = await userManager.FindByIdAsync(Id);
-            var currentRole = await userManager.GetRolesAsync(user);
-            await userManager.RemoveFromRoleAsync(user, currentRole.First().ToString());
-            await userManager.RemoveClaimAsync(user, new Claim($"{currentRole.First().ToString()}Type", currentRole.First().ToString()));
-            return RedirectToAction(nameof(RoleList), new { id = user.Id });
+            await userManager.RemoveFromRoleAsync(user, roleName);
+            await userManager.RemoveClaimAsync(user, new Claim($"{roleName}Type", roleName));
+            return Redirect("/Logout");
         }
         private async Task CreateRoles()
         {
@@ -213,7 +212,7 @@ namespace LearningWebSite.Areas.Admin.Controllers
                 var role = new IdentityRole();
                 role.Name = "Teacher";
                 await roleManager.CreateAsync(role);
-            } 
+            }
 
             // creating Creating Employee role     
             x = await roleManager.RoleExistsAsync("Student");

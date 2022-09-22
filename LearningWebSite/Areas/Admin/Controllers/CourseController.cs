@@ -26,18 +26,15 @@ namespace LearningWebSite.Areas.Admin.Controllers
         private ICourseService _courseService;
         private readonly UserManager<CustomUser> _userManager;
         private ICommentServices _commentServices;
-        private readonly ITelegramBotClient _botClient;
         public CourseController(
             ICourseService courseService,
             UserManager<CustomUser> userManager,
-            ICommentServices commentServices,
-             ITelegramBotClient botClient
+            ICommentServices commentServices
         )
         {
             _courseService = courseService;
             _userManager = userManager;
             _commentServices = commentServices;
-            _botClient = botClient;
         }
         [HttpGet]
         public IActionResult Index(int currentPageIndex = 1)
@@ -67,10 +64,10 @@ namespace LearningWebSite.Areas.Admin.Controllers
         {
             var url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             await _courseService.CreateCourse(courseViewModel);
-            Message message = await _botClient.SendPhotoAsync(
-            chatId: "@testRasool79",
-            photo: $"{url}/{courseViewModel.CourseImageName}",
-            caption: $"{courseViewModel.CourseTitle}");
+            //Message message = await _botClient.SendPhotoAsync(
+            //chatId: "@testRasool79",
+            //photo: $"{url}/{courseViewModel.CourseImageName}",
+            //caption: $"{courseViewModel.CourseTitle}");
             return RedirectAndShowAlert(OperationResult.Success("دوره با موفقیت افزوده شد!"), RedirectToAction(nameof(Index)));
         }
 

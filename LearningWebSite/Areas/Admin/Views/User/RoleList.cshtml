@@ -22,7 +22,7 @@
                 <td>@counter</td>
                 <td>@item</td>
                 <td>
-                    <form class="form-inline d-inline" asp-area="Admin" asp-controller="User" asp-action="DeleteRole" asp-route-Id="@ViewBag.Id" method="post">
+                    <form class="form-inline d-inline" asp-area="Admin" asp-controller="User" asp-action="DeleteRole" asp-route-Id="@ViewBag.Id" asp-route-roleName="@item" method="post">
                         <button type="submit" class="btn btn-danger">حذف</button>
                     </form>
                     <a class="btn btn-warning d-inline" href="/EditRole/@ViewBag.Id/@item">ویرایش</a>
