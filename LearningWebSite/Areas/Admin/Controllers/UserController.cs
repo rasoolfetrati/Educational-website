@@ -1,10 +1,8 @@
-﻿using LearningWebSite.Areas.User.Controllers;
-using LearningWebSite.Core.InfraStructure;
+﻿using LearningWebSite.Core.InfraStructure;
 using LearningWebSite.Core.Services;
 using LearningWebSite.Core.ViewModel.Users;
 using LearningWebSite.DataLayer.Entities.User;
 using LearningWebSite.DataLayer.Entities.Users;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -184,7 +182,7 @@ namespace LearningWebSite.Areas.Admin.Controllers
             {
                 await userManager.AddClaimAsync(user, new Claim("StudentType", "Student"));
             }
-            return Redirect("/Logout");
+            return Redirect("/Role");
         }
         [HttpPost]
         public async Task<IActionResult> DeleteRole(string Id, string roleName)
@@ -192,7 +190,7 @@ namespace LearningWebSite.Areas.Admin.Controllers
             var user = await userManager.FindByIdAsync(Id);
             await userManager.RemoveFromRoleAsync(user, roleName);
             await userManager.RemoveClaimAsync(user, new Claim($"{roleName}Type", roleName));
-            return Redirect("/Logout");
+            return Redirect("/Role");
         }
         private async Task CreateRoles()
         {
