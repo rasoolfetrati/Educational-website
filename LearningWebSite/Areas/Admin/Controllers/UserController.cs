@@ -68,11 +68,12 @@ namespace LearningWebSite.Areas.Admin.Controllers
             return RedirectAndShowAlert(OperationResult.Success("ویرایش کاربر با موفقیت انجام شد."), RedirectToAction(nameof(Index)));
         }
         [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await userManager.FindByIdAsync(id);
             await userManager.DeleteAsync(user);
-            return RedirectAndShowAlert(OperationResult.Success("حذف کاربر با موفقیت انجام شد."), RedirectToAction(nameof(Index)));
+            return new JsonResult("یوزر با موفقیت حذف شد!");
         }
 
         [Route("Role")]

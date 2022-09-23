@@ -100,24 +100,56 @@
                     <img src="~/images/logo.jpg" alt="Easylearn" alt="Easylearn">
                 </div>
 
-                <div class="col-12 d-flex d-lg-none justify-content-center mb-4 mobile-header">
-                    <a asp-area="" asp-controller="Account" asp-action="SignUp" class="border-left ml-3">
-                        <i class="fa fa-user-plus ml-3"></i>
-                    </a>
-                    <a asp-controller="Account" asp-action="Login" class="border-left ml-3">
-                        <i class="fa fa-lock ml-3"></i>
-                    </a>
-                    <a href="~/teach.html" class="border-left ml-3"><i class="fa fa-graduation-cap ml-3"></i></a>
-                    <a href="~/#" class="border-left ml-3 dropdown" data-toggle="dropdown">
-                        <span class="badge badge-info badge-pill" id="orderAmount"></span><i class="fa fa-shopping-basket ml-3"></i>
-                        <form method="get" action="/Course/OrderView" id="form_payment">
-                            <div class="dropdown-menu  dropdown-cart mt-3 mx-5" id="header">
-                                <ul class="list-unstyled">
-                                </ul>
+                <div class="col-12 d-flex d-lg-none justify-content-center mb-4 mobile-header align-item-center align-content-center">
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a asp-area="" asp-controller="Account" asp-action="SignUp" class="border-left ml-3">
+                            <i class="fa fa-user-plus ml-3"></i>
+                        </a>
+                        <a asp-controller="Account" asp-action="Login" class="border-left ml-3">
+                            <i class="fa fa-lock ml-3"></i>
+                        </a>
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="border-left ml-3 dropdown" data-toggle="dropdown" id="loadBasket">
+                            <span class="badge badge-info badge-pill" id="orderAmount"></span><i class="fa fa-shopping-basket ml-3"></i>
+                            <form method="get" action="/Course/OrderView" id="form_payment">
+                                <div class="dropdown-menu  dropdown-cart mt-3 mx-5" id="header">
+                                    <ul class="list-unstyled">
+                                        <div class="float-right">
+                                            <small class=" mt-3 mr-2 d-block" id="TotalPrice"></small>
+                                        </div>
+                                    </ul>
+                                    <button type="submit" onclick="submitDetailsForm()"
+                                        class="btn btn-info m-1 ml-3 font-12">
+                                        پرداخت
+                                    </button>
+                                </div>
+                            </form>
+                        </a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-info font-13 vazir-med-fa ml-3 btn-sm dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                پنل کاربری
+                            </button>
+
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/User">پنل کاربری</a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="dropdown-item" href="/Admin">پنل مدیریت</a>
+                                }
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">
+                                    خروج از
+                                    حساب کاربری
+                                </a>
                             </div>
-                        </form>
-                    </a>
-                    <a href="~/#search" data-toggle="collapse"><i class="fa fa-search"></i></a>
+
+                        </div>
+                    }
+                    <a href="#search" data-toggle="collapse"><i class="fa fa-search"></i></a>
                 </div>
 
                 <div id="search" class=" d-lg-none col-10 mx-auto collapse mb-4 justify-content-center">
@@ -168,13 +200,10 @@
                 <div class="col-md-4">
                     <img src="~/images/logo4.jpg" alt="" class="img-fluid">
                     <p class="text-justify font-14 vazir mb-4">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                        استفاده از طراحان گرافیک است.
-                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطر آنچنان که لازم است.
+                        ما خیلی خوبیم.
                     </p>
                     <p class="font-14">
-                        <i class="fas fa-map-marker-alt text-muted ml-2"></i> ایران , تهران , زعفرانیه ,
-                        ساختمان مهر
+                        <i class="fas fa-map-marker-alt text-muted ml-2"></i> ایران , مشهد , بلوار پیروزی ,
                     </p>
                     <p class="font-14"><i class="fas fa-envelope text-muted ml-2"></i> info@sitename.com</p>
                     <p class="font-14"><i class="fa fa-phone text-muted ml-2"></i>021-12345678</p>
@@ -183,7 +212,6 @@
                 <div class="col-md-2 text-center footer-links">
                     <span class="mt-5 mb-3 d-block font-14">دسترسی سریع</span>
                     <ul class="list-unstyled">
-                        <li class="my-3"><a href="~/#">درباره ما</a></li>
                         <li class="my-3"><a href="/ContactUs">تماس با ما</a></li>
                     </ul>
                 </div>
@@ -197,10 +225,11 @@
 
                 <div class="col-md-4 search-box text-center">
                     <div class="mt-5 social-media">
-                        <a href="~/#"><i class="fab fa-instagram p-1" id="instagram"></i></a>
-                        <a href="~/#"><i class="fab fa-twitter bg-info p-1"></i></a>
-                        <a href="~/#"><i class="fab fa-youtube bg-danger p-1"></i></a>
-                        <a href="~/#"><i class="fab fa-telegram bg-primary p-1"></i></a>
+                        <a href="https://www.instagram.com/rasool_fetrati/"><i class="fab fa-instagram p-1" id="instagram"></i></a>
+                        <a href="https://github.com/rasoolfetrati"><i class="fab fa-github bg-dark p-1"></i></a>
+                        <a href="#"><i class="fab fa-youtube bg-danger p-1"></i></a>
+                        <a href="#"><i class="fab fa-telegram bg-info p-1"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp bg-success p-1"></i></a>
                     </div>
                 </div>
 

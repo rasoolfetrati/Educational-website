@@ -54,7 +54,10 @@ namespace LearningWebSite.Areas.Admin.Controllers
             ViewBag.subGroups = new SelectList(subGroups, "Value", "Text");
 
             var teachers = _courseService.GetTeachers();
-            ViewBag.Teachers = new SelectList(teachers, "Value", "Text", teachers.First());
+            if (teachers.Count > 0)
+            {
+                ViewBag.Teachers = new SelectList(teachers, "Value", "Text", teachers.First());
+            }
             return View();
         }
 

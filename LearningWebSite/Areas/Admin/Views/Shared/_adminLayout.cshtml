@@ -24,7 +24,7 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
-    <div class="wrapper">
+    <div class="wrapper" style="overflow-y:hidden;">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
             <!-- Left navbar links -->
@@ -45,20 +45,6 @@
                     <a href="/Account/Logout" class="nav-link text-danger">خروج</a>
                 </li>
             </ul>
-
-            <!-- SEARCH FORM -->
-            <form class="form-inline ml-3">
-                <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="جستجو"
-                           aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-
             <!-- Right navbar links -->
         </nav>
         <!-- /.navbar -->
@@ -74,16 +60,6 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <div>
-                    <!-- Sidebar user panel (optional) -->
-                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                        <div class="image">
-                            <img src="" class="img-circle elevation-2" alt="User Image">
-                        </div>
-                        <div class="info">
-                            <a href="/AdminContent/#" class="d-block">رسول فطرتی</a>
-                        </div>
-                    </div>
-
                     <!-- Sidebar Menu -->
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -108,13 +84,6 @@
                                         <a href="/Role" class="nav-link">
                                             <i class="fa fa-id-card nav-icon"></i>
                                             <p>مدیریت نقش ها</p>
-                                        </a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a href="/AdminContent/#" class="nav-link">
-                                            <i class="fa fa-user-o nav-icon"></i>
-                                            <p>کاربران حذف شده</p>
                                         </a>
                                     </li>
                                 </ul>

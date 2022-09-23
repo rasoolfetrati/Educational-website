@@ -16,11 +16,6 @@ function numCounter(tagId, maxCount, speed) {
     setTimeout(totalTime, totalPeriod);
 }
 
-numCounter("Projects", 44, 100);
-numCounter("Clients", 12, 400);
-numCounter("Partners", 436, 10);
-
-
 
 
 $(document).ready(function () {
