@@ -59,16 +59,17 @@ public class CommentServices : ICommentServices
         context.SaveChanges();
     }
 
- public List<Comment> GetComments()
- {
-  return context.Comments.Include(u=>u.CustomUser).Include(c=>c.Course).Where(c => !c.IsApprove).ToList();
- }
+    public List<Comment> GetComments()
+    {
+        return context.Comments.Include(u => u.CustomUser).Include(c => c.Course).Where(c => !c.IsApprove).AsNoTracking().ToList();
+    }
 
- public List<Comment> GetCourseComments(int courseId)
+    public List<Comment> GetCourseComments(int courseId)
     {
         return context.Comments
             .Include(u => u.CustomUser)
             .Where(c => c.CourseId == courseId)
+            .AsNoTracking()
             .ToList();
     }
 }

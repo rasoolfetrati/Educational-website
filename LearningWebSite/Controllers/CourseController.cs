@@ -84,7 +84,7 @@ namespace LearningWebSite.Controllers
         [Authorize]
         public async Task<IActionResult> Payment(List<int> courseId, string paymethod)
         {
-            if (string.IsNullOrWhiteSpace(paymethod) || !paymethod.Equals("wallet") || !paymethod.Equals("online"))
+            if (string.IsNullOrWhiteSpace(paymethod))
             {
                 return RedirectAndShowAlert(
                         OperationResult.Error("لطفا روش پرداخت را انتخاب نمایید!"),

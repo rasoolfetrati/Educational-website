@@ -98,8 +98,8 @@ public class BasketService : IBasketService
 
     public int BasketItemsCount(string username)
     {
-        var count = context.Baskets.Where(u => u.UserName == username).Count();
-        if (count == null || count == 0)
+        var count = context.Baskets.Where(u => u.UserName == username).AsNoTracking().Count();
+        if (count <= 0)
         {
             return 0;
         }
@@ -177,7 +177,7 @@ public class BasketService : IBasketService
 
     public List<ShowBasketVM> GetBasketItems(string username)
     {
-        var userFactor = context.Baskets.Where(b => b.UserName == username).ToList();
+        var userFactor = context.Baskets.Where(b => b.UserName == username).AsNoTracking().ToList();
         return userFactor.Select(b => new ShowBasketVM()
         {
             CoursePrice = b.CoursePrice,
@@ -192,7 +192,7 @@ public class BasketService : IBasketService
     public async Task<List<ShowBasketVM>> GetCourses(string username)
     {
         var userBasket = await context.Baskets
-                               .Where(t => t.UserName == username && !t.IsFinally).ToListAsync();
+                               .Where(t => t.UserName == username && !t.IsFinally).AsNoTracking().ToListAsync();
         return userBasket.Select(c => new ShowBasketVM()
         {
             CourseId = c.CourseId,
@@ -220,12 +220,12 @@ public class BasketService : IBasketService
 
     public List<Basket> GetUserBaskets(string username)
     {
-        return context.Baskets.Where(b => b.UserName == username && !b.IsFinally).ToList();
+        return context.Baskets.Where(b => b.UserName == username && !b.IsFinally).AsNoTracking().ToList();
     }
 
     public int GetUserBasketsCount(string username)
     {
-        return context.Baskets.Where(u => u.UserName == username).Count();
+        return context.Baskets.Where(u => u.UserName == username).AsNoTracking().Count();
     }
 
     public int orderSum(int orderId, string username)

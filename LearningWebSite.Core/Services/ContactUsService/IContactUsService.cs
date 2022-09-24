@@ -1,5 +1,6 @@
 ﻿using LearningWebSite.DataLayer.Context;
 using LearningWebSite.DataLayer.Entities.ContactUs;
+using Microsoft.EntityFrameworkCore;
 
 namespace LearningWebSite.Core.Services.ContactUsService;
 
@@ -25,7 +26,7 @@ public class ContactUsService : IContactUsService
 
     public IList<Contacts> GetAllMessages()
     {
-        return context.Contacts.ToList();
+        return context.Contacts.AsNoTracking().ToList();
     }
 
     public async Task SaveMessage(Contacts contacts)

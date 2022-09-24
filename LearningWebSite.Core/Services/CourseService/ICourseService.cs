@@ -86,7 +86,7 @@ namespace LearningWebSite.Core.Services.CourseService
                 .Where(p => p.ParentId == groupId)
                 .Select(
                     g => new SelectListItem() { Value = g.GroupId.ToString(), Text = g.GroupTitle }
-                )
+                ).AsNoTracking()
                 .ToList();
         }
 
@@ -103,7 +103,7 @@ namespace LearningWebSite.Core.Services.CourseService
                 .Where(p => p.ParentId == null)
                 .Select(
                     g => new SelectListItem() { Value = g.GroupId.ToString(), Text = g.GroupTitle }
-                )
+                ).AsNoTracking()
                 .ToList();
         }
 
@@ -130,10 +130,9 @@ namespace LearningWebSite.Core.Services.CourseService
         {
             courseViewModel.CourseImageName = "no-photo.jpg";
             courseViewModel.DemoFileName = "no-photo.jpg";
-            if (
-                courseViewModel.imgCourseUp != null
-                && ImageValidator.IsImage(courseViewModel.imgCourseUp)
-            )
+            ImageConvertor imageConverter = new ImageConvertor();
+
+            if (courseViewModel.imgCourseUp != null && ImageValidator.IsImage(courseViewModel.imgCourseUp))
             {
                 courseViewModel.CourseImageName =
                     NameGenerator.GenerateUniqCode()
@@ -143,14 +142,17 @@ namespace LearningWebSite.Core.Services.CourseService
                     "wwwroot/CourseImage",
                     courseViewModel.CourseImageName
                 );
-
+                string CompressimagePath = Path.Combine(
+                 Directory.GetCurrentDirectory(),
+                 "wwwroot/CourseImage/CompressedImages",
+                 courseViewModel.CourseImageName
+                );
                 using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
                     await courseViewModel.imgCourseUp.CopyToAsync(stream);
                 }
-
-                ImageConvertor imageConverter = new ImageConvertor();
-
+                imageConverter.ImageCompress(imagePath, CompressimagePath, 230, 348);
+                //thumbpath
                 string thumbpath = Path.Combine(
                     Directory.GetCurrentDirectory(),
                     "wwwroot/CourseImage/thumb",
@@ -193,7 +195,7 @@ namespace LearningWebSite.Core.Services.CourseService
                 courseStatus = courseViewModel.courseStatus,
                 Slug = courseViewModel.Slug.Replace(" ", "-"),
                 CoursePresentation = courseViewModel.CoursePresentation,
-                Tags=courseViewModel.Tags
+                Tags = courseViewModel.Tags
             };
             await _context.Courses.AddAsync(course);
             await _context.SaveChangesAsync();
@@ -220,6 +222,7 @@ namespace LearningWebSite.Core.Services.CourseService
                 .OrderBy(c => c.CourseId)
                 .Skip((PageIndex - 1) * maxRows)
                 .Take(maxRows)
+                .AsNoTracking()
                 .ToList();
             double pageCount = (double)((decimal)this._context.Courses.Count() / Convert.ToDecimal(maxRows));
             showCourseViewModelWithIndex.PageCount = (int)Math.Ceiling(pageCount);
@@ -266,11 +269,12 @@ namespace LearningWebSite.Core.Services.CourseService
 
         public List<CourseEpisode> GetAllCourseEpisodes(int courseId)
         {
-            return _context.CourseEpisodes.Where(c => c.CourseId == courseId).ToList();
+            return _context.CourseEpisodes.Where(c => c.CourseId == courseId).AsNoTracking().ToList();
         }
 
         public void UpdateCourse(Course courseView, IFormFile imgCourseUp, IFormFile demoUp)
         {
+            ImageConvertor imageConverter = new ImageConvertor();
             var originalCourse = _context.Courses.Find(courseView.CourseId);
             courseView.UpdateDate = DateTime.Now;
             if (imgCourseUp != null && ImageValidator.IsImage(imgCourseUp))
@@ -295,6 +299,15 @@ namespace LearningWebSite.Core.Services.CourseService
                     {
                         File.Delete(deletethumbPath);
                     }
+                    string DeleteCompressimagePath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot/CourseImage/CompressedImages",
+                    courseView.CourseImageName
+                   );
+                    if (File.Exists(DeleteCompressimagePath))
+                    {
+                        File.Delete(DeleteCompressimagePath);
+                    }
                 }
                 originalCourse.CourseImageName =
                     NameGenerator.GenerateUniqCode() + Path.GetExtension(imgCourseUp.FileName);
@@ -303,14 +316,16 @@ namespace LearningWebSite.Core.Services.CourseService
                     "wwwroot/CourseImage",
                     originalCourse.CourseImageName
                 );
-
+                string CompressimagePath = Path.Combine(
+                 Directory.GetCurrentDirectory(),
+                 "wwwroot/CourseImage/CompressedImages",
+                 courseView.CourseImageName
+                );
                 using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
                     imgCourseUp.CopyTo(stream);
                 }
-
-                ImageConvertor imageConverter = new ImageConvertor();
-
+                imageConverter.ImageCompress(imagePath, CompressimagePath, 230, 348);
                 string thumbpath = Path.Combine(
                     Directory.GetCurrentDirectory(),
                     "wwwroot/CourseImage/thumb",
@@ -430,7 +445,7 @@ namespace LearningWebSite.Core.Services.CourseService
 
         public int GetEpisodeCount(int courseId)
         {
-            return _context.CourseEpisodes.Where(c => c.CourseId == courseId).Count();
+            return _context.CourseEpisodes.Where(c => c.CourseId == courseId).AsNoTracking().Count();
         }
 
         public void DeleteCourse(int courseId)
@@ -467,6 +482,7 @@ namespace LearningWebSite.Core.Services.CourseService
                 )
                 .OrderBy(c => c.CourseId)
                 .Take(9)
+                .AsNoTracking()
                 .ToList();
         }
 
@@ -480,7 +496,7 @@ namespace LearningWebSite.Core.Services.CourseService
                     c =>
                         new ShowCourseViewModel()
                         {
-                            Slug=c.Slug,
+                            Slug = c.Slug,
                             CourseTitle = c.CourseTitle,
                             CourseId = c.CourseId,
                             CourseDescription = c.CourseDescription,
@@ -496,15 +512,16 @@ namespace LearningWebSite.Core.Services.CourseService
                             courseLevel = c.courseLevel,
                             courseStatus = c.courseStatus,
                             CoursePresentation = c.CoursePresentation,
-                            Tags=c.Tags
+                            Tags = c.Tags
                         }
                 )
+                .AsNoTracking()
                 .First();
         }
 
         public List<CourseGroups> GetAllGroupsForLayout()
         {
-            return _context.CourseGroups.Include(g => g.CourseGroup).ToList();
+            return _context.CourseGroups.Include(g => g.CourseGroup).AsNoTracking().ToList();
         }
 
         public string GetTeacherName(int courseId)
@@ -621,18 +638,19 @@ namespace LearningWebSite.Core.Services.CourseService
                             Price = c.CoursePrice,
                             Title = c.CourseTitle,
                             CourseEpisodes = c.CourseEpisodes,
-                            Slug=c.Slug
+                            Slug = c.Slug
                         }
                 )
                 .Skip(skip)
                 .Take(take)
+                .AsNoTracking()
                 .ToList();
             return Tuple.Create(query, pageCount);
         }
 
         public List<CourseGroups> GetAllGroups()
         {
-            return _context.CourseGroups.Include(g => g.CourseGroup).ToList();
+            return _context.CourseGroups.Include(g => g.CourseGroup).AsNoTracking().ToList();
         }
 
     }

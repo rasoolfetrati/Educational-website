@@ -24,5 +24,5 @@ CKEDITOR.editorConfig = function (config) {
         { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl'] },
         { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] }
 
-    ];
+        ];
 };

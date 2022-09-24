@@ -5,10 +5,13 @@ button {
     cursor: pointer;
 }
 
-    button:focus {
+button:focus {
         outline: orange 5px auto;
-    }
-
+}
+.field-validation-error {
+    color: red;
+    list-style: none;
+}
 .validation-summary-errors {
     color: red;
     list-style: none;

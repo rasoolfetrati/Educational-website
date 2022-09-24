@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\CourseImage\CompressedImages\" />
     <Folder Include="wwwroot\CourseImage\thumb\" />
   </ItemGroup>
 

@@ -40,6 +40,8 @@ namespace LearningWebSite.Areas.Admin.Controllers
 
         [Route("DeleteCourse/{courseId}")]
         [HttpPost]
+        [IgnoreAntiforgeryToken]
+
         public async Task<IActionResult> Deletecourse(int courseId)
         {
             var course = _courseService.IsCourseExist(courseId);

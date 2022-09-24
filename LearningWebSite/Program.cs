@@ -25,7 +25,6 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-    option.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 #endregion
 #region IoC

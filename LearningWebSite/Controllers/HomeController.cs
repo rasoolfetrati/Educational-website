@@ -24,6 +24,7 @@ namespace LearningWebSite.Controllers
             return View(data);
         }
         [HttpGet]
+        [Route("تماس_با_ما")]
         public IActionResult ContactUs()
         {
             return View();
@@ -34,18 +35,18 @@ namespace LearningWebSite.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(ModelState);
+                return View(contacts);
             }
             HtmlSanitizer htmlSanitizer = new();
-            contacts.Message= htmlSanitizer.Sanitize(contacts.Message);
+            contacts.Message = htmlSanitizer.Sanitize(contacts.Message);
             await _contactUsService.SaveMessage(contacts);
-            return RedirectAndShowAlert(OperationResult.Success("پیام شما با موفقیت ثبت شد!"),RedirectToAction("ContactUs"));
+            return RedirectAndShowAlert(OperationResult.Success("پیام شما با موفقیت ثبت شد!"), RedirectToAction("ContactUs"));
         }
         [Route("NotFound")]
         public IActionResult NotFound()
         {
             return PartialView("NotFound");
         }
-        
+
     }
 }
