@@ -1,4 +1,5 @@
-﻿using LearningWebSite.Areas.Admin.Controllers;
+﻿using AspNetCore.ReCaptcha;
+using LearningWebSite.Areas.Admin.Controllers;
 using LearningWebSite.Core.InfraStructure;
 using LearningWebSite.Core.Senders;
 using LearningWebSite.Core.Services;
@@ -12,6 +13,8 @@ using TopLearn.Core.Convertors;
 namespace LearningWebSite.Controllers
 {
     [AutoValidateAntiforgeryToken]
+    [RequireHttps]
+    [ResponseCache(NoStore = true, Duration = 0, Location = ResponseCacheLocation.None)]
     public class AccountController : MainControllerBase
     {
         private readonly UserManager<CustomUser> _userManager;
@@ -37,6 +40,8 @@ namespace LearningWebSite.Controllers
         }
         [HttpPost]
         [Route("Login")]
+        [ValidateReCaptcha]
+
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (!ModelState.IsValid) return View(loginViewModel);
@@ -74,6 +79,7 @@ namespace LearningWebSite.Controllers
 
         [HttpPost]
         [Route("SignUp")]
+        [ValidateReCaptcha]
         public async Task<IActionResult> SignUp(RegisterViewModel registerViewModel)
         {
             if (!ModelState.IsValid)
@@ -96,6 +102,7 @@ namespace LearningWebSite.Controllers
         }
         [HttpPost]
         [Route("ActiveAccount")]
+        [ValidateReCaptcha]
         public async Task<IActionResult> ActiveAccount(string code)
         {
             if (Url.IsLocalUrl(HttpContext.Request.Path))
@@ -138,6 +145,7 @@ namespace LearningWebSite.Controllers
             return View();
         }
         [HttpPost("ForgetPassword")]
+        [ValidateReCaptcha]
         public IActionResult ForgetPassword(string email)
         {
             var user = _userManager.FindByEmailAsync(email).Result;
@@ -163,6 +171,7 @@ namespace LearningWebSite.Controllers
         }
         [HttpPost]
         [Route("ResetPassword")]
+        [ValidateReCaptcha]
         public async Task<IActionResult> ResetPassword(ChangePasswordByUserViewModel model)
         {
             var user = await _userManager.FindByIdAsync(model.UserId);

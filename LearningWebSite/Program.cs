@@ -1,4 +1,5 @@
 #region Usings
+using AspNetCore.ReCaptcha;
 using LearningWebSite.Core.Identity;
 using LearningWebSite.Core.InfraStructure;
 using LearningWebSite.Core.Services;
@@ -60,6 +61,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
 });
 #endregion
+#region ReCaptcha
+builder.Services.AddReCaptcha(builder.Configuration.GetSection("GoogleRecaptcha"));
+#endregion
 #region TelBot
 //var botConfig = builder.Configuration.GetSection("BotConfiguration").Get<BotConfiguration>();
 
@@ -81,7 +85,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/NotFound");
+    app.UseHsts();
+}
 #region ExeptionHandlers
 app.Use(async (context, next) =>
 {
