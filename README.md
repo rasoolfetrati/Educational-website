@@ -1,5 +1,14 @@
-# EasyLearn
-for running this website <br>
-you need .Net Sdk 6.0.3 <br>
-sql server prefer 2019 <br>
-visual studio 2019 or 2022 <br>
+# Easy Learn
+
+for running this project you need visual studio 2022
+<br>
+Sql Server 2019 & ssms lates version
+<br>
+make sure you install .Net Web Development
+<br>
+install .Net Sdk 6
+<br>
+after doing this setups open project then open package manager console and Enter this codes:
+<br>
+Add-migration intial_Db then update-database
+
