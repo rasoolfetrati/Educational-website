@@ -14,7 +14,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Installing
 
 1. Clone the repository:
-git clone https://github.com/<repo>.git
+git clone https://github.com/rasoolfetrati/LearningWebSite/.git
 
 2. Navigate to the project directory:
 
@@ -44,7 +44,7 @@ The application should now be running on `https://localhost:5001`.
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/<repo>/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/rasoolfetrati/LearningWebSite/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 
 
@@ -54,9 +54,9 @@ Please read [CONTRIBUTING.md](https://github.com/<repo>/blob/master/CONTRIBUTING
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/<repo>/blob/master/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/rasoolfetrati/LearningWebSite/blob/master/LICENSE) file for details.
 
 ## Acknowledgments
 
-- [Inspiration](https://github.com/<repo>)
+- [Inspiration](https://github.com/rasoolfetrati/LearningWebSite/)
 
