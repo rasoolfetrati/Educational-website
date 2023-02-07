@@ -13,39 +13,23 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-1. [.NET Core SDK 6](https://dotnet.microsoft.com/download/dotnet-core)
-2. [SQL Server 2019](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+1. [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
+2. [Visual Studio 2022](https://visualstudio.microsoft.com/vs/whatsnew/)
+3. [SQL Server 2019](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 
-### Installing
+### Installation
 
-1. Clone the repository:
-git clone https://github.com/rasoolfetrati/LearningWebSite/.git
+1. Clone the repository
+2. Open the solution file in Visual Studio 2022
+3. Run the following command in the Package Manager Console to apply migrations:
 
-2. Navigate to the project directory:
+Update-Database
 
-cd LearningWebSite
 
-3. Restore the packages and build the solution:
+4. Build and run the project.
 
-dotnet restore
-dotnet build
+That's it! You should now have the Learning Web Site running on your local machine.
 
-4. Update the connection string in the `appsettings.json` file to match your SQL Server installation.
-
-5. Run the following command to create the database and seed the data:
-
-dotnet ef database update
-
-6. Finally, run the application:
-
-dotnet run
-
-The application should now be running on `https://localhost:5001`.
-
-## Built With
-
-- [ASP.NET Core 6](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore)
-- [SQL Server 2019](https://docs.microsoft.com/en-us/sql/sql-server/?view=sql-server-ver15)
 
 ## Contributing
 
