@@ -39,7 +39,7 @@ The application should now be running on `https://localhost:5001`.
 
 ## Built With
 
-- [ASP.NET Core 3.1](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-3.1)
+- [ASP.NET Core 6](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore)
 - [SQL Server 2019](https://docs.microsoft.com/en-us/sql/sql-server/?view=sql-server-ver15)
 
 ## Contributing
