@@ -13,7 +13,7 @@ We welcome contributions to Learning Web Site! Thank you for considering to cont
 
 ## Code of Conduct
 
-We expect all contributors to adhere to our [Code of Conduct](https://github.com/<repo>/blob/master/CODE_OF_CONDUCT.md).
+We expect all contributors to adhere to our [Code of Conduct](https://github.com/rasoolfetrati/LearningWebSite/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -21,4 +21,4 @@ By contributing to this repository, you agree that your contributions will be li
 
 ## Feature Requests and Bug Reports
 
-If you have a feature request or found a bug, please open an [Issue](https://github.com/<repo>/issues).
+If you have a feature request or found a bug, please open an [Issue](https://github.com/rasoolfetrati/LearningWebSite/issues).
