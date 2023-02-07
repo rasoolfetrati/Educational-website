@@ -50,7 +50,7 @@ Please read [CONTRIBUTING.md](https://github.com/rasoolfetrati/LearningWebSite/b
 
 ## Authors
 
-- [Rasool Fetrati](https://github.com/<rasoolfetrati>)
+- [Rasool Fetrati](https://github.com/rasoolfetrati)
 
 ## License
 
