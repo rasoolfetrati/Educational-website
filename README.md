@@ -23,6 +23,7 @@ These instructions will get you a copy of the project up and running on your loc
 2. Open the solution file in Visual Studio 2022
 3. Run the following command in the Package Manager Console to apply migrations:
 Add-Migration _init_DB
+<br>
 Update-Database
 
 
