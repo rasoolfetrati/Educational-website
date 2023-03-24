@@ -1,8 +1,8 @@
-# Learning Web Site
+# Educational website
 
-Welcome to the Learning Web Site project! This website is built with ASP.NET Core and SQL Server 2019, designed to provide a comprehensive and interactive learning experience for its users. 
+Welcome to the Educational website project! This website is built with ASP.NET Core and SQL Server 2019, designed to provide a comprehensive and interactive learning experience for its users. 
 
-We believe that knowledge should be accessible to everyone and this project is our contribution to making that a reality. Whether you're a student, a teacher, or just someone looking to improve their skills, the Learning Web Site is here to help.
+We believe that knowledge should be accessible to everyone and this project is our contribution to making that a reality. Whether you're a student, a teacher, or just someone looking to improve their skills, the Educational website is here to help.
 
 This README file will guide you through setting up the project on your local machine, provide information on how to contribute, and highlight the technologies used in the project. So, let's get started!
 
