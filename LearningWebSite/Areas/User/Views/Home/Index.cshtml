@@ -1,9 +1,11 @@
 ﻿@using LearningWebSite.Core.InfraStructure
+@using LearningWebSite.Core.Services.CourseService;
 @using LearningWebSite.Core.ViewModel.CourseVM
 @using LearningWebSite.Core.ViewModel.Users
 @using LearningWebSite.Core.ViewModel.WalletVM
 @using LearningWebSite.DataLayer.Entities.Basket
 @model SideBarViewModel
+@inject ICourseService _course
 @{
     ViewData["Title"] = "پنل کاربری";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,17 +23,18 @@
                     <a href="#dore-signup" class="list-group-item list-group-item-action" data-toggle="list"> <i class="fa fa-server  align-middle ml-2"></i>دوره هایی که ثبت نام کرده اید </a>
                     <a href="#shopping-cart" class="list-group-item list-group-item-action " data-toggle="list"><i class="fa fa-shopping-cart align-middle ml-2"></i>سبد خرید </a>
                     <a href="#factor" class="list-group-item list-group-item-action " data-toggle="list"><i class="fa fa-shopping-cart align-middle ml-2"></i>فاکتور های خرید </a>
+                    @if (User.Claims.Any(c => c.Value == "Teacher"))
+                    {
+                        <a href="#TeacherCourses" class="list-group-item list-group-item-action " data-toggle="list"><i class="fa fa-user align-middle ml-2"></i>دوره های مدرس </a>
+                    }
                     <a href="#WALLET" class="list-group-item list-group-item-action " data-toggle="list"><i class="fa fa-wallet align-middle ml-2"></i>شارژ کیف پول</a>
                     <a href="#user-change" class="list-group-item list-group-item-action" data-toggle="list"><i class="fa fa-address-card align-middle ml-2"></i> تغییر مشخصات و کلمه عبور  </a>
                     <a asp-area="" asp-controller="Account" asp-action="LogOut" class="list-group-item list-group-item-action"> <i class=" fa fa-window-close align-middle ml-2"></i> خروج</a>
                 </div>
             </div>
         </div>
-
         <div class="col-12 col-lg-9">
-
             <div class="tab-content">
-
                 <div class="tab-pane fade show active" id="vaziyat">
                     <!----- Start vaziyat ----->
                     <div class="card my-5 pb-4 text-right">
@@ -40,7 +43,6 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-
                                 <div class="col-12 col-md-6">
                                     <div class="card mb-2">
                                         <div class="card-body d-flex justify-content-between align-items-center">
@@ -52,7 +54,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-12 col-md-6">
                                     <div class="card mb-2">
                                         <div class="card-body d-flex justify-content-between align-items-center">
@@ -64,7 +65,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-12 col-md-6">
                                     <div class="card mb-2">
                                         <div class="card-body d-flex justify-content-between align-items-center">
@@ -76,15 +76,10 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
-
                     </div>
                 </div><!----- End vaziyat ----->
-
-
                 <div class="tab-pane fade show text-center" id="dore-signup">
                     <!----- Start dore signup ----->
                     <div class="card my-5 pb-4 text-center">
@@ -107,27 +102,21 @@
                                     <a href="/Course/@item.CourseId/@item.CourseTitle.Replace(" ","-")" class="btn btn-sm col-3 mr-2 btn-primary rounded-pill float-left mt-3 font-12">مشاهده دوره</a>
                                 </div>
                             }
-
                         </div>
                     </div>
                 </div><!----- End dore signup ----->
-
-
                 <div class="tab-pane fade show text-center" id="shopping-cart">
                     <!----- Start shopping cart----->
-
                     <div class="card my-5 pb-4 text-center">
-
                         <div class="card-header">
                             <h6>سبد خرید</h6>
                         </div>
-
                         <div class="card-body mt-5">
                             @{
                                 var basket = ViewBag.Basket as List<Basket>;
                             }
-                            <div class="table-responsive">
-                                <table id="myTable2" class="table table-border">
+                            <div class="table-responsive" style="overflow:hidden;">
+                                <table id="myTable2" class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>عکس</th>
@@ -136,7 +125,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         <form method="post" action="/Course/OrderView" class="form">
                                             @if (basket.Count > 0)
                                             {
@@ -152,48 +140,43 @@
                                                     <td>
                                                         <p>@item.CourseTitle</p>
                                                     </td>
-
                                                     <td>
                                                         <input type="number" value="@item.CoursePrice" class="price form-control-sm" disabled="">
                                                     </td>
                                                 </tr>
                                                 }
-
+                                            <tr>
+                                                <td colspan="3">
+                                                    <div>
+                                                        <span class="font-13">قیمت کل :</span>
+                                                        <span id="total" class="total mx-2">0</span>
+                                                        <span class="font-13">تومان</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <button class="btn btn-success btn-block mt-3 font-14" type="submit"> پرداخت</button>
+                                                </td>
+                                            </tr>
                                             }
-                                        <span class="font-13">قیمت کل :</span>
-                                        <span id="total" class="total mx-2">0</span>
-                                        <span class="font-13">تومان</span>
-
-                                        <button class="btn btn-success btn-block mt-3 font-14" type="submit"> پرداخت</button>
                                         </form>
-
                                     </tbody>
                                 </table>
-
-
-
                             </div>
-
                         </div>
-
-
                     </div>
-
                 </div><!----- End shopping cart ----->
-
                 <div class="tab-pane fade show text-center" id="factor">
                     <!----- Start shopping cart----->
                     @{
                         var data = ViewBag.Factors as List<ShowFactorsViewModel>;
                     }
-                    <div class="card my-5 pb-4 text-center">
-
+                    <div class="card my-5 pb-4 text-center" style="overflow:hidden;">
                         <div class="card-header">
                             <h6>فاکتور ها</h6>
                         </div>
-
                         <div class="card-body mt-5">
-
                             <div class="table-responsive">
                                 <table id="myTable" class="table">
                                     <thead>
@@ -222,21 +205,15 @@
                                                     else
                                                     {
                                                         <span class="text text-danger">ناموفق</span>
-
                                                     }
                                                 </td>
                                                 <td>
                                                     <a href="/PaymentResult/@item.WalletId" class="btn btn-success">مشاهده فاکتور</a>
                                                 </td>
-
                                             </tr>
-
                                         }
-
                                     </tbody>
-
                                 </table>
-
                                 @if (data.Count >= 10)
                                 {
                                     <ul class="pagination">
@@ -253,16 +230,86 @@
                                         </li>
                                     </ul>
                                 }
-
                             </div>
-
                         </div>
-
-
                     </div>
-
                 </div><!----- End shopping cart ----->
+                <!----- Start Teacher Section----->
+                @if (User.Claims.Any(c => c.Value == "Teacher"))
+                {
+                    <div class="tab-pane fade show text-center" id="TeacherCourses">
+                        <div class="card my-5 pb-4 text-center" style="overflow:hidden;">
+                            <div class="card-header">
+                                <h6>دوره های مدرس</h6>
+                            </div>
+                            <div class="card-body mt-5">
+                                <div class="table-responsive">
+                                    <table id="myTable" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">تصویر</th>
+                                                <th scope="col">عنوان دوره</th>
+                                                <th scope="col">تعداد جلسه</th>
+                                                <th scope="col">دستورات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                var TeacherCourses = ViewBag.TeacherCourses as List<ShowCourseListItemViewModel>;
+                                                int counter = 1;
+                                            }
+                                            @foreach (var item in TeacherCourses)
+                                            {
+                                                var count = _course.GetEpisodeCount(item.CourseId);
+                                                <tr id="removeTr-@item.CourseId">
+                                                    <td scope="col">
+                                                        @counter
+                                                    </td>
+                                                    <td scope="col">
+                                                        <img src="/CourseImage/thumb/@item.ImageName" class="img-thumbnail"
+                                                     style="max-height: 150px;max-width150px;" />
+                                                    </td>
+                                                    <td scope="col">
+                                                        @item.Title
+                                                    </td>
+                                                    <td scope="col">
+                                                        @count
+                                                    </td>
+                                                    <td scope="col">
+                                                        <a asp-area="User" asp-controller="Home" asp-action="IndexEpisode"
+                                                   asp-route-courseId="@item.CourseId" class="btn btn-info btn-sm">
+                                                            مدیریت بخش های دوره
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                counter++;
+                                            }
+                                        </tbody>
+                                    </table>
+                                    @if (TeacherCourses.Count >= 10)
+                                    {
+                                        <ul class="pagination">
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#" tabindex="-1">قبل</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">بعد</a>
+                                            </li>
+                                        </ul>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
 
+                <!----- End Teacher cart ----->
                 <div class="tab-pane fade show " id="WALLET">
                     <!----- Start WALLET  ----->
                     <div class="card my-5">
@@ -272,7 +319,6 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-
                                     <form asp-controller="Wallet" asp-action="ChargeWallet" method="post">
                                         <div class="form-group">
                                             <label for="amount" class="text-right">مبلغ:</label>
@@ -280,18 +326,14 @@
                                         </div>
                                         <button type="submit" class="btn btn-info btn-block font-13">درگاه پرداخت</button>
                                     </form>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div><!----- End WALLET  ----->
                 <partial name="_UserInfo" model="null" />
-
             </div>
-
         </div>
-
     </div>
 </div>
 @section Scripts{
@@ -301,22 +343,31 @@
         $("#password").removeAttr("data-val", "required")
         $("#repassword").removeAttr("data-val", "required")
         $("#password").removeAttr("data-val-required");
-
         function readURL(input) {
-
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-
                 reader.onload = function (e) {
                     $('#imguser').attr('src', e.target.result);
                 }
-
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
         $("#customFile").change(function () {
             readURL(this);
         });
+    </script>
+    <script>
+        const prices = document.querySelectorAll('.price');
+        let total = 0;
+
+        prices.forEach((price) => {
+            const priceValue = parseFloat(price.value);
+            if (!isNaN(priceValue)) {
+                total += priceValue;
+            }
+        });
+        if (!total === 0 || !total === null) {
+            document.getElementById('total').textContent = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
     </script>
 }

@@ -14,12 +14,8 @@ namespace LearningWebSite.Core.Senders
             mail.Body = Body;
             mail.IsBodyHtml = true;
 
-            //System.Net.Mail.Attachment attachment;
-            // attachment = new System.Net.Mail.Attachment("c:/textfile.txt");
-            // mail.Attachments.Add(attachment);
-
             SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("info.fetrati@gmail.com", "ulmyrrxhcacsmljs");
+            SmtpServer.Credentials = new System.Net.NetworkCredential("info.fetrati@gmail.com", "wynksewczkmvrvut");
             SmtpServer.EnableSsl = true;
 
             SmtpServer.Send(mail);

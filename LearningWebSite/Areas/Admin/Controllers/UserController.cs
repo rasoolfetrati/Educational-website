@@ -73,7 +73,7 @@ namespace LearningWebSite.Areas.Admin.Controllers
         {
             var user = await userManager.FindByIdAsync(id);
             await userManager.DeleteAsync(user);
-            return new JsonResult("یوزر با موفقیت حذف شد!");
+            return new JsonResult("کاربر با موفقیت حذف شد!");
         }
 
         [Route("Role")]

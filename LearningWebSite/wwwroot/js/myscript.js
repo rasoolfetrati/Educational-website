@@ -129,29 +129,6 @@ $(document).ready(function () {
 
 });
 
-
-/*----- shopping cart -----*/
-
-$(document).ready(function () {
-    update_amounts();
-    $('.qty, .price').on('keyup keypress blur change', function (e) {
-        update_amounts();
-    });
-});
-function update_amounts() {
-    let sum = 0;
-    $('#myTable2 > tbody  > tr').each(function () {
-        let price = $(this).find('.price').val();
-        let amount = (price)
-        $(this).find('.amount').text(+amount);
-        sum += +amount;
-    });
-    $('.total').text(new Intl.NumberFormat('fa-IR').format(sum));
-
-}
-
-
-
 //----------------for quantity-increment-or-decrement-------
 var incrementQty;
 var decrementQty;

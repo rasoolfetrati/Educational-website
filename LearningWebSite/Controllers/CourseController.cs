@@ -8,6 +8,7 @@ using LearningWebSite.Core.Services.CourseService;
 using LearningWebSite.Core.Services.WalletService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IO.Compression;
 
 namespace LearningWebSite.Controllers
 {
@@ -61,7 +62,7 @@ namespace LearningWebSite.Controllers
             ViewBag.selectedGroups = selectedGroups;
             ViewBag.selectedtype = getType;
             ViewBag.sort = sort;
-            ViewBag.Groups =  courseService.GetAllGroups();
+            ViewBag.Groups = courseService.GetAllGroups();
             ViewBag.pageId = pageId;
             return View(courseService.GetCourse(pageId, filter, getType, sort, selectedGroups, take));
         }
@@ -70,7 +71,7 @@ namespace LearningWebSite.Controllers
         public async Task<IActionResult> OrderView()
         {
             var data = await basketService.GetCourses(User.Identity.Name);
-            if (data.Count<=0)
+            if (data.Count <= 0)
             {
                 ViewBag.Error = "در سبد خرید شما محصولی وجود ندارد!";
                 return View();
@@ -208,7 +209,7 @@ namespace LearningWebSite.Controllers
             {
                 return RedirectAndShowAlert(
                     OperationResult.Error("مشکلی پیش اومد..."),
-                    RedirectToAction("index", new { episode.CourseId, episode.Course.CourseTitle })
+                    RedirectToAction("index", new { episode.CourseId, episode.Course.Slug })
                 );
             }
             string filePath = Path.Combine(
@@ -216,12 +217,12 @@ namespace LearningWebSite.Controllers
                 "wwwroot/course/Episode",
                 episode.EpisodeFileName
             );
-           
+
             if (!System.IO.File.Exists(filePath))
             {
                 return RedirectAndShowAlert(
               OperationResult.Error("فایل یافت نشد!"),
-              RedirectToAction("index", new { episode.CourseId,episode.Course.CourseTitle})
+              RedirectToAction("index", new { episode.CourseId, episode.Course.Slug })
                 );
             }
             string fileName = episode.EpisodeFileName;
@@ -240,8 +241,62 @@ namespace LearningWebSite.Controllers
             }
             return RedirectAndShowAlert(
                 OperationResult.Error("شما این دوره را نخریده اید!"),
-                RedirectToAction("index", new { episode.CourseId, episode.Course.CourseTitle })
+                RedirectToAction("index", new { episode.CourseId, episode.Course.Slug })
             );
+        }
+        [Route("PlayOnline/{episodeId}")]
+        [HttpGet]
+        public IActionResult PlayOnline(int episodeId)
+        {
+            var episode = courseService.GetEpisodeById(episodeId);
+            if (episode == null)
+            {
+                return RedirectAndShowAlert(
+                    OperationResult.Error("مشکلی پیش اومد..."),
+                    RedirectToAction("index", new { courseId = episode.CourseId, slug = episode.Course.Slug })
+                );
+            }
+            string filePath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot/course/Episode",
+                episode.EpisodeFileName
+            );
+            var extractPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot/course/ExtractedEpisodes"
+            );
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return RedirectAndShowAlert(
+                    OperationResult.Error("فایل یافت نشد!"),
+                    RedirectToAction("index", new { courseId = episode.CourseId, slug = episode.Course.Slug })
+                );
+            }
+            if (episode.IsFree && User.Identity.IsAuthenticated)
+            {
+                var res = ExtractFile(filePath, extractPath);
+                return new JsonResult(res.Value);
+            }
+            if (!episode.IsFree && User.Identity.IsAuthenticated && userService.IsUserInCourse(episode.CourseId, User.Identity.Name))
+            {
+                var res = ExtractFile(filePath, extractPath);
+                return new JsonResult(res.Value);
+            }
+            return new JsonResult(null);
+        }
+        public JsonResult ExtractFile(string filePath, string extractPath)
+        {
+            ZipFile.ExtractToDirectory(filePath, extractPath, overwriteFiles: true);
+            var mp4FilePath = Directory.GetFiles(extractPath, "*.mp4", SearchOption.AllDirectories)
+            .FirstOrDefault();
+
+            if (mp4FilePath != null)
+            {
+                var finalpath = mp4FilePath.Split("wwwroot", StringSplitOptions.RemoveEmptyEntries);
+                return new JsonResult(finalpath[1]);
+            }
+            return null;
         }
     }
 }

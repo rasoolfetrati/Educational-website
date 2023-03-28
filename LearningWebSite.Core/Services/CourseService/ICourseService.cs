@@ -56,6 +56,7 @@ namespace LearningWebSite.Core.Services.CourseService
             List<int> selectedGroups = null,
             int take = 0
         );
+        List<ShowCourseListItemViewModel> GetTeacherCourses(string TeacherId);
     }
 
     public class CourseService : ICourseService
@@ -247,9 +248,9 @@ namespace LearningWebSite.Core.Services.CourseService
                 {
                     await file.CopyToAsync(stream);
                 }
+                await _context.AddAsync(courseEpisode);
+                await _context.SaveChangesAsync();
             }
-            await _context.AddAsync(courseEpisode);
-            await _context.SaveChangesAsync();
             await Task.CompletedTask;
         }
 
@@ -392,7 +393,7 @@ namespace LearningWebSite.Core.Services.CourseService
             {
                 string deletedemoPath = Path.Combine(
                     Directory.GetCurrentDirectory(),
-                    "wwwroot/course/demos",
+                    "wwwroot/course/Episode",
                     courseEpisode.EpisodeFileName
                 );
                 if (File.Exists(deletedemoPath))
@@ -400,10 +401,10 @@ namespace LearningWebSite.Core.Services.CourseService
                     File.Delete(deletedemoPath);
                 }
                 courseEpisode.EpisodeFileName =
-                    NameGenerator.GenerateUniqCode() + Path.GetExtension(demoUp.FileName);
+                    demoUp.FileName + Path.GetExtension(demoUp.FileName);
                 string demoPath = Path.Combine(
                     Directory.GetCurrentDirectory(),
-                    "wwwroot/course/demos",
+                    "wwwroot/course/Episode",
                     courseEpisode.EpisodeFileName
                 );
 
@@ -653,5 +654,17 @@ namespace LearningWebSite.Core.Services.CourseService
             return _context.CourseGroups.Include(g => g.CourseGroup).AsNoTracking().ToList();
         }
 
+        public List<ShowCourseListItemViewModel> GetTeacherCourses(string TeacherId)
+        {
+            var teachId = _context.Users.SingleOrDefault(u => u.Email == TeacherId).Id;
+            var courses = _context.Courses.Include(e => e.CourseEpisodes).Where(u => u.TeacherId == teachId).Select(c => new ShowCourseListItemViewModel()
+            {
+                CourseId = c.CourseId,
+                CourseEpisodes = c.CourseEpisodes,
+                ImageName = c.CourseImageName,
+                Title = c.CourseTitle
+            }).ToList();
+            return courses;
+        }
     }
 }

@@ -33,6 +33,9 @@
   <ItemGroup>
     <Folder Include="wwwroot\CourseImage\CompressedImages\" />
     <Folder Include="wwwroot\CourseImage\thumb\" />
+    <Folder Include="wwwroot\course\demos\" />
+    <Folder Include="wwwroot\course\Episode\" />
+    <Folder Include="wwwroot\course\ExtractedEpisodes\" />
   </ItemGroup>
 
   <ItemGroup>

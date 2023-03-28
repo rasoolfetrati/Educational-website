@@ -26,11 +26,17 @@
             <label>فایل بخش</label>
             <input type="file" name="fileEpisode">
             <p class="text-danger">فایل اجباری است</p>
-            @if (ViewData["IsExistFile"] != null)
+            @if (ViewData["IsNullFile"] != null)
             {
                 <div class="alert alert-danger">
                     نام فایل معتبر نیست ، لطفا تغییر دهید
                 </div>
+            }
+            @if (ViewData["IsExistFile"] != null)
+            {
+                        <div class="alert alert-danger">
+                            !این فایل از قبل موجود است
+                        </div>
             }
             <span asp-validation-for="EpisodeFileName"></span>
         </div>

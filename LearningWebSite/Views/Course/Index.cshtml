@@ -10,7 +10,7 @@
     {
     <meta name="description" content="@Model.CourseDescription.Substring(0,150)">
     <meta name="keywords" content="@Model.Tags>
-    <meta property="og:site_name" value="سایت آموزشی ایزی لرن">
+<meta property="og:site_name" value="سایت آموزشی ایزی لرن">
     <meta property="og:title" content="@Model.CourseTitle">
     <meta property="og:url" content="https://rasoolfetrati.ir/Course/@Model.CourseId/@Model.Slug">
     <meta property="og:image" content="/CourseImage/@Model.CourseImageName">
@@ -29,21 +29,21 @@
     <link rel="canonical" href="https://rasoolfetrati.ir/Course/@Model.CourseId/@Model.Slug" />
 
 }
-    <div class="container">
-        <ul class="breadcrumb bg-white mt-4 ">
-            <li class="breadcrumb-item"><a href="/" class="font-12 vazir">صفحه اصلی</a></li>
-            <li class="breadcrumb-item"><a href="#" class="pr-2 font-12 vazir">دوره های آموزشی</a></li>
-            <li class="breadcrumb-item"><a href="#" class="pr-2 font-12 vazir">@Model.CourseTitle</a></li>
-        </ul>
-    </div>
-    <div class="container">
-        <div class="row">
+<div class="container">
+    <ul class="breadcrumb bg-white mt-4 ">
+        <li class="breadcrumb-item"><a href="/" class="font-12 vazir">صفحه اصلی</a></li>
+        <li class="breadcrumb-item"><a href="#" class="pr-2 font-12 vazir">دوره های آموزشی</a></li>
+        <li class="breadcrumb-item"><a href="#" class="pr-2 font-12 vazir">@Model.CourseTitle</a></li>
+    </ul>
+</div>
+<div class="container">
+    <div class="row">
 
-            <div class="col-md-4 mb-3">
-                <img src="/CourseImage/@Model.CourseImageName" class="img-fluid" alt="@Model.CourseTitle">
-                <ul class="list-group text-center list-group-flush custom-list-group">
-                    <li class="list-group-item font-13">عنوان دوره : @Model.CourseTitle</li>
-                    <li class="list-group-item font-13">مدرس : @ViewBag.Fullname</li>
+        <div class="col-md-4 mb-3">
+            <img src="/CourseImage/@Model.CourseImageName" class="img-fluid" alt="@Model.CourseTitle">
+            <ul class="list-group text-center list-group-flush custom-list-group">
+                <li class="list-group-item font-13">عنوان دوره : @Model.CourseTitle</li>
+                <li class="list-group-item font-13">مدرس : @ViewBag.Fullname</li>
                 @if (Model.courseStatus == 1)
                 {
                     <li class="list-group-item font-13">وضعیت دوره :  <span class="text-warning">در حال برگذاری</span></li>
@@ -142,7 +142,7 @@
                             <h1 id="courseTitle" class="mb-3 text-info">@Model.CourseTitle</h1>
 
                             <video src="/course/demos/@Model.DemoFileName" poster="/CourseImage/@Model.CourseImageName" controls=""
-                                   class="embed-responsive embed-responsive-item">
+                                   class="embed-responsive embed-responsive-item" id="videoPlayer" autoplay>
                             </video>
 
                             <p class="text-justify course-text vazir font-14 my-5">
@@ -157,24 +157,14 @@
                                 <h6 class="mb-3 mt-3">سر فصل ها :</h6>
                                 @foreach (var item in episode)
                                 {
-                                    <div class="mb-2 course-items px-2 py-4 d-flex align-items-center text-center">
-                                        <span class="bg-info count text-center text-white mr-3 font-13">@counter</span>
-                                        <span class="mr-3 font-13">@item.EpisodeTitle</span>
-                                        <span class="mr-3 font-13 @(item.IsFree?"text-success":"text-danger")">
-                                            @(item.IsFree ?
-                                                "رایگان" : "نقدی")
-                                        </span>
-                                        <span class="mr-3 font-13">
-                                            <i class="@(item.IsFree ? "text-success fa fa-unlock":"text-danger fa fa-lock")"></i>
-                                        </span>
-                                        <span class="mr-5 font-13">
-                                            <a href="/downloadFile/@item.EpisodeId" class="btn btn-outline-success btn-sm">
-                                                <i class="fa fa-download"></i>
-                                            </a>
-                                        </span>
-                                        <span class="mr-5 font-13">مدت زمان این قسمت: @item.EpisodeTime</span>
+                                    <div class="mb-2 course-items d-flex align-items-center justify-content-between px-2 py-4 text-center" style="justify-content: space-around!important;">
+                                        <span class="bg-info count text-white font-13">@counter</span>
+                                        <span class="font-13">@item.EpisodeTitle</span>
+                                        <span class="font-13 @((item.IsFree) ? "text-success" : "text-danger")">@((item.IsFree) ? "رایگان" : "نقدی")</span>
+                                        <a href="/downloadFile/@item.EpisodeId" class="btn btn-outline-success btn-sm mr-2"><i class="fa fa-download"></i></a>
+                                        <a href="javascript:void(0)" onclick="playvideo(@item.EpisodeId)" class="btn btn-outline-success btn-sm mr-2"><i class="fa fa-play"></i></a>
+                                        <span class="font-13">مدت زمان این قسمت: @item.EpisodeTime</span>
                                     </div>
-
                                     counter++;
                                 }
                             }
@@ -216,74 +206,74 @@
 </div>
 
 @section Scripts
-    {
-    <script src="https://cdn.ckeditor.com/4.19.1/basic/ckeditor.js"></script>
-    <script src="/js/deleteScript.js"></script>
+{
+<script src="https://cdn.ckeditor.com/4.19.1/basic/ckeditor.js"></script>
+<script src="/js/deleteScript.js"></script>
 
-    <script>
-        CKEDITOR.replace('txtComment', {
-            customConfig: '/js/Config.js'
+<script>
+    CKEDITOR.replace('txtComment', {
+        customConfig: '/js/Config.js'
+    });
+</script>
+<script>
+    $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
+</script>
+<script>
+    function AddToBasket(courseId) {
+        requestSent = false;
+        $.ajax({
+            type: "POST",
+            url: "/AddBasket/" + courseId,
+            async: true,
+            success: function (result) {
+                Swal.fire(result);
+                GetBasketItems();
+            }
         });
-    </script>
-    <script>
-        $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
-    </script>
-    <script>
-        function AddToBasket(courseId) {
-            requestSent = false;
-            $.ajax({
-                type: "POST",
-                url: "/AddBasket/" + courseId,
-                async: true,
-                success: function (result) {
-                    Swal.fire(result);
-                    GetBasketItems();
-                }
-            });
-        }
-    </script>
-    <script>
-        $("#btnGet").click(AjaxFormSubmit);
-        function AjaxFormSubmit() {
-            //Set the URL.
-            var url = $("#myForm").attr("action");
+    }
+</script>
+<script>
+    $("#btnGet").click(AjaxFormSubmit);
+    function AjaxFormSubmit() {
+        //Set the URL.
+        var url = $("#myForm").attr("action");
 
-            //Add the Field values to FormData object.
-            var formData = new FormData();
-            formData.append("txtcourseId", $("#txtcourseId").val());
-            var date = CKEDITOR.instances.txtComment.getData();
-            formData.append("txtComment", date);
-            formData.append("commentId", $("#commentId").val());
+        //Add the Field values to FormData object.
+        var formData = new FormData();
+        formData.append("txtcourseId", $("#txtcourseId").val());
+        var date = CKEDITOR.instances.txtComment.getData();
+        formData.append("txtComment", date);
+        formData.append("commentId", $("#commentId").val());
 
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: formData,
-                processData: false,
-                contentType: false,
-                async: true,
-                success: function (response) {
-                    JSON.stringify(response);
-                    if (response.status === "success") {
-                        Swal.fire(
-                            'عملیات موفق',
-                            response.message,
-                            'success'
-                        );
-                        $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
-                        CKEDITOR.instances.txtComment.setData('');
-                    } else if (response.status === "error") {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'اوپس...',
-                            text: response.message,
-                            confirmButtonText: 'باشه',
-                        });
-                    }
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            async: true,
+            success: function (response) {
+                JSON.stringify(response);
+                if (response.status === "success") {
+                    Swal.fire(
+                        'عملیات موفق',
+                        response.message,
+                        'success'
+                    );
+                    $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
+                    CKEDITOR.instances.txtComment.setData('');
+                } else if (response.status === "error") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'اوپس...',
+                        text: response.message,
+                        confirmButtonText: 'باشه',
+                    });
                 }
-            });
-        }
-    </script>
+            }
+        });
+    }
+</script>
     <script>
         $("#btnAnswer").click(answerTocomment);
         function answerTocomment(id) {
@@ -294,4 +284,28 @@
         }
 
     </script>
+<script>
+    function playvideo(episodeId) {
+        $.ajax({
+            type: "GET",
+            url: "/PlayOnline/" + episodeId,
+            success: function (response) {
+                if(response===null){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'خطا...',
+                        text: 'برای مشاهده ویدیو ابتدا باید وارد حساب کاربری خود شوید یا دوره را خریداری کنید!',
+                        confirmButtonText: 'باشه',
+                    });
+                }else{
+                    $('#videoPlayer').attr('src', response);
+                    $('html, body').animate({
+                        scrollTop: $(".card-body").offset().top
+                    }, 1000);
+                }
+                console.log(response);
+            }
+        });
+    }
+</script>
 }

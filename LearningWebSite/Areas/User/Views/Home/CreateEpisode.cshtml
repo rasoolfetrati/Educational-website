@@ -1,0 +1,55 @@
+﻿@using LearningWebSite.DataLayer.Entities.Courses
+@model CourseEpisode
+@{
+    ViewData["Title"] = "ساخت بخش";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="d-flex justify-content-center p-3">
+
+    <form method="post" asp-antiforgery="true" asp-area="User" asp-controller="Home" asp-action="CreateEpisode" enctype="multipart/form-data">
+        <input type="hidden" asp-for="CourseId" />
+        <div class="col-md-12">
+            <h2>اطلاعات بخش</h2>
+            <hr />
+            <div class="form-group">
+                <label>عنوان بخش</label>
+                <input type="text" asp-for="EpisodeTitle" class="form-control">
+                <span asp-validation-for="EpisodeTitle"></span>
+            </div>
+            <div class="form-group">
+                <label>زمان بخش</label>
+                <input type="text" asp-for="EpisodeTime" class="form-control">
+                <span asp-validation-for="EpisodeTime"></span>
+            </div>
+            <div class="form-group">
+                <label>فایل بخش</label>
+                <input type="file" name="fileEpisode">
+                <p class="text-danger">فایل اجباری است</p>
+                @if (ViewData["IsNullFile"] != null)
+                {
+                    <div class="alert alert-danger">
+                        نام فایل معتبر نیست ، لطفا تغییر دهید
+                    </div>
+                }
+                @if (ViewData["IsExistFile"] != null)
+                {
+                    <div class="alert alert-danger">
+                        !این فایل از قبل موجود است
+                    </div>
+                }
+                <span asp-validation-for="EpisodeFileName"></span>
+            </div>
+            <div class="form-group">
+                <label>دسترسی</label>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" asp-for="IsFree">
+                        رایگان است
+                    </label>
+                </div>
+                <input type="submit" value="ذخیره اطلاعات" class="btn btn-success" />
+            </div>
+        </div>
+    </form>
+</div>
+

@@ -21,12 +21,14 @@ namespace LearningWebSite.Controllers
         private readonly SignInManager<CustomUser> _signInManager;
         private readonly IViewRenderService _viewRenderService;
         private readonly IUserService _userService;
-        public AccountController(UserManager<CustomUser> userManager, SignInManager<CustomUser> signInManager, IViewRenderService viewRenderService, IUserService userService)
+        private readonly RoleManager<IdentityRole> roleManager;
+        public AccountController(UserManager<CustomUser> userManager, SignInManager<CustomUser> signInManager, IViewRenderService viewRenderService, IUserService userService, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _viewRenderService = viewRenderService;
             _userService = userService;
+            this.roleManager = roleManager;
         }
         [Route("Login")]
         public IActionResult Login(string? ReturnUrl = "")
@@ -74,6 +76,7 @@ namespace LearningWebSite.Controllers
             {
                 return Redirect("/");
             }
+            CreateRoles().Wait();
             return View();
         }
 
@@ -197,6 +200,35 @@ namespace LearningWebSite.Controllers
         public IActionResult Success()
         {
             return View();
+        }
+        private async Task CreateRoles()
+        {
+            bool x = await roleManager.RoleExistsAsync("Admin");
+            if (!x)
+            {
+                // first we create Admin rool    
+                var role = new IdentityRole();
+                role.Name = "Admin";
+                await roleManager.CreateAsync(role);
+            }
+
+            // creating Creating Manager role     
+            x = await roleManager.RoleExistsAsync("Teacher");
+            if (!x)
+            {
+                var role = new IdentityRole();
+                role.Name = "Teacher";
+                await roleManager.CreateAsync(role);
+            }
+
+            // creating Creating Employee role     
+            x = await roleManager.RoleExistsAsync("Student");
+            if (!x)
+            {
+                var role = new IdentityRole();
+                role.Name = "Student";
+                await roleManager.CreateAsync(role);
+            }
         }
     }
 }

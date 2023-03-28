@@ -71,7 +71,7 @@ builder.Services.AddReCaptcha(builder.Configuration.GetSection("GoogleRecaptcha"
 //builder.Services.AddHttpClient("LearningWebSite")
 //    .AddTypedClient<ITelegramBotClient>(httpClient => new TelegramBotClient(botConfig.BotToken, httpClient));
 
-////Dummy business-logic service
+//Dummy business-logic service
 //builder.Services.AddScoped<HandleUpdateService>();
 #endregion
 
