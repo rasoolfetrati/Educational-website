@@ -1,7 +1,7 @@
 ﻿@using LearningWebSite.Core.ViewModel.BasketVM
 @model List<ShowBasketVM>
 @{
-    ViewData["Title"] = "OrderView";
+    ViewData["Title"] = "مرور سبد خرید";
 }
 <br />
 @if (ViewBag.Error != null)
@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
                                 <div class="row d-flex justify-content-center">
-                                    @if (@ViewBag.UserWallet > @ViewBag.Total)
+                                    @if (@ViewBag.UserWallet >= @ViewBag.Total)
                                     {
                                         <div class="col-4">
                                             <div class="input-group mb-3">
@@ -64,7 +64,7 @@
                                                     <div class="input-group-text">
                                                         <label for="walletPay">پرداخت با کیف پول</label>
                                                         <input type="radio" value="wallet" name="paymethod" id="walletPay" aria-label="Radio button for following text input">
-                                                        <input type="number" value="@ViewBag.UserWallet" disabled class="form-control text-center" aria-label="Text input with radio button">
+                                                        <input type="number" value="@ViewBag.UserWallet" disabled class="form-control text-center p-0" aria-label="Text input with radio button">
                                                         <button type="submit" class="btn btn-outline-success mt-3"> پرداخت</button>
                                                     </div>
                                                 </div>
@@ -83,6 +83,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </form>
 
@@ -147,7 +148,7 @@
                             icon: 'success',
                             title: 'موفق',
                             text: result.message,
-                        });    
+                        });
                     }
                     if (result.code === 404) {
                         Swal.fire({

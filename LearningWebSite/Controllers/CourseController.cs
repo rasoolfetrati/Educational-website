@@ -78,6 +78,7 @@ namespace LearningWebSite.Controllers
             }
             ViewBag.orderId = basketService.GetOrderId(User.Identity.Name);
             ViewBag.UserWallet = userService.WalletBalance(User.Identity.Name);
+            ViewBag.Total=basketService.GetTotalPriceUserBasket(User.Identity.Name);
             return View(data);
         }
 
@@ -275,28 +276,30 @@ namespace LearningWebSite.Controllers
             }
             if (episode.IsFree && User.Identity.IsAuthenticated)
             {
-                var res = ExtractFile(filePath, extractPath);
+                var res = ExtractFile(filePath, extractPath,episode.EpisodeFileName);
                 return new JsonResult(res.Value);
             }
             if (!episode.IsFree && User.Identity.IsAuthenticated && userService.IsUserInCourse(episode.CourseId, User.Identity.Name))
             {
-                var res = ExtractFile(filePath, extractPath);
+                var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
                 return new JsonResult(res.Value);
             }
             return new JsonResult(null);
         }
-        public JsonResult ExtractFile(string filePath, string extractPath)
+        public JsonResult ExtractFile(string filePath, string extractPath,string filename)
         {
             ZipFile.ExtractToDirectory(filePath, extractPath, overwriteFiles: true);
-            var mp4FilePath = Directory.GetFiles(extractPath, "*.mp4", SearchOption.AllDirectories)
+            var targetFilePath = Directory.GetFiles(extractPath, filename.Replace(".zip",".mp4"), SearchOption.AllDirectories)
             .FirstOrDefault();
 
-            if (mp4FilePath != null)
+            if (targetFilePath != null)
             {
-                var finalpath = mp4FilePath.Split("wwwroot", StringSplitOptions.RemoveEmptyEntries);
+                var finalpath = targetFilePath.Split("wwwroot", StringSplitOptions.RemoveEmptyEntries);
                 return new JsonResult(finalpath[1]);
             }
+
             return null;
+
         }
     }
 }
