@@ -26,15 +26,18 @@ public class CourseController : AdminControllerBase
     private ICourseService _courseService;
     private readonly UserManager<CustomUser> _userManager;
     private ICommentServices _commentServices;
+    private readonly ITelegramBotClient _botClient;
     public CourseController(
         ICourseService courseService,
         UserManager<CustomUser> userManager,
-        ICommentServices commentServices
+        ICommentServices commentServices,
+        ITelegramBotClient botClient
     )
     {
         _courseService = courseService;
         _userManager = userManager;
         _commentServices = commentServices;
+        _botClient = botClient;
     }
     [HttpGet]
     public IActionResult Index(int currentPageIndex = 1)
@@ -142,9 +145,20 @@ public class CourseController : AdminControllerBase
         }
         else
         {
+            // var url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+
             await _courseService.CreateEpisode(courseEpisode, fileEpisode);
+
+            //var courseImageName = _courseService.GetCourseById(courseEpisode.CourseId).Result.CourseImageName;
+
+            //اطلاع دادن به کاربر ها در صورت ارسال اپیزود جدید
+            //Message message = await _botClient.SendPhotoAsync(
+            //chatId: "@testRasool79",
+            //photo: $"{url}/CourseImage/{courseImageName}",
+            //caption: $"{courseEpisode.EpisodeTitle}");
+
             return RedirectAndShowAlert(
-                OperationResult.Success(),
+                OperationResult.Success("ساخت اپیزود با موفقیت انجام شد."),
                 RedirectToAction(
                     nameof(IndexEpisode),
                     new { courseId = courseEpisode.CourseId }
@@ -161,7 +175,7 @@ public class CourseController : AdminControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditEpisode(CourseEpisode courseEpisode,IFormFile fileEpisode)
+    public async Task<IActionResult> EditEpisode(CourseEpisode courseEpisode, IFormFile fileEpisode)
     {
         if (fileEpisode == null && courseEpisode.EpisodeId <= 0)
         {

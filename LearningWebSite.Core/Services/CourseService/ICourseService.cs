@@ -13,6 +13,7 @@ using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types;
 using File = System.IO.File;
+using System.Linq;
 
 namespace LearningWebSite.Core.Services.CourseService
 {
@@ -564,7 +565,7 @@ namespace LearningWebSite.Core.Services.CourseService
             string filter = "",
             string getType = "all",
             string sort = "lates",
-            List<int> selectedGroups = null,
+            List<int> categories = null,
             int take = 0
         )
         {
@@ -618,13 +619,12 @@ namespace LearningWebSite.Core.Services.CourseService
                     }
             }
 
-            if (selectedGroups != null && selectedGroups.Any())
+            if (categories != null && categories.Any())
             {
-                foreach (int groupId in selectedGroups)
-                {
-                    result = result.Where(c => c.GroupId == groupId || c.SubGroup == groupId);
-                }
+                result = result.Where(c => categories.Contains(c.GroupId) || categories.Contains((int)c.SubGroup));
             }
+
+
             int skip = (pageId - 1) * take;
             double pageCounter = (double)((decimal)result.Count() / Convert.ToDecimal(take));
             int pageCount = (int)Math.Ceiling(pageCounter);

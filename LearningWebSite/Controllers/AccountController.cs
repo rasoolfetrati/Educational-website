@@ -149,9 +149,9 @@ namespace LearningWebSite.Controllers
         }
         [HttpPost("ForgetPassword")]
         [ValidateReCaptcha]
-        public IActionResult ForgetPassword(string email)
+        public async Task<IActionResult> ForgetPassword(string email)
         {
-            var user = _userManager.FindByEmailAsync(email).Result;
+            var user =await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return RedirectAndShowAlert(OperationResult.Error("کاربری با این ایمیل یافت نشد!"), View("ForgetPassword"));
@@ -162,9 +162,9 @@ namespace LearningWebSite.Controllers
         }
         [HttpGet]
         [Route("ResetPassword/{id}")]
-        public IActionResult ResetPassword(string id)
+        public async Task<IActionResult> ResetPassword(string id)
         {
-            var user = _userManager.FindByIdAsync(id).Result;
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -186,7 +186,7 @@ namespace LearningWebSite.Controllers
             var result = await _userManager.ResetPasswordAsync(user, token, model.Password);
             if (result.Succeeded)
             {
-                return RedirectAndShowAlert(OperationResult.Success("کلمه عبور شما با موفقیت تغییر کرد!"), Redirect("/Account/Login"));
+                return RedirectAndShowAlert(OperationResult.Success("کلمه عبور شما با موفقیت تغییر کرد!"), Redirect("/Login"));
 
             }
             foreach (var item in result.Errors)

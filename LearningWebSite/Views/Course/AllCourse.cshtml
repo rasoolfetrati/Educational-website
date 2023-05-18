@@ -97,7 +97,7 @@
                             {
                                 <li>
                                     <input class="form-check-input custom-checkbox" onchange="changeGroup()" type="checkbox"
-                                       @((selected.Any(s=>s==group.GroupId)?"checked":"")) name="selectedGroups" value="@group.GroupId"
+                                    @((selected.Any(s => s == group.GroupId) ? "checked" : "")) name="Categories" value="@group.GroupId"
                                        id="cat-1" />
                                     <label for="cat-1" class="form-check-label"> @group.GroupTitle </label>
                                     @if (groups.Any(g => g.ParentId == group.GroupId))
@@ -107,7 +107,7 @@
                                             {
                                                 <li>
                                                     <input onchange="changeGroup()" @((selected.Any(s=>s==sub.GroupId)?"checked":"")) type="checkbox"
-                                               name="selectedGroups" value="@sub.GroupId" id="cat-1" />
+                                                           name="Categories" value="@sub.GroupId" id="cat-1" />
                                                     <label class="form-check-label" for="cat-1"> @sub.GroupTitle </label>
                                                 </li>
                                             }

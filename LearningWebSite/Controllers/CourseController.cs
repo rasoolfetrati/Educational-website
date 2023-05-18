@@ -55,16 +55,16 @@ namespace LearningWebSite.Controllers
             string filter = "",
             string getType = "all",
             string sort = "lates",
-            List<int> selectedGroups = null,
+            List<int> Categories = null,
             int take = 0
         )
         {
-            ViewBag.selectedGroups = selectedGroups;
+            ViewBag.selectedGroups = Categories;
             ViewBag.selectedtype = getType;
             ViewBag.sort = sort;
             ViewBag.Groups = courseService.GetAllGroups();
             ViewBag.pageId = pageId;
-            return View(courseService.GetCourse(pageId, filter, getType, sort, selectedGroups, take));
+            return View(courseService.GetCourse(pageId, filter, getType, sort, Categories, take));
         }
 
         [Authorize]
