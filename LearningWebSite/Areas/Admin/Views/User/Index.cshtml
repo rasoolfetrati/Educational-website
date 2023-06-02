@@ -21,7 +21,7 @@
                     <div class="card mb-3 border-info">
                         <div class="card-header bg-info h5 text-light">فیلتر</div>
                         <div class="card-body">
-                            <form asp-area="Admin" asp-controller="Account" asp-action="Filter" class="form-horizontal" method="post">
+                            <form asp-area="Admin" asp-controller="User" asp-action="Index" class="form-horizontal" method="post">
                                 <div class="form-group row">
                                     <label class="col-md-3" for="txtTitle">ایمیل :</label>
                                     <div class="col-md-6">
@@ -29,9 +29,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-md-3" for="txtId">تلفن همراه :</label>
+                                    <label class="col-md-3" for="txtId">نام و نام خانوادگی :</label>
                                     <div class="col-md-6">
-                                        <input class="form-control" id="txtId" name="phone" autocomplete="off">
+                                        <input class="form-control" id="txtId" name="name" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -39,8 +39,8 @@
                                     <div class="col-md-6">
                                         <select class="form-control" id="ddlState" name="state">
                                             <option>انتخاب کنید...</option>
-                                            <option value="1">فعال</option>
-                                            <option value="2">غیر فعال</option>
+                                            <option value="True">فعال</option>
+                                            <option value="False">غیر فعال</option>
                                         </select>
                                     </div>
                                 </div>

@@ -19,7 +19,7 @@
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h1 class="h5">لیست دوره ها</h1>
                 <div>
-                    <a class="btn btn-default btn-sm" href="/Admin/User">خالی کن</a>
+                    <a class="btn btn-default btn-sm" href="/Admin/Course">خالی کن</a>
                     <a class="btn btn-outline-primary btn-sm" data-toggle="collapse" href="#frmFilter" role="button"
                         aria-expanded="false" aria-controls="collapseExample">جستجو دوره</a>
                     <a class="btn btn-outline-success btn-sm" asp-area="Admin" asp-controller="Course"
@@ -33,22 +33,12 @@
                             <div class="card mb-3 border-info">
                                 <div class="card-header bg-info h5 text-light">فیلتر</div>
                                 <div class="card-body">
-                                    <form class="form-horizontal" method="post" action="/Admin/Account/Filter">
+                                    <form class="form-horizontal" method="get" asp-area="Admin" asp-controller="Course" asp-action="Index">
                                         <div class="form-group row">
                                             <label class="col-md-3" for="txtTitle">نام دوره :</label>
                                             <div class="col-md-6">
-                                                <input class="form-control" id="txtTitle" name="email"
+                                                <input class="form-control" id="txtTitle" name="courseName"
                                                     autocomplete="off">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3" for="ddlState">وضعیت :</label>
-                                            <div class="col-md-6">
-                                                <select class="form-control" id="ddlState" name="state">
-                                                    <option>انتخاب کنید...</option>
-                                                    <option value="1">فعال</option>
-                                                    <option value="2">غیر فعال</option>
-                                                </select>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">جستجو</button>
@@ -71,7 +61,6 @@
                     </thead>
                     <tbody>
                         @foreach (var item in Model.showCourseViewModels)
-
                         {
 
                             var count = _course.GetEpisodeCount(item.CourseId);

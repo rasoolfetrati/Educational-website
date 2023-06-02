@@ -24,9 +24,9 @@ namespace LearningWebSite.Areas.Admin.Controllers
             this.userService = userService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? email,string? name,bool? state)
         {
-            ViewBag.Model = userService.GetAllUsers();
+            ViewBag.Model = userService.GetAllUsers(email,name,state);
             return View();
         }
         public IActionResult AddUser()
@@ -77,9 +77,9 @@ namespace LearningWebSite.Areas.Admin.Controllers
         }
 
         [Route("Role")]
-        public IActionResult RoleIndex()
+        public IActionResult RoleIndex(string? email, string? name, bool? state)
         {
-            ViewBag.Model2 = userService.GetAllUsers();
+            ViewBag.Model2 = userService.GetAllUsers(email, name, state);
             return View();
         }
         [Route("RoleList/{id}")]

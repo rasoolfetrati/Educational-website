@@ -26,27 +26,32 @@ public class CourseController : AdminControllerBase
     private ICourseService _courseService;
     private readonly UserManager<CustomUser> _userManager;
     private ICommentServices _commentServices;
-    private readonly ITelegramBotClient _botClient;
+   // private readonly ITelegramBotClient _botClient;
     public CourseController(
         ICourseService courseService,
         UserManager<CustomUser> userManager,
-        ICommentServices commentServices,
-        ITelegramBotClient botClient
+        ICommentServices commentServices
+       // ITelegramBotClient botClient
     )
     {
         _courseService = courseService;
         _userManager = userManager;
         _commentServices = commentServices;
-        _botClient = botClient;
+        //_botClient = botClient;
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="currentPageIndex">This is a for page index</param>
+    /// <param name="courseName">this is for (courses filter)</param>
+    /// <returns>view with data</returns>
     [HttpGet]
-    public IActionResult Index(int currentPageIndex = 1)
+    public IActionResult Index(string courseName, int currentPageIndex = 1)
     {
-        var data = _courseService.GetAllCourseForAdmin(currentPageIndex);
+        var data = _courseService.GetAllCourseForAdmin(courseName, currentPageIndex);
 
         return View(data);
     }
-
     [HttpGet]
     public IActionResult CreateCourse()
     {

@@ -15,7 +15,7 @@ namespace LearningWebSite.Core.Services;
 public interface IUserService
 {
     void UpdateUser(UserEditViewModel userEditView);
-    List<CustomUser> GetAllUsers();
+    List<CustomUser> GetAllUsers(string? email, string? name, bool? state);
     CustomUser GetUserByActiveCode(string code);
     CustomUser GetUserById(string id);
     void changeActiveCode(string Id);
@@ -84,21 +84,35 @@ public class UserService : IUserService
         context.SaveChanges();
     }
 
-    public List<CustomUser> GetAllUsers()
+    public List<CustomUser> GetAllUsers(string? email, string? name, bool? state)
     {
-        return context.Users
+        if (string.IsNullOrWhiteSpace(email) && string.IsNullOrWhiteSpace(name) && state == null)
+        {
+            return context.Users
             .Select(
-                w =>
-                    new CustomUser()
-                    {
-                        Id = w.Id,
-                        FirstName = w.FirstName,
-                        LastName = w.LastName,
-                        EmailConfirmed = w.EmailConfirmed,
-                        Email = w.Email
-                    }
-            )
-            .ToList();
+             w =>
+            new CustomUser()
+            {
+                Id = w.Id,
+                FirstName = w.FirstName,
+                LastName = w.LastName,
+                EmailConfirmed = w.EmailConfirmed,
+                Email = w.Email
+            }).ToList();
+        }
+        var FilteredUser = context.Users.Where(
+            u => u.Email.Contains(email) ||
+        u.FirstName.Contains(name) ||
+        u.LastName.Contains(name) ||
+        u.EmailConfirmed == state).Select(f => new CustomUser()
+        {
+            Id = f.Id,
+            FirstName = f.FirstName,
+            LastName = f.LastName,
+            EmailConfirmed = f.EmailConfirmed,
+            Email = f.Email
+        }).ToList();
+        return FilteredUser;
     }
 
     public SideBarViewModel GetSideBarView(string username)
@@ -260,7 +274,7 @@ public class UserService : IUserService
                     && u.UserOperationType == UserOperationType.Collect
             )
             .Sum(c => c.Amount);
-        if (spend>enter)
+        if (spend > enter)
         {
             return 0;
         }
