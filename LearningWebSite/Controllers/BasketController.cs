@@ -37,10 +37,7 @@ namespace LearningWebSite.Controllers
             {
                 return new JsonResult("جهت افزودن دوره به سبد خرید خود ابتدا وارد سایت شوید!");
             }
-            var result = await _basketService.AddCourseToBasket(
-                courseId,
-                User.Identity.Name.ToString()
-            );
+            var result = await _basketService.AddCourseToBasket(courseId,User.Identity.Name.ToString());
             if (result.Status == Core.InfraStructure.OperationResultStatus.Error)
             {
                 return new JsonResult(result.Message);

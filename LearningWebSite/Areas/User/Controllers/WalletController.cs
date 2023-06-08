@@ -24,16 +24,17 @@ namespace LearningWebSite.Areas.User.Controllers
         public async Task<IActionResult> ChargeWallet(int amount)
         {
             var url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+
             if (amount == 0 && amount == null)
             {
                 return RedirectAndShowAlert
                     (OperationResult.Error("مبلغ را لطفا وارد نمایید"),
                     RedirectToAction("Index", "Home", new { area = "User" }));
             }
-            var walletId =  _walletService.AddFactor(amount, User.Identity.Name);
+            var walletId = _walletService.AddFactor(amount, User.Identity.Name);
             var payment = new ZarinpalSandbox.Payment(amount);
             var response = await payment
-                .PaymentRequest("شارژ حساب", $"{url}/OnlinePayment/" + walletId,
+                .PaymentRequest("شارژ حساب", $"{url}/OnlinePaymentResult/" + walletId,
                     "rasoulfetrati2@gmail.com", "09902036655");
             if (response.Status == 100)
             {
@@ -41,8 +42,9 @@ namespace LearningWebSite.Areas.User.Controllers
             }
             return RedirectAndShowAlert(OperationResult.Error("مشکلی پیش اومد..."), RedirectToAction("Index", "Home", new { area = "User" }));
         }
-        [Route("OnlinePayment/{id}")]
-        public async Task<IActionResult> OnlinePayment(int id)
+        [Route("OnlinePaymentResult/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> OnlinePaymentResult(int id)
         {
             if (HttpContext.Request.Query["Status"] != "" &&
                 HttpContext.Request.Query["Status"].ToString().ToLower().Trim() == "ok" &&
@@ -52,7 +54,7 @@ namespace LearningWebSite.Areas.User.Controllers
                 var wallet = await _walletService.GetWalletById(id);
                 if (wallet == null)
                 {
-                    return RedirectAndShowAlert(OperationResult.Error("خطایی پیش اومد"), RedirectToAction("Index", "Home", new { area = "User" }));
+                    return RedirectAndShowAlert(OperationResult.Error("خطایی پیش اومد"), Redirect("/User/Home/Index"));
                 }
                 var payment = new ZarinpalSandbox.Payment(wallet.Amount);
                 var response = await payment.Verification(authority);
@@ -66,7 +68,7 @@ namespace LearningWebSite.Areas.User.Controllers
                 }
                 else
                 {
-                    return RedirectAndShowAlert(OperationResult.Error("خطایی پیش اومد"), RedirectToAction("Index", "Home", new { area = "User" }));
+                    return RedirectAndShowAlert(OperationResult.Error("خطایی پیش اومد"), Redirect("/User/Home/Index"));
                 }
             }
             else if (
@@ -75,17 +77,17 @@ namespace LearningWebSite.Areas.User.Controllers
                 HttpContext.Request.Query["Authority"] != ""
                 )
             {
-                return RedirectAndShowAlert(OperationResult.Error("شما پرداخت را لغو کردید"),
-                          RedirectToAction("PaymentResult", new { id = id }));
+                return Redirect($"/PaymentResult/{id}");
             }
 
             return RedirectAndShowAlert(OperationResult.Error("مشکلی پیش اومد..."), RedirectToAction("Index", "Home", new { area = "User" }));
         }
         [Route("PaymentResult/{id}")]
+        [HttpGet]
         public async Task<IActionResult> PaymentResult(int id)
         {
-            var res = await _walletService.GetWalletById(id,User?.Identity?.Name.ToString());
-            if (res!=null)
+            var res = await _walletService.GetWalletById(id, User?.Identity?.Name.ToString());
+            if (res != null)
             {
                 if (res.IsPay)
                 {

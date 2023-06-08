@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/css/bootstrap/bootstrap-rtl.css">
     <link rel="stylesheet" href="~/css/customcss/style.css">
     <link rel="stylesheet" href="~/css/fontawesome/css/all.css">
-    <link rel="stylesheet" href="~/css/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.10/sweetalert2.css">
 </head>
 
 <body>
@@ -265,7 +265,7 @@
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/myscript.js"></script>
     <script src="~/js/global.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.10/sweetalert2.all.js"></script>
 
     <partial name="_ValidationScriptsPartial" />
     <script>
@@ -283,6 +283,7 @@
                     }
                 }).then(() => {
                     response.forEach((item) => {
+                        $("#header ul").empty();
                         $("#header ul").prepend(`<li><img src="/CourseImage/${item.courseImage}" class="m-1 ml-3"><div class="float-right"><small class=" mt-3 mr-2 d-block"> ${item.courseTitle} (${new Intl.NumberFormat('fa-IR').format(item.coursePrice)} تومان)</small></div></li>`);
                         $("#TotalPrice").text("مبلغ کل:" + new Intl.NumberFormat('fa-IR').format(item.sumOrder) + "تومان");
                     });

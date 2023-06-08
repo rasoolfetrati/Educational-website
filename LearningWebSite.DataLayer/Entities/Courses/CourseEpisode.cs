@@ -24,7 +24,8 @@ namespace LearningWebSite.DataLayer.Entities.Courses
 
         [Display(Name = "رایگان")]
         public bool IsFree { get; set; }
-
+        [Display(Name = "نیاز به لاگین دارد؟")]
+        public bool Login { get; set; }
 
         public Course Course { get; set; }
 

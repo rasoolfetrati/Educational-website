@@ -99,7 +99,7 @@ namespace LearningWebSite.Core.Services.WalletService
                 CreateDate = w.CreateDate,
                 IsPay = w.IsPay,
                 WalletId = w.FactorId,
-            }).ToList();
+            }).OrderBy(f=>f.CreateDate).Take(10).AsNoTracking().ToList();
         }
 
         public Factor GetUserWallet(int Walletid, string username)

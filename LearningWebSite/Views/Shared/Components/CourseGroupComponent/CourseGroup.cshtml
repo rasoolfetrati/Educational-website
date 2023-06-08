@@ -9,7 +9,7 @@
             <div class="dropdown-menu custom-dropdown-menu dropdown-menu-right font-13 text-right">
                 @foreach (var sub in Model.Where(g => g.ParentId == group.GroupId))
                 {
-                    <a href="/Course/AllCourse?selectedGroups=@sub.GroupId" class="dropdown-item py-2">@sub.GroupTitle</a>
+                    <a href="/Course/AllCourse?categories=@sub.GroupId" class="dropdown-item py-2">@sub.GroupTitle</a>
                 }
             </div>
 

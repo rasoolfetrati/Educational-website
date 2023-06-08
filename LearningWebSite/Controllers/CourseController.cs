@@ -78,7 +78,7 @@ namespace LearningWebSite.Controllers
             }
             ViewBag.orderId = basketService.GetOrderId(User.Identity.Name);
             ViewBag.UserWallet = userService.WalletBalance(User.Identity.Name);
-            ViewBag.Total=basketService.GetTotalPriceUserBasket(User.Identity.Name);
+            ViewBag.Total = basketService.GetTotalPriceUserBasket(User.Identity.Name);
             return View(data);
         }
 
@@ -274,9 +274,14 @@ namespace LearningWebSite.Controllers
                     RedirectToAction("index", new { courseId = episode.CourseId, slug = episode.Course.Slug })
                 );
             }
-            if (episode.IsFree && User.Identity.IsAuthenticated)
+            if (!episode.Login)
             {
-                var res = ExtractFile(filePath, extractPath,episode.EpisodeFileName);
+                var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
+                return new JsonResult(res.Value);
+            }
+            if (episode.IsFree && User.Identity.IsAuthenticated && episode.Login)
+            {
+                var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
                 return new JsonResult(res.Value);
             }
             if (!episode.IsFree && User.Identity.IsAuthenticated && userService.IsUserInCourse(episode.CourseId, User.Identity.Name))
@@ -286,10 +291,10 @@ namespace LearningWebSite.Controllers
             }
             return new JsonResult(null);
         }
-        public JsonResult ExtractFile(string filePath, string extractPath,string filename)
+        public JsonResult ExtractFile(string filePath, string extractPath, string filename)
         {
             ZipFile.ExtractToDirectory(filePath, extractPath, overwriteFiles: true);
-            var targetFilePath = Directory.GetFiles(extractPath, filename.Replace(".zip",".mp4"), SearchOption.AllDirectories)
+            var targetFilePath = Directory.GetFiles(extractPath, filename.Replace(".zip", ".mp4"), SearchOption.AllDirectories)
             .FirstOrDefault();
 
             if (targetFilePath != null)
