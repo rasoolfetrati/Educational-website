@@ -1,7 +1,7 @@
 ﻿@using LearningWebSite.DataLayer.Entities.Courses
 @model List<CourseEpisode>
 @{
-    ViewData["Title"] = "IndexEpisode";
+    ViewData["Title"] = "مدیریت اپیزود ها";
     Layout = "~/Areas/Admin/Views/Shared/_adminLayout.cshtml";
 }
 
@@ -21,6 +21,9 @@
                 <div class="col-md-12" style="margin: 10px 0;">
 
                     <a asp-area="Admin" asp-controller="Course" asp-action="CreateEpisode" asp-route-courseId="@ViewData["CourseId"]" class="btn btn-outline btn-success">افزودن بخش جدید</a>
+                    <a href="javascript:void(0)" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
+                        افزودن سورس دوره
+                    </a>
                     <a class="btn btn-outline-primary pull-left" asp-area="Admin" asp-controller="Course" asp-action="Index">بازگشت به صفحه دوره ها</a>
 
                 </div>
@@ -67,7 +70,7 @@
                                             <i class="fa fa-trash-o fa-fw"></i>
                                         </button>
                                     </form>
-                               
+
                                 </td>
                             </tr>
                         }
@@ -83,3 +86,32 @@
 </div>
 
 
+<!--Modal-->
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">افزودن سورس دوره</h5>
+                </div>
+                <form asp-area="Admin" asp-controller="Course" asp-action="AddSource" method="post" enctype="multipart/form-data">
+                    <input type="hidden" value="@ViewData["CourseId"]" name="courseId" />
+                    <div class="modal-body">
+                        <div class="input-group is-invalid">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="project" name="project" required>
+                                <label class="custom-file-label" for="validatedInputGroupCustomFile">انتخاب کنید...</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+                        <input type="submit" class="btn btn-info mr-auto" value="ارسال"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

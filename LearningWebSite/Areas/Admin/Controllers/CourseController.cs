@@ -26,12 +26,12 @@ public class CourseController : AdminControllerBase
     private ICourseService _courseService;
     private readonly UserManager<CustomUser> _userManager;
     private ICommentServices _commentServices;
-   // private readonly ITelegramBotClient _botClient;
+    // private readonly ITelegramBotClient _botClient;
     public CourseController(
         ICourseService courseService,
         UserManager<CustomUser> userManager,
         ICommentServices commentServices
-       // ITelegramBotClient botClient
+    // ITelegramBotClient botClient
     )
     {
         _courseService = courseService;
@@ -206,6 +206,16 @@ public class CourseController : AdminControllerBase
             OperationResult.Success(),
             RedirectToAction(nameof(IndexEpisode), new { courseId = courseEpisode.CourseId })
         );
+    }
+    [HttpPost]
+    public async Task<IActionResult> AddSource(int courseId, IFormFile project)
+    {
+        if (project != null)
+        {
+            await _courseService.AddSource(courseId, project);
+            return RedirectAndShowAlert(OperationResult.Success("سورس دوره با موفقیت افزوده شد!"), RedirectToAction("IndexEpisode", "Course", new { courseId = courseId }));
+        }
+        return RedirectAndShowAlert(OperationResult.Error("لطفا فایل خود را انتخاب کنید!"), RedirectToAction("IndexEpisode", "Course", new { courseId = courseId }));
     }
 
     [Route("GetSubGroups/{id}")]

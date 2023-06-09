@@ -156,5 +156,16 @@ namespace LearningWebSite.Areas.User.Controllers
                 RedirectToAction(nameof(IndexEpisode), new { courseId = courseEpisode.CourseId })
             );
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddSource(int courseId, IFormFile project)
+        {
+            if (project != null)
+            {
+                await _courseService.AddSource(courseId, project);
+                return RedirectAndShowAlert(OperationResult.Success("سورس دوره با موفقیت افزوده شد!"), RedirectToAction("IndexEpisode", "Course", new { courseId = courseId }));
+            }
+            return RedirectAndShowAlert(OperationResult.Error("لطفا فایل خود را انتخاب کنید!"), RedirectToAction("IndexEpisode", "Course", new { courseId = courseId }));
+        }
     }
 }

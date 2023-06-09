@@ -52,6 +52,7 @@ public interface ICourseService
         int take = 0
     );
     List<ShowCourseListItemViewModel> GetTeacherCourses(string TeacherId);
+    Task AddSource(int courseId, IFormFile source);
 }
 
 public class CourseService : ICourseService
@@ -667,5 +668,48 @@ public class CourseService : ICourseService
             Title = c.CourseTitle
         }).ToList();
         return courses;
+    }
+
+    public async Task AddSource(int courseId, IFormFile source)
+    {
+        var projectSource = await _context.CourseEpisodes.Where(p => p.CourseId == courseId).FirstOrDefaultAsync(p => p.EpisodeTitle == "سورس دوره");
+        if (projectSource == null)
+        {
+            CourseEpisode courseEpisode = new CourseEpisode()
+            {
+                CourseId = courseId,
+                EpisodeTime = TimeSpan.Zero,
+                EpisodeTitle = "سورس دوره",
+                IsFree = false,
+                Login = true
+            };
+            if (source != null)
+            {
+                string deletedemoPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot/course/Episode",
+                source.FileName);
+
+                if (File.Exists(deletedemoPath))
+                {
+                    File.Delete(deletedemoPath);
+                }
+                courseEpisode.EpisodeFileName =
+                    source.FileName + Path.GetExtension(source.FileName);
+                string demoPath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot/course/Episode",
+                    courseEpisode.EpisodeFileName
+                );
+
+                using (var stream = new FileStream(demoPath, FileMode.Create))
+                {
+                    await source.CopyToAsync(stream);
+                }
+            }
+            await _context.CourseEpisodes.AddAsync(courseEpisode);
+            await _context.SaveChangesAsync();
+        }
+        await Task.CompletedTask;
     }
 }

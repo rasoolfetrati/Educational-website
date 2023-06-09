@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <br />
 <div class="row">
     <div class="col-lg-12">
@@ -13,15 +14,18 @@
     <!-- /.col-lg-12 -->
 </div>
 <hr />
-<div class="d-flex justify-content-center p-3">
-    <div class="col-lg-8">
+<div class="">
+    <div class="col-lg-12">
         <div class="card card-default">
             <!-- /.card-heading -->
             <div class="card-body">
                 <div class="col-md-12" style="margin: 10px 0;">
 
-                    <a asp-area="User" asp-controller="Home" asp-action="CreateEpisode" asp-route-courseId="@ViewData["CourseId"]" class="btn btn-outline btn-success">افزودن بخش جدید</a>
-                    <a class="btn btn-outline-primary pull-left" asp-area="User" asp-controller="Home" asp-action="Index">بازگشت به صفحه دوره ها</a>
+                    <a asp-area="Admin" asp-controller="Course" asp-action="CreateEpisode" asp-route-courseId="@ViewData["CourseId"]" class="btn btn-outline btn-success">افزودن بخش جدید</a>
+                    <a href="javascript:void(0)" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
+                        افزودن سورس دوره
+                    </a>
+                    <a class="btn btn-outline-primary pull-left" asp-area="Admin" asp-controller="Course" asp-action="Index">بازگشت به صفحه دوره ها</a>
 
                 </div>
 
@@ -54,20 +58,20 @@
                                     else
                                     {
                                         <span class="text-danger">
-                                            <i class="fa fa-times"></i>
+                                            <i class="fa fa-close"></i>
                                         </span>
                                     }
                                 </td>
                                 <td class="text-center">
-                                    <a asp-area="User" asp-controller="Home" asp-action="EditEpisode" asp-route-episodId="@item.EpisodeId" class="btn btn-warning btn-sm">
+                                    <a asp-area="Admin" asp-controller="Course" asp-action="EditEpisode" asp-route-episodId="@item.EpisodeId" class="btn btn-warning btn-sm">
                                         ویرایش
                                     </a>
                                     <form id="deleteForm" class="d-inline">
                                         <button onclick="submitDeleteForm('/DeleteEpisode/',@item.EpisodeId)" type="button" class="btn btn-outline-danger btn-sm">
-                                            <i class="fa fa-trash fa-fw"></i>
+                                            <i class="fa fa-trash-o fa-fw"></i>
                                         </button>
                                     </form>
-                               
+
                                 </td>
                             </tr>
                         }
@@ -83,3 +87,31 @@
 </div>
 
 
+<!--Modal-->
+<!-- Button trigger modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">افزودن سورس دوره</h5>
+                </div>
+                <form asp-area="User" asp-controller="Home" asp-action="AddSource" method="post" enctype="multipart/form-data">
+                    <input type="hidden" value="@ViewData["CourseId"]" name="courseId" />
+                    <div class="modal-body">
+                        <div class="input-group is-invalid">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="project" name="project" required>
+                                <label class="custom-file-label" for="validatedInputGroupCustomFile">انتخاب کنید...</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+                        <input type="submit" class="btn btn-info mr-auto" value="ارسال" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
