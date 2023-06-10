@@ -206,75 +206,75 @@
 </div>
 
 @section Scripts
-{
-<script src="https://cdn.ckeditor.com/4.19.1/basic/ckeditor.js"></script>
-<script src="/js/deleteScript.js"></script>
+    {
+    <script src="https://cdn.ckeditor.com/4.19.1/basic/ckeditor.js"></script>
+    <script src="/js/deleteScript.js"></script>
 
-<script>
-    CKEDITOR.replace('txtComment', {
-        customConfig: '/js/Config.js'
-    });
-</script>
-<script>
-    $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
-</script>
-<script>
-    function AddToBasket(courseId) {
-        requestSent = false;
-        $.ajax({
-            type: "POST",
-            url: "/AddBasket/" + courseId,
-            async: true,
-            success: function (result) {
-                Swal.fire(result);
-                GetBasketItems();
-            }
+    <script>
+        CKEDITOR.replace('txtComment', {
+            customConfig: '/js/Config.js'
         });
-    }
-</script>
-<script>
-    $("#btnGet").click(AjaxFormSubmit);
-    function AjaxFormSubmit() {
-        //Set the URL.
-        var url = $("#myForm").attr("action");
-
-        //Add the Field values to FormData object.
-        var formData = new FormData();
-        formData.append("txtcourseId", $("#txtcourseId").val());
-        var date = CKEDITOR.instances.txtComment.getData();
-        formData.append("txtComment", date);
-        formData.append("commentId", $("#commentId").val());
-
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            async: true,
-            success: function (response) {
-                JSON.stringify(response);
-                if (response.status === "success") {
-                    Swal.fire(
-                        'عملیات موفق',
-                        response.message,
-                        'success'
-                    );
-                    $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
-                    CKEDITOR.instances.txtComment.setData('');
-                } else if (response.status === "error") {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'اوپس...',
-                        text: response.message,
-                        confirmButtonText: 'باشه',
-                    });
+    </script>
+    <script>
+        $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
+    </script>
+    <script>
+        function AddToBasket(courseId) {
+            requestSent = false;
+            $.ajax({
+                type: "POST",
+                url: "/AddBasket/" + courseId,
+                async: true,
+                success: function (result) {
+                    Swal.fire(result);
+                    GetBasketItems();
                 }
-            }
-        });
-    }
-</script>
-<script>
+            });
+        }
+    </script>
+    <script>
+        $("#btnGet").click(AjaxFormSubmit);
+        function AjaxFormSubmit() {
+            //Set the URL.
+            var url = $("#myForm").attr("action");
+
+            //Add the Field values to FormData object.
+            var formData = new FormData();
+            formData.append("txtcourseId", $("#txtcourseId").val());
+            var date = CKEDITOR.instances.txtComment.getData();
+            formData.append("txtComment", date);
+            formData.append("commentId", $("#commentId").val());
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                async: true,
+                success: function (response) {
+                    JSON.stringify(response);
+                    if (response.status === "success") {
+                        Swal.fire(
+                            'عملیات موفق',
+                            response.message,
+                            'success'
+                        );
+                        $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
+                        CKEDITOR.instances.txtComment.setData('');
+                    } else if (response.status === "error") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'اوپس...',
+                            text: response.message,
+                            confirmButtonText: 'باشه',
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+    <script>
         $("#btnAnswer").click(answerTocomment);
         function answerTocomment(id) {
             $("#commentId").val(id);
@@ -284,28 +284,45 @@
         }
 
     </script>
-<script>
-    function playvideo(episodeId) {
-        $.ajax({
-            type: "GET",
-            url: "/PlayOnline/" + episodeId,
-            success: function (response) {
-                if(response===null){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'خطا...',
-                        text: 'برای مشاهده ویدیو باید دوره را خریداری کنید!',
-                        confirmButtonText: 'باشه',
-                    });
-                }else{
-                    $('#videoPlayer').attr('src', response);
-                    $('html, body').animate({
-                        scrollTop: $(".card-body").offset().top
-                    }, 1000);
+    <script>
+        function playvideo(episodeId) {
+            $.ajax({
+                type: "GET",
+                url: "/PlayOnline/" + episodeId,
+                success: function (response) {
+                    if (response.status === 401) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطا...',
+                            text: response.message,
+                            confirmButtonText: 'باشه',
+                        });
+                    }
+                    if (response.status === 400) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطا...',
+                            text: response.message,
+                            confirmButtonText: 'باشه',
+                        });
+                    }
+                    if (response.status === 500) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطا...',
+                            text: response.message,
+                            confirmButtonText: 'باشه',
+                        });
+                    }
+                    if(response.status===200) {
+                        $('#videoPlayer').attr('src', response.value);
+                        $('html, body').animate({
+                            scrollTop: $(".card-body").offset().top
+                        }, 1000);
+                    }
+                    console.log(response);
                 }
-                console.log(response);
-            }
-        });
-    }
-</script>
+            });
+        }
+    </script>
 }

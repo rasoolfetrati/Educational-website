@@ -35,6 +35,7 @@
                             <th>عنوان بخش</th>
                             <th>زمان جلسه</th>
                             <th>رایگان</th>
+                            <th>نیاز به لاگین دارد؟</th>
                             <th>دستورات</th>
                         </tr>
                     </thead>
@@ -63,12 +64,26 @@
                                     }
                                 </td>
                                 <td class="text-center">
+                                    @if (item.Login)
+                                    {
+                                        <span class="text-success">
+                                            <i class="fa fa-check"></i>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">
+                                            <i class="fa fa-close"></i>
+                                        </span>
+                                    }
+                                </td>
+                                <td class="text-center">
                                     <a asp-area="Admin" asp-controller="Course" asp-action="EditEpisode" asp-route-episodId="@item.EpisodeId" class="btn btn-warning btn-sm">
                                         ویرایش
                                     </a>
                                     <form id="deleteForm" class="d-inline">
                                         <button onclick="submitDeleteForm('/DeleteEpisode/',@item.EpisodeId)" type="button" class="btn btn-outline-danger btn-sm">
-                                            <i class="fa fa-trash-o fa-fw"></i>
+                                            <i class="fa fa-trash fa-fw"></i>
                                         </button>
                                     </form>
 
@@ -115,3 +130,5 @@
         </div>
     </div>
 </div>
+
+<br/>

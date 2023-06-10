@@ -9,6 +9,7 @@ using LearningWebSite.Core.Services.WalletService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
+using System.Net;
 
 namespace LearningWebSite.Controllers
 {
@@ -252,10 +253,11 @@ namespace LearningWebSite.Controllers
             var episode = courseService.GetEpisodeById(episodeId);
             if (episode == null)
             {
-                return RedirectAndShowAlert(
-                    OperationResult.Error("مشکلی پیش اومد..."),
-                    RedirectToAction("index", new { courseId = episode.CourseId, slug = episode.Course.Slug })
-                );
+                return new JsonResult(new { status = 500, message = "مشکلی پیش آمده است!" });
+            }
+            if (episode.EpisodeTime == TimeSpan.Zero)
+            {
+                return new JsonResult(new { status = 400, message = "سورس دوره غیر قابل پخش است!" });
             }
             string filePath = Path.Combine(
                 Directory.GetCurrentDirectory(),
@@ -269,27 +271,24 @@ namespace LearningWebSite.Controllers
 
             if (!System.IO.File.Exists(filePath))
             {
-                return RedirectAndShowAlert(
-                    OperationResult.Error("فایل یافت نشد!"),
-                    RedirectToAction("index", new { courseId = episode.CourseId, slug = episode.Course.Slug })
-                );
+                return new JsonResult(new { status = 500, message = "مشکلی پیش آمده است!" });
             }
-            if (!episode.Login)
+            if (!episode.Login && episode.IsFree)
             {
                 var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
-                return new JsonResult(res.Value);
+                return new JsonResult(new { status = 200, value = res.Value });
             }
             if (episode.IsFree && User.Identity.IsAuthenticated && episode.Login)
             {
                 var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
-                return new JsonResult(res.Value);
+                return new JsonResult(new { status = 200, value = res.Value });
             }
             if (!episode.IsFree && User.Identity.IsAuthenticated && userService.IsUserInCourse(episode.CourseId, User.Identity.Name))
             {
                 var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
-                return new JsonResult(res.Value);
+                return new JsonResult(new { status = 200, value = res.Value });
             }
-            return new JsonResult(null);
+            return new JsonResult(new { status = HttpStatusCode.Unauthorized, message = "برای مشاهده ویدیو باید لاگین کنید!" });
         }
         public JsonResult ExtractFile(string filePath, string extractPath, string filename)
         {

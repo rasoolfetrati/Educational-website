@@ -114,14 +114,17 @@
                         <div class="card-body mt-5">
                             @{
                                 var basket = ViewBag.Basket as List<Basket>;
+                                int counter2 = 1;
                             }
                             <div class="table-responsive" style="overflow:hidden;">
                                 <table id="myTable2" class="table table-bordered">
                                     <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>عکس</th>
                                             <th>نام دوره</th>
                                             <th>قیمت دوره</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -131,7 +134,8 @@
                                                 @foreach (var item in basket)
                                                 {
                                                     <input hidden name="courseId" value="@item.CourseId" />
-                                                <tr>
+                                                <tr id="removeTr-@item.BasketId">
+                                                    <td>@counter2</td>
                                                     <td>
                                                         <div class="product-img">
                                                             <div class=""><img class="img img-thumbnail" src="/CourseImage/thumb/@item.CourseImage"></div>
@@ -143,10 +147,15 @@
                                                     <td>
                                                         <input type="number" value="@item.CoursePrice" class="price form-control-sm" disabled="">
                                                     </td>
+
+                                                    <td>
+                                                        <a href="javascript:void(0)" onclick="submitDeleteForm('/RemoveBasket/',@item.BasketId)"><span class="btn btn-danger"><i class="fa fa-trash"></i></span></a>
+                                                    </td>
+                                                    @counter2++;
                                                 </tr>
                                                 }
                                             <tr>
-                                                <td colspan="3">
+                                                <td colspan="6">
                                                     <div>
                                                         <span class="font-13">قیمت کل :</span>
                                                         <span id="total" class="total mx-2">0</span>
@@ -154,11 +163,13 @@
                                                     </div>
                                                 </td>
                                             </tr>
+
                                             <tr>
-                                                <td colspan="3">
+                                                <td colspan="6">
                                                     <button class="btn btn-success btn-block mt-3 font-14" type="submit"> پرداخت</button>
                                                 </td>
                                             </tr>
+
                                             }
                                         </form>
                                     </tbody>
@@ -268,7 +279,7 @@
                                                     </td>
                                                     <td scope="col">
                                                         <img src="/CourseImage/thumb/@item.ImageName" class="img-thumbnail"
-                                                     style="max-height: 150px;max-width150px;" />
+                                                             style="max-height: 150px;max-width150px;" />
                                                     </td>
                                                     <td scope="col">
                                                         @item.Title
@@ -370,4 +381,5 @@
             document.getElementById('total').textContent = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
     </script>
+    <script src="/js/deleteScript.js"></script>
 }
