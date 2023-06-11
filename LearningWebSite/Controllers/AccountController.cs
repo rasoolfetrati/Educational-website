@@ -131,7 +131,7 @@ namespace LearningWebSite.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return Redirect("/");
+            return RedirectAndShowAlert(OperationResult.Success("شما با موفقیت از حساب کاربری خود خارج شدید!"),Redirect("/"));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

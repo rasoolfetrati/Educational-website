@@ -161,6 +161,7 @@
                                         <span class="bg-info count text-white font-13">@counter</span>
                                         <span class="font-13">@item.EpisodeTitle</span>
                                         <span class="font-13 @((item.IsFree) ? "text-success" : "text-danger")">@((item.IsFree) ? "رایگان" : "نقدی")</span>
+                                        <span class="font-13"><i class="@((item.Login)? "btn btn-success fa fa-unlock":"btn btn-danger fa fa-lock")"></i></span>
                                         <a href="/downloadFile/@item.EpisodeId" class="btn btn-outline-success btn-sm mr-2"><i class="fa fa-download"></i></a>
                                         <a href="javascript:void(0)" onclick="playvideo(@item.EpisodeId)" class="btn btn-outline-success btn-sm mr-2"><i class="fa fa-play"></i></a>
                                         <span class="font-13">مدت زمان این قسمت: @item.EpisodeTime</span>
@@ -207,14 +208,17 @@
 
 @section Scripts
     {
-    <script src="https://cdn.ckeditor.com/4.19.1/basic/ckeditor.js"></script>
     <script src="/js/deleteScript.js"></script>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script src="https://cdn.ckeditor.com/4.19.1/basic/ckeditor.js"></script>
 
-    <script>
-        CKEDITOR.replace('txtComment', {
-            customConfig: '/js/Config.js'
-        });
-    </script>
+        <script>
+            CKEDITOR.replace('txtComment', {
+                customConfig: '/js/Config.js'
+            });
+        </script>
+    }
     <script>
         $(".loadcomments").load(`/getcomments/${@Model.CourseId}`);
     </script>
@@ -314,7 +318,7 @@
                             confirmButtonText: 'باشه',
                         });
                     }
-                    if(response.status===200) {
+                    if (response.status === 200) {
                         $('#videoPlayer').attr('src', response.value);
                         $('html, body').animate({
                             scrollTop: $(".card-body").offset().top
