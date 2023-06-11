@@ -161,7 +161,7 @@
                                         <span class="bg-info count text-white font-13">@counter</span>
                                         <span class="font-13">@item.EpisodeTitle</span>
                                         <span class="font-13 @((item.IsFree) ? "text-success" : "text-danger")">@((item.IsFree) ? "رایگان" : "نقدی")</span>
-                                        <span class="font-13"><i class="@((item.Login)? "btn btn-success fa fa-unlock":"btn btn-danger fa fa-lock")"></i></span>
+                                        <span class="font-13"><i class="@((item.Login)? "btn btn-danger fa fa-lock":"btn btn-success fa fa-unlock")"></i></span>
                                         <a href="/downloadFile/@item.EpisodeId" class="btn btn-outline-success btn-sm mr-2"><i class="fa fa-download"></i></a>
                                         <a href="javascript:void(0)" onclick="playvideo(@item.EpisodeId)" class="btn btn-outline-success btn-sm mr-2"><i class="fa fa-play"></i></a>
                                         <span class="font-13">مدت زمان این قسمت: @item.EpisodeTime</span>
