@@ -6,7 +6,7 @@
     ViewData["Title"] = "صفحه اصلی";
 }
 @section MetaTags
-{
+    {
     <meta name="description" content="ایزی لرن یک پلتفرم کاملا متفاوت در زمینه یادگیری و آموزش برنامه نویسی بوده تا بتواند برای کسب و کار , توسعه و نگهداری نرم افزار , فن آوری های جدید و مهارت های خلاقانه ای که شما به دنبال ان هستید به صورت حرفه ای  آموزش ببینید.">
     <meta property="og:site_name" value="آموزش برنامه نویسی - ایزی لرن">
     <meta property="og:title" content="آموزش تخصصی برنامه نویسی">
@@ -94,7 +94,7 @@
 <!----- Start course boxes ----->
 <div class="container my-3">
     <div class="row">
-        @if (Model!=null)
+        @if (Model != null)
         {
             @foreach (var item in Model)
             {
@@ -225,86 +225,49 @@
 <div class="container d-none d-lg-block">
     <div class="row">
         <div class="col-sm-12 d-flex justify-content-between">
-            <h6 class="title pb-2">بهترین مدرسین ما</h6>
+            <h6 class="title pb-2">دوره های پیشنهادی ما</h6>
         </div>
     </div>
 </div>
 
-<!----- Start best teachers ----->
-<div class="container d-none d-lg-block">
-    <div class="row mt-3 mb-5">
-
-        <div class="col-md-3">
-            <div class="card teacher-card">
-                <img src="images/teacher1.jpg" alt="teacher" class="img-fluid card-img-top">
-                <div class="card-body">
-                    <p class="card-text font-14 text-center">مریم صالحی</a>
-                    <p class="card-text font-12  text-info text-center">مدرس حرفه ای طراحی سایت</p>
-                </div>
-                <div class="card-footer">
-                    <div class="text-center">
-                        <a href="#"><i class="fa fa-instagram ml-2 text-danger"></i></a>
-                        <a href="#"><i class="fa fa-telegram ml-2 text-primary"></i></a>
-                        <a href="#"><i class="fa fa-whatsapp ml-2 text-success"></i></a>
+<!----- Start comment slider ----->
+<div class="container">
+    <div class="row my-5">
+        <div class="owl-carousel owl-theme owl-rtl">
+            @{
+                var recommendedCourses = ViewBag.RecommendedCourse as IReadOnlyList<CourseIndexViewModel>;
+            }
+           @if (recommendedCourses!=null)
+            {
+                @foreach (var item in recommendedCourses)
+                {
+                    <div class="item">
+                        <div class="col-lg-8 col-md-8 col-sm-12">
+                            <div class="card custom-card mb-3" style="min-height:100%;">
+                                <div class="sub-layer">
+                                    <img src="/CourseImage/CompressedImages/@item.CourseImageName" alt="@item.CourseTitle" class="img-fluid card-img-top">
+                                    <div class="over-layer">
+                                        <a href="/Course/@item.CourseId/@item.Slug" class="btn btn-primary"> مشاهده دوره </a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <a href="/Course/@item.CourseId/@item.Slug" class="card-link">@item.CourseTitle</a>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="float-left">
+                                        <small class="text-info mr-2 ">@item.CoursePrice.ToString("#,0") تومان</small>
+                                    </div>
+                                    <div class="float-right">
+                                        <span class="text-muted font-13 pull-right">@_courseService.GetTimeSpan(item.CourseId)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                }
+            }
+
         </div>
-
-
-        <div class="col-md-3">
-            <div class="card teacher-card">
-                <img src="images/teacher3.jpg" alt="teacher" class="img-fluid card-img-top">
-                <div class="card-body">
-                    <p class="card-text font-14 text-center">محمد انصاری</a>
-                    <p class="card-text font-12  text-info text-center">مدرس حرفه ای اندروید</p>
-                </div>
-                <div class="card-footer">
-                    <div class="text-center">
-                        <a href="#"><i class="fa fa-instagram ml-2 text-danger"></i></a>
-                        <a href="#"><i class="fa fa-telegram ml-2 text-primary"></i></a>
-                        <a href="#"><i class="fa fa-whatsapp ml-2 text-success"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-md-3">
-            <div class="card teacher-card">
-                <img src="images/teacher2.jpg" alt="teacher" class="img-fluid card-img-top">
-                <div class="card-body">
-                    <p class="card-text font-14 text-center">سارا یگانه</p>
-                    <p class="card-text font-12  text-info text-center">مدرس حرفه ای  گرافیک</p>
-                </div>
-                <div class="card-footer">
-                    <div class="text-center">
-                        <a href="#"><i class="fa fa-instagram ml-2 text-danger"></i></a>
-                        <a href="#"><i class="fa fa-telegram ml-2 text-primary"></i></a>
-                        <a href="#"><i class="fa fa-whatsapp ml-2 text-success"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-md-3">
-            <div class="card teacher-card">
-                <img src="images/teacher.jpg" alt="teacher" class="img-fluid card-img-top">
-                <div class="card-body">
-                    <p class="card-text font-14 text-center">علی نوروزی</p>
-                    <p class="card-text font-12  text-info text-center">مدرس حرفه ای برنامه نویسی وب</p>
-                </div>
-                <div class="card-footer">
-                    <div class="text-center">
-                        <a href="#"><i class="fa fa-instagram ml-2 text-danger"></i></a>
-                        <a href="#"><i class="fa fa-telegram ml-2 text-primary"></i></a>
-                        <a href="#"><i class="fa fa-whatsapp ml-2 text-success"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
     </div>
 </div>
+<!----- End course slider ----->

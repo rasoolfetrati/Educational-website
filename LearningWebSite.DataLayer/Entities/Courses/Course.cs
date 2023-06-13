@@ -54,6 +54,7 @@ public class Course
     public int courseStatus { get; set; }
     public DateTime? UpdateDate { get; set; }
     public bool IsDelete { get; set; } = false;
+    public bool IsRecommended { get; set; } = false;
 
     #region Relations
 

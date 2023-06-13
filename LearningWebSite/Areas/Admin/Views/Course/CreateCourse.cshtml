@@ -56,7 +56,6 @@
             <p></p>
             <img id="imgCourse" class="thumbnail" style="max-height: 150px;max-width: 150px" src="/CourseImage/no-photo.jpg" />
             <div class="form-group">
-
                 <label>انتخاب تصویر</label>
                 <input asp-for="imgCourseUp" type="file" id="imgCourseUp">
             </div>
@@ -92,6 +91,12 @@
                 <p class="help-block">کلمات را با - جدا کنید</p>
                 <span asp-validation-for="Tags"></span>
             </div>
+            <div class="form-group">
+                <span>
+                    <label>دوره در قسمت پیشنهادی نمایش داده شود؟</label>
+                    <input type="checkbox" asp-for="IsRecommended" class="btn btn-check">
+                </span>
+            </div>
         </div>
     </form>
     <br />
@@ -101,7 +106,7 @@
 </div>
 
 @section Scripts
-{
+    {
     <script>
         $("#GroupId").change(function () {
             $("#SubGroup").empty();

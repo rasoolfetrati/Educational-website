@@ -18,9 +18,10 @@ namespace LearningWebSite.Controllers
             _contactUsService = contactUsService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var data = _courseService.GetCoursesForIndex();
+            ViewBag.RecommendedCourse = await _courseService.GetRecommendedCourses();
             return View(data);
         }
         [HttpGet]
