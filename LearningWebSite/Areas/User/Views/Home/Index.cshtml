@@ -133,7 +133,7 @@
                                             {
                                                 @foreach (var item in basket)
                                                 {
-                                                    <input hidden name="courseId" value="@item.CourseId" />
+                                                    <input hidden name="courseId" value="@item.CourseId"/>
                                                 <tr id="removeTr-@item.BasketId">
                                                     <td>@counter2</td>
                                                     <td>
@@ -151,18 +151,9 @@
                                                     <td>
                                                         <a href="javascript:void(0)" onclick="submitDeleteForm('/RemoveBasket/',@item.BasketId)"><span class="btn btn-danger"><i class="fa fa-trash"></i></span></a>
                                                     </td>
-                                                    @counter2++;
+                                                        @counter2++
                                                 </tr>
                                                 }
-                                            <tr>
-                                                <td colspan="6">
-                                                    <div>
-                                                        <span class="font-13">قیمت کل :</span>
-                                                        <span id="total" class="total mx-2">0</span>
-                                                        <span class="font-13">تومان</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
 
                                             <tr>
                                                 <td colspan="6">

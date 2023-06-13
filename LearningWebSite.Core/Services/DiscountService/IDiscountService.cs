@@ -14,7 +14,7 @@ public interface IDiscountService
     void DeleteDiscountCode(int discountId);
     bool IsDiscountCodeExist(string code);
     Discount FindDiscountById(int discountId);
-    DiscountStatus UseDiscount(string userId, int orderId,string code);
+    DiscountStatus UseDiscount(string userId, int orderId, string code);
 }
 public class DiscountService : IDiscountService
 {
@@ -22,8 +22,8 @@ public class DiscountService : IDiscountService
     IBasketService basketService;
     public DiscountService(ApplicationDbContext context, IBasketService basketService)
     {
-        this.context=context;
-        this.basketService=basketService;
+        this.context = context;
+        this.basketService = basketService;
     }
     public async Task AddDiscountCode(Discount discount)
     {
@@ -57,13 +57,13 @@ public class DiscountService : IDiscountService
 
     public bool IsDiscountCodeExist(string code)
     {
-        return context.Discounts.Any(c=>c.DiscountCode == code);
+        return context.Discounts.Any(c => c.DiscountCode == code);
     }
 
-    public DiscountStatus UseDiscount(string userId,int orderId ,string code)
+    public DiscountStatus UseDiscount(string userId, int orderId, string code)
     {
-        var discount=context.Discounts.SingleOrDefault(d=>d.DiscountCode==code);
-        if (discount==null)
+        var discount = context.Discounts.SingleOrDefault(d => d.DiscountCode == code);
+        if (discount == null)
         {
             return DiscountStatus.NotFound;
         }
@@ -75,11 +75,12 @@ public class DiscountService : IDiscountService
             return DiscountStatus.Finished;
 
         var order = basketService.GetOrderById(orderId);
-        if (context.UserDiscountCodes.Any(u=>u.UserId==userId&&u.DiscountId==discount.DiscountId))
+        if (context.UserDiscountCodes.Any(u => u.UserId == userId && u.DiscountId == discount.DiscountId))
         {
             return DiscountStatus.Used;
         }
         int percent = (order.OrderSum * discount.DiscountPercent) / 100;
+        order.OrderId = orderId;
         order.OrderSum = order.OrderSum - percent;
         basketService.UpdateOrder(order);
 
