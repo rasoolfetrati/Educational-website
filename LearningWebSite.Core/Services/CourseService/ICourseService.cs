@@ -48,4 +48,5 @@ public interface ICourseService
     List<ShowCourseListItemViewModel> GetTeacherCourses(string TeacherId);
     Task AddSource(int courseId, IFormFile source);
     Task<IReadOnlyList<CourseIndexViewModel>> GetRecommendedCourses();
+    Task<IReadOnlyList<CourseIndexViewModel>> GetBestSellerCourses();
 }

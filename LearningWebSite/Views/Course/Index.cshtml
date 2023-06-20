@@ -74,6 +74,13 @@
                     <li class="list-group-item font-13">قیمت دوره : رایگان</li>
                 }
                 <li class="list-group-item font-13">مدت زمان دوره : @ViewBag.CourseTime</li>
+                @*<li class="list-group-item font-13">@((Model.StudentCounter > 200) ? $"تعداد دانشجو: {Model.StudentCounter}" : "")</li>*@
+                <li class="list-group-item font-13">تعداد دانشجو:@Model.StudentCounter</li>
+                <li class="list-group-item font-13">
+                    رای شما به این دوره:
+                    <span class="star-rating" data-average="" data-count="8679" title="">
+                        <a class="star-gold" data-value="1" href=""><i class="fa fa-star"></i></a> <a class="star-gold" data-value="2" href=""><i class="fa fa-star"></i></a> <a class="star-gold" data-value="3" href=""><i class="fa fa-star"></i></a> <a class="star-gold" data-value="4" href=""><i class="fa fa-star"></i></a> <a class="star-gold" data-value="5" href=""><i class="fa fa-star"></i></a></span>
+                </li>
                 @if (Model.CoursePresentation == "1")
                 {
                     <li class="list-group-item font-13 text-success">نحوه برگذاری دوره : مجازی</li>

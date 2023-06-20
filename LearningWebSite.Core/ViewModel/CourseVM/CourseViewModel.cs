@@ -93,7 +93,7 @@ public class ShowCourseViewModel
     public string CourseImageName { get; set; }
     public string DemoFileName { get; set; }
     public DateTime CreateDate { get; set; }
-
+    public int StudentCounter { get; set; }
     public DateTime? UpdateDate { get; set; }
     public bool IsDelete { get; set; }
     public List<Comment> comments { get; set; }

@@ -131,6 +131,59 @@
     </div>
 </div>
 <!----- End course boxes ----->
+<!----- End category box ----->
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 d-flex justify-content-between">
+            <h6 class="title pb-2">پرفروش ترین دوره های آموزشی</h6>
+        </div>
+    </div>
+</div>
+
+<!----- Start course boxes ----->
+<div class="container my-3">
+    <div class="row">
+        @{
+            var bestSeller = await _courseService.GetBestSellerCourses();
+        }
+        @if (bestSeller != null)
+        {
+            @foreach (var item in bestSeller)
+            {
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card custom-card mb-3" style="min-height:100%;">
+                        <div class="sub-layer">
+                            <img src="/CourseImage/CompressedImages/@item.CourseImageName" alt="@item.CourseTitle" class="img-fluid card-img-top">
+                            <div class="over-layer">
+                                <a href="/Course/@item.CourseId/@item.Slug" class="btn btn-primary"> مشاهده دوره </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="/Course/@item.CourseId/@item.Slug" class="card-link">@item.CourseTitle</a>
+                        </div>
+                        <div class="card-footer">
+                            <div class="float-left">
+                                @if (item.CoursePrice <= 0)
+                                {
+                                    <small class="text-success mr-2 ">رایگان</small>
+                                }
+                                else
+                                {
+                                    <small class="text-info mr-2 ">@item.CoursePrice.ToString("#,#") تومان</small>
+                                }
+                            </div>
+                            <div class="float-right">
+                                <span class="text-muted font-13 pull-right">@_courseService.GetTimeSpan(item.CourseId)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+<!----- End course boxes ----->
 
 <div class="container">
     <div class="row">

@@ -149,7 +149,7 @@ public class CourseService : ICourseService
             Slug = courseViewModel.Slug.Replace(" ", "-"),
             CoursePresentation = courseViewModel.CoursePresentation,
             Tags = courseViewModel.Tags,
-            IsRecommended= courseViewModel.IsRecommended,
+            IsRecommended = courseViewModel.IsRecommended,
         };
         await _context.Courses.AddAsync(course);
         await _context.SaveChangesAsync();
@@ -454,6 +454,7 @@ public class CourseService : ICourseService
         return _context.Courses
             .Include(c => c.CourseEpisodes)
             .Include(c => c.Comments)
+            .Include(c => c.UserCourses)
             .Where(c => c.CourseId == id && c.Slug == slug)
             .Select(
                 c =>
@@ -475,11 +476,12 @@ public class CourseService : ICourseService
                         courseLevel = c.courseLevel,
                         courseStatus = c.courseStatus,
                         CoursePresentation = c.CoursePresentation,
-                        Tags = c.Tags
+                        Tags = c.Tags,
+                        StudentCounter = c.UserCourses.Count(u => u.CourseId == id),
                     }
             )
             .AsNoTracking()
-            .First();
+            .Single();
     }
 
     public List<CourseGroups> GetAllGroupsForLayout()
@@ -688,5 +690,24 @@ public class CourseService : ICourseService
             .Take(6)
             .AsNoTracking()
             .ToListAsync();
+    }
+
+    public async Task<IReadOnlyList<CourseIndexViewModel>> GetBestSellerCourses()
+    {
+        return await _context.Courses
+                .Where(c => c.IsRecommended)
+                .Select(c =>
+                    new CourseIndexViewModel()
+                    {
+                        CourseId = c.CourseId,
+                        CourseTitle = c.CourseTitle,
+                        CoursePrice = c.CoursePrice,
+                        CourseImageName = c.CourseImageName,
+                        Slug = c.Slug
+                    })
+                .OrderBy(c => c.CourseId)
+                .Take(3)
+                .AsNoTracking()
+                .ToListAsync();
     }
 }
