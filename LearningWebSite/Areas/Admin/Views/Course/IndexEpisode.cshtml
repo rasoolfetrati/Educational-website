@@ -77,9 +77,12 @@
                                     }
                                 </td>
                                 <td class="text-center">
-                                    <a asp-area="Admin" asp-controller="Course" asp-action="EditEpisode" asp-route-episodId="@item.EpisodeId" class="btn btn-warning btn-sm">
-                                        ویرایش
-                                    </a>
+                                    @if (!item.EpisodeTitle.Equals("سورس دوره"))
+                                    {
+                                        <a asp-area="Admin" asp-controller="Course" asp-action="EditEpisode" asp-route-episodId="@item.EpisodeId" class="btn btn-warning btn-sm">
+                                            <i class="fa fa-pencil fa-fw"></i>
+                                        </a>
+                                    }
                                     <form id="deleteForm" class="d-inline">
                                         <button onclick="submitDeleteForm('/DeleteEpisode/',@item.EpisodeId)" type="button" class="btn btn-outline-danger btn-sm">
                                             <i class="fa fa-trash-o fa-fw"></i>

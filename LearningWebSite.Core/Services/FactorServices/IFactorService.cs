@@ -9,8 +9,8 @@ namespace LearningWebSite.Core.Services.WalletService
     public interface IFactorService
     {
         int AddFactor(int amount, string username);
-        void AddOnlineFactor(int orderId, string username,string code);
-        void AddWalletFactor(int orderId, string username,string code);
+        void AddOnlineFactor(int orderId, string username, string code);
+        void AddWalletFactor(int orderId, string username, string code);
         WalletViewModel GetWalletViewModel(int walletId, string username);
         void UpdateWallet(int walletId, string code);
         Task<Factor> GetWalletById(int Walletid);
@@ -47,7 +47,7 @@ namespace LearningWebSite.Core.Services.WalletService
 
         }
 
-        public void AddOnlineFactor(int orderId , string username, string code)
+        public void AddOnlineFactor(int orderId, string username, string code)
         {
             int ordersum = _context.Orders.First(o => o.OrderId == orderId).OrderSum;
             Factor factor = new Factor()
@@ -87,6 +87,8 @@ namespace LearningWebSite.Core.Services.WalletService
             var userBasket = _context.Baskets
                              .Where(t => courseIds.Contains(t.CourseId) && t.UserName == username).ToList();
             _context.Baskets.RemoveRange(userBasket);
+            await _context.SaveChangesAsync();
+            await Task.CompletedTask;
         }
 
         public List<ShowFactorsViewModel> GetFactors(string username)
@@ -99,7 +101,7 @@ namespace LearningWebSite.Core.Services.WalletService
                 CreateDate = w.CreateDate,
                 IsPay = w.IsPay,
                 WalletId = w.FactorId,
-            }).OrderByDescending(f=>f.CreateDate).Take(10).AsNoTracking().ToList();
+            }).OrderByDescending(f => f.CreateDate).Take(10).AsNoTracking().ToList();
         }
 
         public Factor GetUserWallet(int Walletid, string username)

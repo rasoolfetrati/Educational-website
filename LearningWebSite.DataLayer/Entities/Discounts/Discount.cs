@@ -21,7 +21,7 @@ public class Discount
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
 
-    #region
+    #region Rels
 
     public List<UserDiscountCode> DiscountCodes { get; set; }
 

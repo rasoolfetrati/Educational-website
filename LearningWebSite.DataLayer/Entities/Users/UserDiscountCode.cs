@@ -9,11 +9,9 @@ public class UserDiscountCode
     public int UC_Id { get; set; }
     public int DiscountId { get; set; }
     public string UserId { get; set; }
-
     #region Relations
 
     public CustomUser User { get; set; }
     public Discount Discount { get; set; }
-
     #endregion
 }

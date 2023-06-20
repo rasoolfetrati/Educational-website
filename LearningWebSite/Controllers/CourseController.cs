@@ -1,4 +1,5 @@
-﻿using Ganss.XSS;
+﻿#region Usings
+using Ganss.XSS;
 using LearningWebSite.Areas.Admin.Controllers;
 using LearningWebSite.Core.InfraStructure;
 using LearningWebSite.Core.Services;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
 using System.Net;
+#endregion
 
 namespace LearningWebSite.Controllers
 {
@@ -85,7 +87,7 @@ namespace LearningWebSite.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Payment(List<int> courseId, string paymethod)
+        public async Task<IActionResult> Payment(List<int> courseId, string paymethod, int sumOrder)
         {
             if (string.IsNullOrWhiteSpace(paymethod))
             {
@@ -95,12 +97,11 @@ namespace LearningWebSite.Controllers
                     );
             }
             var url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
-            var orderId = await basketService.CreateOrder(courseId, User.Identity.Name);
-            var orderSum = basketService.orderSum(orderId, User.Identity.Name);
+            int orderId = basketService.GetOrderId(User.Identity.Name);
             if (paymethod.Equals("wallet"))
             {
                 int walletBalance = userService.WalletBalance(User.Identity.Name);
-                if (walletBalance < orderSum)
+                if (walletBalance < sumOrder)
                 {
                     return RedirectAndShowAlert(
                         OperationResult.Error("موجودی کیف پول شما کمتر از مبلغ سفارش می باشد!"),
@@ -112,10 +113,10 @@ namespace LearningWebSite.Controllers
             }
             else
             {
-                var payment = new ZarinpalSandbox.Payment(orderSum);
+                var payment = new ZarinpalSandbox.Payment(sumOrder);
                 var response = await payment.PaymentRequest(
                     "خرید دوره",
-                    $"{url}/OnlineCoursePayment/" + orderId,
+                    $"{url}/OnlineCoursePayment/{orderId}/{sumOrder}",
                     User.Identity.Name,
                     "09902036655"
                 );
@@ -129,9 +130,9 @@ namespace LearningWebSite.Controllers
             return BadRequest();
         }
 
-        [Route("OnlineCoursePayment/{orderId}")]
+        [Route("OnlineCoursePayment/{orderId}/{sumOrder}")]
         [Authorize]
-        public async Task<IActionResult> OnlineCoursePayment(int orderId)
+        public async Task<IActionResult> OnlineCoursePayment(int orderId, int sumOrder)
         {
             if (
                 HttpContext.Request.Query["Status"] != ""
@@ -141,14 +142,24 @@ namespace LearningWebSite.Controllers
             {
                 string authority = HttpContext.Request.Query["Authority"];
                 var result = basketService.orderSum(orderId, User.Identity.Name);
-                var payment = new ZarinpalSandbox.Payment(result);
-                var response = await payment.Verification(authority);
-                if (response.Status == 100)
+                if (result == sumOrder)
                 {
-                    basketService.DeleteUserBasket(User.Identity.Name);
-                    string code = response.RefId.ToString();
-                    basketService.AddToUserCourse(orderId, User.Identity.Name, code);
-                    return RedirectAndShowAlert(OperationResult.Success("خرید شما با موفقیت انجام شد!"), Redirect("/"));
+
+                    var payment = new ZarinpalSandbox.Payment(result);
+                    var response = await payment.Verification(authority);
+                    if (response.Status == 100)
+                    {
+                        basketService.DeleteUserBasket(User.Identity.Name);
+                        string code = response.RefId.ToString();
+                        basketService.AddToUserCourse(orderId, User.Identity.Name, code);
+                        return RedirectAndShowAlert(OperationResult.Success("خرید شما با موفقیت انجام شد!"), Redirect("/"));
+                    }
+                    else
+                    {
+                        return RedirectAndShowAlert(
+                        OperationResult.Error("خطایی پیش اومد"),
+                        RedirectToAction("Index", "Home", new { area = "User" }));
+                    }
                 }
                 else
                 {
