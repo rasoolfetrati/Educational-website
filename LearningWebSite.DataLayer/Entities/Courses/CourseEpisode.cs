@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LearningWebSite.DataLayer.Entities.Courses
 {
@@ -20,13 +21,16 @@ namespace LearningWebSite.DataLayer.Entities.Courses
 
         [Display(Name = "فایل")]
         [MaxLength(150)]
-        public string EpisodeFileName { get; set; }
+        [AllowNull]
+        public string? EpisodeFileName { get; set; }
 
         [Display(Name = "رایگان")]
         public bool IsFree { get; set; }
         [Display(Name = "نیاز به لاگین دارد؟")]
         public bool Login { get; set; }
-
+        [AllowNull]
+        [Display(Name = "آدرس فایل")]
+        public string? FileUrl { get; set; } = string.Empty;
         public Course Course { get; set; }
 
     }

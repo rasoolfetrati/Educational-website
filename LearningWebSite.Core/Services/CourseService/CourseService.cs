@@ -209,9 +209,9 @@ public class CourseService : ICourseService
             {
                 await file.CopyToAsync(stream);
             }
-            await _context.AddAsync(courseEpisode);
-            await _context.SaveChangesAsync();
         }
+        await _context.AddAsync(courseEpisode);
+        await _context.SaveChangesAsync();
         await Task.CompletedTask;
     }
 

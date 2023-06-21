@@ -225,6 +225,15 @@ namespace LearningWebSite.Controllers
                     RedirectToAction("index", new { episode.CourseId, episode.Course.Slug })
                 );
             }
+            if (!string.IsNullOrWhiteSpace(episode.FileUrl))
+            {
+                var result = DownloadExtention.GetUrlContent(episode.FileUrl);
+                if (result != null)
+                {
+                    return File(result.Result, "application/force-download", episode.EpisodeTitle + "" + Path.GetExtension(episode.FileUrl));
+                }
+                return Ok("file is not exist");
+            }
             string filePath = Path.Combine(
                 Directory.GetCurrentDirectory(),
                 "wwwroot/course/Episode",
@@ -270,34 +279,33 @@ namespace LearningWebSite.Controllers
             {
                 return new JsonResult(new { status = 400, message = "سورس دوره غیر قابل پخش است!" });
             }
-            string filePath = Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "wwwroot/course/Episode",
-                episode.EpisodeFileName
-            );
-            var extractPath = Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "wwwroot/course/ExtractedEpisodes"
-            );
-
-            if (!System.IO.File.Exists(filePath))
+            if (!string.IsNullOrWhiteSpace(episode.FileUrl))
             {
-                return new JsonResult(new { status = 500, message = "مشکلی پیش آمده است!" });
+                return new JsonResult(new { status = 200, value = episode.FileUrl });
             }
-            if (!episode.Login && episode.IsFree)
+            if (!string.IsNullOrWhiteSpace(episode.EpisodeFileName))
             {
-                var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
-                return new JsonResult(new { status = 200, value = res.Value });
-            }
-            if (episode.IsFree && User.Identity.IsAuthenticated && episode.Login)
-            {
-                var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
-                return new JsonResult(new { status = 200, value = res.Value });
-            }
-            if (!episode.IsFree && User.Identity.IsAuthenticated && userService.IsUserInCourse(episode.CourseId, User.Identity.Name))
-            {
-                var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
-                return new JsonResult(new { status = 200, value = res.Value });
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/Episode", episode.EpisodeFileName);
+                var extractPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/ExtractedEpisodes");
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return new JsonResult(new { status = 500, message = "مشکلی پیش آمده است!" });
+                }
+                if (!episode.Login && episode.IsFree)
+                {
+                    var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
+                    return new JsonResult(new { status = 200, value = res.Value });
+                }
+                if (episode.IsFree && User.Identity.IsAuthenticated && episode.Login)
+                {
+                    var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
+                    return new JsonResult(new { status = 200, value = res.Value });
+                }
+                if (!episode.IsFree && User.Identity.IsAuthenticated && userService.IsUserInCourse(episode.CourseId, User.Identity.Name))
+                {
+                    var res = ExtractFile(filePath, extractPath, episode.EpisodeFileName);
+                    return new JsonResult(new { status = 200, value = res.Value });
+                }
             }
             return new JsonResult(new { status = HttpStatusCode.Unauthorized, message = "برای مشاهده ویدیو باید لاگین کنید!" });
         }
@@ -315,6 +323,15 @@ namespace LearningWebSite.Controllers
 
             return null;
 
+        }
+    }
+    public static class DownloadExtention
+    {
+        public static async Task<byte[]?> GetUrlContent(string url)
+        {
+            using (var client = new HttpClient())
+            using (var result = await client.GetAsync(url))
+                return result.IsSuccessStatusCode ? await result.Content.ReadAsByteArrayAsync() : null;
         }
     }
 }

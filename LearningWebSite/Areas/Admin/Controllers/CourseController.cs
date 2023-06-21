@@ -7,15 +7,6 @@ using LearningWebSite.DataLayer.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Telegram.Bot.Exceptions;
-using Telegram.Bot.Extensions.Polling;
-using Telegram.Bot.Types.Enums;
-using Telegram.Bot;
-using Telegram.Bot.Types;
-using LearningWebSite.Core.Services.BotService;
-using System.Threading;
-using System.Text.Encodings.Web;
-using Ganss.XSS;
 
 namespace LearningWebSite.Areas.Admin.Controllers;
 
@@ -131,22 +122,27 @@ public class CourseController : AdminControllerBase
     [DisableRequestSizeLimit]
     public async Task<IActionResult> CreateEpisode(CourseEpisode courseEpisode, IFormFile fileEpisode)
     {
-        var getExtension = Path.GetExtension(fileEpisode.FileName);
-        if (getExtension != ".zip")
+
+        if (fileEpisode != null)
         {
-            ModelState.AddModelError("", "پسوند فایل حتما باید zip باشد.");
-            return View(courseEpisode);
-        }
-        if (fileEpisode == null)
-        {
-            ViewData["IsNullFile"] = true;
-            return View();
-        }
-        bool isExist = _courseService.CheckExistFile(fileEpisode.FileName);
-        if (isExist)
-        {
-            ViewData["IsExistFile"] = true;
-            return View();
+            var getExtension = Path.GetExtension(fileEpisode.FileName);
+            if (getExtension != ".zip")
+            {
+                ModelState.AddModelError("", "پسوند فایل حتما باید zip باشد.");
+                return View(courseEpisode);
+            }
+            bool isExist = _courseService.CheckExistFile(fileEpisode.FileName);
+            if (isExist)
+            {
+                ViewData["IsExistFile"] = true;
+                return View(courseEpisode);
+            }
+            await _courseService.CreateEpisode(courseEpisode, fileEpisode);
+            return RedirectAndShowAlert(
+             OperationResult.Success("ساخت اپیزود با موفقیت انجام شد."),
+             RedirectToAction(
+                 nameof(IndexEpisode),
+                 new { courseId = courseEpisode.CourseId }));
         }
         else
         {

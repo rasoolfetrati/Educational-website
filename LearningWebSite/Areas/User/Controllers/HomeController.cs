@@ -89,28 +89,43 @@ namespace LearningWebSite.Areas.User.Controllers
         public async Task<IActionResult> CreateEpisode(CourseEpisode courseEpisode, IFormFile fileEpisode)
         {
 
-            if (fileEpisode == null)
+            if (fileEpisode != null)
             {
-                ViewData["IsNullFile"] = true;
-                return View(courseEpisode);
-            }
-            var getExtension = Path.GetExtension(fileEpisode.FileName);
-            if (getExtension != ".zip")
-            {
-                ModelState.AddModelError("", "پسوند فایل حتما باید zip باشد.");
-                return View(courseEpisode);
-            }
-            bool isExist = _courseService.CheckExistFile(fileEpisode.FileName);
-            if (isExist)
-            {
-                ViewData["IsExistFile"] = true;
-                return View(courseEpisode);
+                var getExtension = Path.GetExtension(fileEpisode.FileName);
+                if (getExtension != ".zip")
+                {
+                    ModelState.AddModelError("", "پسوند فایل حتما باید zip باشد.");
+                    return View(courseEpisode);
+                }
+                bool isExist = _courseService.CheckExistFile(fileEpisode.FileName);
+                if (isExist)
+                {
+                    ViewData["IsExistFile"] = true;
+                    return View(courseEpisode);
+                }
+                await _courseService.CreateEpisode(courseEpisode, fileEpisode);
+                return RedirectAndShowAlert(
+                 OperationResult.Success("ساخت اپیزود با موفقیت انجام شد."),
+                 RedirectToAction(
+                     nameof(IndexEpisode),
+                     new { courseId = courseEpisode.CourseId }));
             }
             else
             {
+                // var url = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+
                 await _courseService.CreateEpisode(courseEpisode, fileEpisode);
+
+                //var courseImageName = _courseService.GetCourseById(courseEpisode.CourseId).Result.CourseImageName;
+
+                //اطلاع دادن به کاربر ها در صورت ارسال اپیزود جدید
+                //Message message = await _botClient.SendPhotoAsync(
+                //chatId: "@testRasool79",
+                //photo: $"{url}/CourseImage/{courseImageName}",
+                //caption: $"{courseEpisode.EpisodeTitle}");
+
                 return RedirectAndShowAlert(
-                    OperationResult.Success(),
+                    OperationResult.Success("ساخت اپیزود با موفقیت انجام شد."),
                     RedirectToAction(
                         nameof(IndexEpisode),
                         new { courseId = courseEpisode.CourseId }
