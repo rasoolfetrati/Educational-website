@@ -12,6 +12,7 @@ public class CourseIndexViewModel
     public string CourseImageName { get; set; }
     public int CoursePrice { get; set; }
     public string Slug { get; set; }
+    public DateTime? LastModifiedDate { get; set; }
 
 }
 public class CourseViewModel

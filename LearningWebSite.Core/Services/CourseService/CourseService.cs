@@ -150,6 +150,7 @@ public class CourseService : ICourseService
             CoursePresentation = courseViewModel.CoursePresentation,
             Tags = courseViewModel.Tags,
             IsRecommended = courseViewModel.IsRecommended,
+            LastModifiedDate = DateTime.Now
         };
         await _context.Courses.AddAsync(course);
         await _context.SaveChangesAsync();
@@ -334,6 +335,7 @@ public class CourseService : ICourseService
         originalCourse.CoursePresentation = courseView.CoursePresentation;
         originalCourse.Tags = courseView.Tags;
         originalCourse.IsRecommended = courseView.IsRecommended;
+        //originalCourse.LastModifiedDate = DateTime.Now;
 
         _context.Courses.Update(originalCourse);
         _context.SaveChanges();
@@ -440,10 +442,12 @@ public class CourseService : ICourseService
                         CourseTitle = c.CourseTitle,
                         CoursePrice = c.CoursePrice,
                         CourseImageName = c.CourseImageName,
-                        Slug = c.Slug
+                        Slug = c.Slug,
+                        LastModifiedDate = c.LastModifiedDate
                     }
             )
-            .OrderBy(c => c.CourseId)
+            .OrderBy(c => c.LastModifiedDate)
+            .ThenBy(c => c.CourseId)
             .Take(9)
             .AsNoTracking()
             .ToList();
@@ -684,7 +688,7 @@ public class CourseService : ICourseService
                     CourseTitle = c.CourseTitle,
                     CoursePrice = c.CoursePrice,
                     CourseImageName = c.CourseImageName,
-                    Slug = c.Slug
+                    Slug = c.Slug,
                 })
             .OrderBy(c => c.CourseId)
             .Take(6)

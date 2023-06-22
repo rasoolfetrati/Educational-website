@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LearningWebSite.DataLayer.Context
 {
-    public class ApplicationDbContext:IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }
@@ -31,6 +31,26 @@ namespace LearningWebSite.DataLayer.Context
         public DbSet<UserDiscountCode> UserDiscountCodes { get; set; }
         public DbSet<Discount> Discounts { get; set; }
 
+
+        public override int SaveChanges()
+        {
+            this.ChangeTracker.DetectChanges();
+
+            var modified = this.ChangeTracker.Entries()
+                        .Where(t => t.State == EntityState.Modified)
+                        .Select(t => t.Entity)
+                        .ToArray();
+
+            foreach (var entity in modified)
+            {
+                if (entity is Course)
+                {
+                    var track = entity as Course;
+                    track.LastModifiedDate = DateTime.Now;
+                }
+            }
+            return base.SaveChanges();
+        }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<CourseGroups>().HasQueryFilter(g => !g.IsDelete);

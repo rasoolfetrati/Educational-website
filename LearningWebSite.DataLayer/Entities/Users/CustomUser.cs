@@ -14,7 +14,6 @@ namespace LearningWebSite.DataLayer.Entities.Users
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Gender Gender { get; set; }
         public string Avatar { get; set; }
         public string ActiveCode { get; set; }
         public bool IsDelete { get; set; } = false;

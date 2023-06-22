@@ -50,7 +50,6 @@ public class UserService : IUserService
             Avatar = "Default.png",
             Email = userAddingViewModel.Email,
             EmailConfirmed = userAddingViewModel.IsActive,
-            Gender = DataLayer.Entities.User.Gender.Unknown,
             UserName = userAddingViewModel.Email,
             FirstName = userAddingViewModel.FirstName,
             LastName = userAddingViewModel.LastName
@@ -189,7 +188,6 @@ public class UserService : IUserService
             Avatar = "Default.png",
             FirstName = registerViewModel.FirstName,
             LastName = registerViewModel.LastName,
-            Gender = DataLayer.Entities.User.Gender.Unknown,
             UserName = registerViewModel.Email.FixEmail(),
             ActiveCode = GenerateActiveCode.GenerateCode(),
         };

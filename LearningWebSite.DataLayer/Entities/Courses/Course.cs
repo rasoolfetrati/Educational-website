@@ -2,6 +2,7 @@
 using LearningWebSite.DataLayer.Entities.Comments;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LearningWebSite.DataLayer.Entities.Courses;
 
@@ -48,6 +49,8 @@ public class Course
 
     [Required]
     public DateTime CreateDate { get; set; } = DateTime.Now;
+    [AllowNull]
+    public DateTime? LastModifiedDate { get; set; } = DateTime.Now;
     [Required]
     public int courseLevel { get; set; }
     [Required]
